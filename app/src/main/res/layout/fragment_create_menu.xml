@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.createmenu.CreateMenuFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ImgCreateMenu"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/edtNameCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="name" />
+
+    <EditText
+        android:id="@+id/edtDescriptionCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="description" />
+
+    <EditText
+        android:id="@+id/edtPriceCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Price" />
+
+    <EditText
+        android:id="@+id/edtStockCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="stock" />
+
+    <EditText
+        android:id="@+id/edtCategoryMenuIdCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="category_menu_id" />
+
+    <Button
+        android:id="@+id/btnCreateMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/base_color"
+        android:hint="Create"
+        android:textColor="#FFF" />
+
+
+</LinearLayout>

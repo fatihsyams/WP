@@ -5,19 +5,25 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.wp.view.pesanan.PesananFragment
 import com.example.wp.R
+import com.example.wp.view.createmenu.CreateMenuFragment
 import com.example.wp.view.login.LoginFragment
 
 class MainActivity : AppCompatActivity() {
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-     loadFragment(LoginFragment())
+        loadFragment(CreateMenuFragment())
 
     }
-    private fun loadFragment(fragment : Fragment) {
+        fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fl_container, fragment)
             .commit()
     }
+
+
 }

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.wp.data.DataItem
 import com.example.wp.R
 import com.example.wp.adapter.MenusAdapter
@@ -18,9 +18,11 @@ class PesananFragment : Fragment(),
 
     lateinit var presenter: PesananPresenter
 
-//    private val viewmodel: PesananViewModel by lazy {
-//        ViewModelProviders.of(this).get(PesananViewModel::class.java)
-//    }
+    private val menuAdapter: MenusAdapter by lazy {
+        MenusAdapter(requireContext(), listOf())
+    }
+
+    var listMenu = listOf<DataItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,47 +37,35 @@ class PesananFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         presenter = PesananPresenter(this)
+        context?.let { presenter.initSession(it) }
         presenter.logicData()
 
-//        viewmodel.getInfoMenus()
-//
-//        viewmodel.pesananLoad.observe(viewLifecycleOwner, Observer {
-//            when (it) {
-//                is Load.Success -> {
-//                    Toast.makeText(context, "$it.data.id", Toast.LENGTH_LONG).show()
-//
-//                    rvMenus.layoutManager = LinearLayoutManager(context)
-//                    rvMenus.adapter = MenusAdapter(context!!, it.data.data!!)
-//
-//                }
-//                is Load.Fail -> {
-//                    Toast.makeText(context, "Fail + ${it.error}", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        })
 
 
-//        searchView.setOnQueryTextListener(object :
-//            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                adapters.filter.filter(newText)
-//                return false
-//            }
-//
-//        })
-//
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filter(query.orEmpty())
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText.orEmpty())
+                return false
+            }
+
+        })
+
 //
     }
 
     override fun showData(data: List<DataItem>) {
         Log.d("data", "${data.size}")
+        menuAdapter.addDataMenus(data)
+        listMenu = data
         rvMenus.apply {
-            adapter = MenusAdapter(context, data)
-            layoutManager = LinearLayoutManager(context)
+            adapter = menuAdapter
+            layoutManager = GridLayoutManager(context, 3)
         }
     }
 
@@ -87,5 +77,12 @@ class PesananFragment : Fragment(),
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
+
+    fun filter(query: String) {
+        val result = listMenu.filter {
+            it.name?.contains(query, true)!!.or(false)
+        }
+        menuAdapter.updateDataMenu(result)
+    }
 
 }

@@ -6,6 +6,7 @@ interface LoginInterface {
     interface View {
         fun showLoginSuccess(msg: String)
         fun showLoginFailed(msg: String)
+        fun moveHome()
     }
 
     interface Presenter {

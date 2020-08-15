@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ResponseMenuWp(
 
-    @field:SerializedName("data")
+    @field:SerializedName("menu")
 	val data: List<DataItem>? = null,
 
     @field:SerializedName("success")

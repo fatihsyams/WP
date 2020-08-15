@@ -26,7 +26,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
             view?.showLoginFailed("Isi data anda")
         }
 
-        val api = WarungPojokService.create()
+        val api = WarungPojokService.create(sm)
         val loginBody = RequestLogin(username, password)
         api.login(loginBody).enqueue(object : Callback<ResponseLoginn> {
             override fun onFailure(call: Call<ResponseLoginn>, t: Throwable) {
@@ -34,13 +34,19 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
                 Log.d("GagalLogin", t.message.toString())
             }
 
-            override fun onResponse(call: Call<ResponseLoginn>, response: Response<ResponseLoginn>) {
+            override fun onResponse(
+                call: Call<ResponseLoginn>,
+                response: Response<ResponseLoginn>
+            ) {
                 if (response.body() != null) {
                     var responseBody = response.body()
-                    view?.showLoginSuccess("Selamat Datang")
+                    view?.showLoginSuccess("Selamat Datang" + "${responseBody?.token}")
                     if (responseBody?.token != null) {
                         sm.saveBoolean(true)
+                        sm.saveToken(responseBody?.token.toString())
+                        view?.moveHome()
                     } else {
+                        view?.showLoginFailed("Token Tidak Dapat")
                         Log.d("TOKEN", "Token tidak dapat")
                     }
                 } else {
@@ -54,7 +60,9 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
 
     override fun checkLogin() {
         if (sm.getBoolean()) {
-            view?.showLoginSuccess("Selamat Datang")
+            view?.moveHome()
+        } else {
+            view?.showLoginFailed("Token Tidak Dapat")
         }
     }
 

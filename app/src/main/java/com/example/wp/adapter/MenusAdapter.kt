@@ -11,8 +11,8 @@ import com.example.wp.data.DataItem
 import com.example.wp.R
 import kotlinx.android.synthetic.main.item_menu.view.*
 
-class MenusAdapter(val context: Context, val data: List<DataItem>) :
-    RecyclerView.Adapter<MenusAdapter.ViewHolder>(), Filterable {
+class MenusAdapter(val context: Context, var data: List<DataItem>) :
+    RecyclerView.Adapter<MenusAdapter.ViewHolder>() {
 
 
 //    var filterNamaMenus : List<ResponseMenu>? = null
@@ -38,7 +38,8 @@ class MenusAdapter(val context: Context, val data: List<DataItem>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val harga = view.tvHargaMenus
-//        val kategori = view.tvKeteranganMenus
+
+        //        val kategori = view.tvKeteranganMenus
         val namaMenu = view.tvNamaMenus
 
         fun bindItem(item: DataItem) {
@@ -48,41 +49,14 @@ class MenusAdapter(val context: Context, val data: List<DataItem>) :
         }
     }
 
-    override fun getFilter(): Filter {
-        TODO("Not yet implemented")
+   fun updateDataMenu(newData: List<DataItem>) {
+       data = newData
+       notifyDataSetChanged()
+   }
+
+    fun addDataMenus(newData: List<DataItem>) {
+        data = newData
     }
 
 
-//    override fun getFilter(): Filter {
-//        return object : Filter() {
-//            override fun performFiltering(constraint: CharSequence?): FilterResults {
-//                val charSearch = constraint.toString()
-//                filterNamaMenus = if (charSearch.isEmpty()) {
-//                    data
-//                } else {
-//                    val resultList = ArrayList<ResponseMenu>()
-//                    for (row in data) {
-//                        if (row.name.toLowerCase(Locale.ROOT).contains(
-//                                charSearch.toLowerCase(
-//                                    Locale.ROOT
-//                                )
-//                            )
-//                        ) {
-//                            resultList.add(row)
-//                        }
-//                    }
-//                    resultList
-//                }
-//                val filterResults = FilterResults()
-//                filterResults.values = filterNamaMenus
-//                return filterResults
-//            }
-//
-//            @Suppress("UNCHECKED_CAST")
-//            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-//                filterNamaMenus = results?.values as ArrayList<ResponseMenu>
-//                notifyDataSetChanged()
-//            }
-//        }
-//    }
 }

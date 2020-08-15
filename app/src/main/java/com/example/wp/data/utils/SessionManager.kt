@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SessionManager {
-    private val KEY_NAME  = "NAMA"
+    private val KEY_NAME = "NAMA"
     private val KEY_PASS = "PASS"
     private val KEY_BOOLEAN = "BOOLEAN"
+    private val KEY_TOKEN = "TOKEN"
 
 
     var mSharedPrefence: SharedPreferences? = null
@@ -16,7 +17,7 @@ class SessionManager {
         mSharedPrefence = context.getSharedPreferences(KEY_NAME, Context.MODE_PRIVATE)
     }
 
-    fun saveEmail(email : String) {
+    fun saveEmail(email: String) {
         mEditor = mSharedPrefence?.edit()
         mEditor?.putString(KEY_NAME, email)?.apply()
     }
@@ -26,10 +27,20 @@ class SessionManager {
         mEditor?.putString(KEY_PASS, pass)?.apply()
     }
 
+    fun saveToken(token: String) {
+        mEditor = mSharedPrefence?.edit()
+        mEditor?.putString(KEY_TOKEN, token)?.apply()
+    }
+
+    fun getToken(): String? {
+        return mSharedPrefence?.getString(KEY_TOKEN, null)
+    }
+
     fun saveBoolean(boolean: Boolean) {
         mEditor = mSharedPrefence?.edit()
         mEditor?.putBoolean(KEY_BOOLEAN, boolean)?.apply()
     }
+
     fun getBoolean(): Boolean {
         return mSharedPrefence?.getBoolean(KEY_BOOLEAN, false)!!
     }
@@ -46,7 +57,6 @@ class SessionManager {
         mEditor = mSharedPrefence?.edit()
         mEditor?.clear()?.commit()
     }
-
 
 
 }
