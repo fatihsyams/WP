@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loadFragment(CreateMenuFragment())
+        loadFragment(LoginFragment())
 
     }
         fun loadFragment(fragment: Fragment) {

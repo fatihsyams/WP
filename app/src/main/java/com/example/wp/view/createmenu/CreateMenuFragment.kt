@@ -2,6 +2,7 @@ package com.example.wp.view.createmenu
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.net.toFile
+import com.bumptech.glide.Glide
+import com.esafirm.imagepicker.features.ImagePicker
 import com.example.wp.R
 import kotlinx.android.synthetic.main.fragment_base_input_menu.*
 import kotlinx.android.synthetic.main.fragment_create_menu.*
@@ -49,31 +52,31 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View {
         presenter = CreateMenuPresenter(this)
         context?.let { presenter.instencePrefence(it) }
         btnCreateMenu.setOnClickListener {
-            var requestFile: RequestBody =
+            val requestFile: RequestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file)
 
 
-            var nama: RequestBody = RequestBody.create(
+            val nama: RequestBody = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 edtNameCreateMenu.text.toString()
             )
-            var description: RequestBody = RequestBody.create(
+            val description: RequestBody = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 edtDescriptionCreateMenu.text.toString()
             )
-            var Price: RequestBody = RequestBody.create(
+            val Price: RequestBody = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 edtPriceCreateMenu.text.toString()
             )
-            var stock: RequestBody = RequestBody.create(
+            val stock: RequestBody = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 edtStockCreateMenu.text.toString()
             )
-            var category_menu_id: RequestBody = RequestBody.create(
+            val category_menu_id: RequestBody = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 edtCategoryMenuIdCreateMenu.text.toString()
             )
-            var body: MultipartBody.Part =
+            val body: MultipartBody.Part =
                 MultipartBody.Part.createFormData("image", file.path, requestFile)
 
             presenter.logicInputMenus(
@@ -86,45 +89,67 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View {
 
     private fun setUpImage() {
         ImgCreateMenu.setOnClickListener {
-            Toast.makeText(context, "TEST", Toast.LENGTH_LONG).show()
-            val intentGallery = Intent()
-            intentGallery.apply {
-                type = "image/*"
-                action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(
-                    Intent.createChooser(intentGallery, "Pilih Photo"),
-                    PICK_IMAGE
-                )
-            }
+            ImagePicker.create(this) // Activity or Fragment
+                .folderMode(false)
+                .start();
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            var images: MutableList<com.esafirm.imagepicker.model.Image>? =
+                ImagePicker.getImages(data)
+            var image = ImagePicker.getFirstImageOrNull(data)
+            var path: String = image.path
+
+            context?.let {
+                Glide.with(it)
+                    .load(path)
+                    .into(ImgCreateMenu)
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
 
-        var resolver = activity!!.contentResolver
 
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OKE) {
-            try {
-//                var extras: Bundle? = data?.extras
-//                var bitmap: Bitmap = extras?.get("data") as Bitmap
+    }
+
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
 //
+//
+//
+//
+//        var resolver = activity!!.contentResolver
+//
+//        if (requestCode == PICK_IMAGE && resultCode == RESULT_OKE) {
+//            try {
+////                var extras: Bundle? = data?.extras
+////                var bitmap: Bitmap = extras?.get("data") as Bitmap
+////
 //                uri = data?.data
 //
 //
 //                val bitmap: Bitmap =
-////                    MediaStore.Images.Media.getBitmap(resolver, uri)
+//                    MediaStore.Images.Media.getBitmap(resolver, uri)
 //                var filesDir: File = activity?.filesDir!!
 //                var imageFile = File(filesDir, "image" + ".jpg")
 //
 //                file = imageFile
 //
-//                imgInputMenus.setImageBitmap(bitmap)
-            } catch (e: HttpException) {
-                Toast.makeText(context, e.message(), Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+//                context?.let {
+//                    Glide.with(it)
+//                        .load(file)
+//                        .into(imgInputMenus)
+//                }
+////                imgInputMenus.setImageBitmap(bitmap)
+//            } catch (e: HttpException) {
+//                Toast.makeText(context, e.message(), Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
 
 
     override fun showAlertSuccess(msg: String) {

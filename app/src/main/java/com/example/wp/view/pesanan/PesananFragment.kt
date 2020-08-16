@@ -65,7 +65,7 @@ class PesananFragment : Fragment(),
         listMenu = data
         rvMenus.apply {
             adapter = menuAdapter
-            layoutManager = GridLayoutManager(context, 3)
+            layoutManager = GridLayoutManager(context, 2)
         }
     }
 

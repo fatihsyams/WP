@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     tools:context=".view.pesanan.PesananFragment">
 
     <androidx.appcompat.widget.SearchView
@@ -13,6 +14,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenus"
+        android:layout_margin="10dp"
+        android:layout_marginRight="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_menu" />
