@@ -1,11 +1,9 @@
-package com.example.wp.adapter
+package com.example.wp.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wp.data.DataItem
 import com.example.wp.R

@@ -1,4 +1,4 @@
-package com.example.wp.view
+package com.example.wp.presentation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

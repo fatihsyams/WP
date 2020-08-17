@@ -1,14 +1,6 @@
-package com.example.wp
+package com.example.wp.presentation.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.wp.data.ResponseMenuWp
-import com.example.wp.data.WarungPojokService
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class PesananViewModel : ViewModel() {
 //    private val service = WarungPojokService.create(sm)

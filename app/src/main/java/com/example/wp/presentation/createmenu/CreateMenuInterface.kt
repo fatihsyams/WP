@@ -1,8 +1,9 @@
-package com.example.wp.view.createmenu
+package com.example.wp.presentation.createmenu
 
 import android.content.Context
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.File
 
 interface CreateMenuInterface {
     interface View {
@@ -12,12 +13,12 @@ interface CreateMenuInterface {
 
     interface Presenter {
         fun logicInputMenus(
-            name: RequestBody,
-            description: RequestBody,
-            price: RequestBody,
-            category: RequestBody,
-            stock: RequestBody,
-            image: MultipartBody.Part
+            name: String,
+            description: String,
+            price: String,
+            category: String,
+            stock: String,
+            image: File
         )
         fun instencePrefence(context: Context)
     }

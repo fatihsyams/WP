@@ -1,16 +1,16 @@
-package com.example.wp.view.createmenu
+package com.example.wp.presentation.createmenu
 
 import android.content.Context
 import android.util.Log
-import com.example.wp.data.RequestCreateMenu
 import com.example.wp.data.ResponseCreateMenu
-import com.example.wp.data.WarungPojokService
-import com.example.wp.data.utils.SessionManager
+import com.example.wp.data.preference.SessionManager
+import com.example.wp.utils.NetworkUtils.Companion.create
+import com.example.wp.utils.toRequestBody
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface.Presenter {
 
@@ -23,18 +23,25 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
     }
 
     override fun logicInputMenus(
-        name: RequestBody,
-        description: RequestBody,
-        price: RequestBody,
-        category: RequestBody,
-        stock: RequestBody,
-        image: MultipartBody.Part
+        name: String,
+        description: String,
+        price: String,
+        category: String,
+        stock: String,
+        image: File
     ) {
 
-        val api = WarungPojokService.create(sm)
+        val api = create(sm)
 
-        if (sm.getBoolean()) {
-            api.createMenu(name, description, price, category, stock, image)
+        if (sm.isUserLogin()) {
+            api.createMenu(
+                name = name.toRequestBody(),
+                description = description.toRequestBody(),
+                price = price.toRequestBody(),
+                category_menu_id = category.toRequestBody(),
+                stock = stock.toRequestBody(),
+                image = MultipartBody.Part.createFormData("image", image.name, image.toRequestBody())
+            )
                 .enqueue(object : Callback<ResponseCreateMenu> {
                     override fun onFailure(call: Call<ResponseCreateMenu>, t: Throwable) {
                         view?.showAlertFailed(t.message.orEmpty())
@@ -49,11 +56,11 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
                         if (response.isSuccessful) {
                             val responseBody = response.body()
                             view?.showAlertSuccess(responseBody?.status.toString())
+                        }else{
+                            view?.showAlertFailed("error ${response.message()}")
                         }
 
                     }
-
-
                 })
         } else {
             Log.d("TOKEN", "tokennya ga ada")
@@ -61,9 +68,8 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
 
     }
 
-
     override fun instencePrefence(context: Context) {
-        sm.SessionManager(context)
+        sm.initSessionManager(context)
     }
 
 }

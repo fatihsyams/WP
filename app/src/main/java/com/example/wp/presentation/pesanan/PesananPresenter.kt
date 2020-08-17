@@ -1,10 +1,10 @@
-package com.example.wp.view.pesanan
+package com.example.wp.presentation.pesanan
 
 import android.content.Context
 import android.util.Log
 import com.example.wp.data.ResponseMenuWp
-import com.example.wp.data.WarungPojokService
-import com.example.wp.data.utils.SessionManager
+import com.example.wp.data.preference.SessionManager
+import com.example.wp.utils.NetworkUtils.Companion.create
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +21,7 @@ class PesananPresenter(model: PesananInterface.View) :
 
 
     override fun logicData() {
-        val service = WarungPojokService.create(sm)
+        val service = create(sm)
         service.getMenuMVP().enqueue(object : Callback<ResponseMenuWp> {
             override fun onFailure(call: Call<ResponseMenuWp>, t: Throwable) {
                 Log.d("GAGAL", t.message.toString())
@@ -34,7 +34,7 @@ class PesananPresenter(model: PesananInterface.View) :
                 val responseBody = response.body()
 
                 if (response.isSuccessful) {
-                    if (sm.getBoolean()) {
+                    if (sm.isUserLogin()) {
                         view?.alertSuccess("${responseBody?.message}")
                         view?.showData(responseBody?.data.orEmpty())
                         Log.d("BISA", "${responseBody?.message}")
@@ -52,7 +52,7 @@ class PesananPresenter(model: PesananInterface.View) :
     }
 
     override fun initSession(context: Context) {
-        sm.SessionManager(context)
+        sm.initSessionManager(context)
     }
 
 //    override fun checkToken() {

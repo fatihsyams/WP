@@ -1,4 +1,4 @@
-package com.example.wp
+package com.example.wp.utils
 
 sealed class Load<out T> {
     object Uninitialized : Load<Nothing>()

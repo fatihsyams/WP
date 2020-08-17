@@ -1,4 +1,4 @@
-package com.example.wp.view.pesanan
+package com.example.wp.presentation.pesanan
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.wp.data.DataItem
 import com.example.wp.R
-import com.example.wp.adapter.MenusAdapter
+import com.example.wp.presentation.adapter.MenusAdapter
 import kotlinx.android.synthetic.main.fragment_pesanan.*
 
 class PesananFragment : Fragment(),

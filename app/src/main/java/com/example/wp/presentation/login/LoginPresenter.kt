@@ -1,12 +1,12 @@
-package com.example.wp.view.login
+package com.example.wp.presentation.login
 
 import android.content.Context
 import android.util.Log
 import com.example.wp.data.RequestLogin
-import com.example.wp.data.ResponseLogin
 import com.example.wp.data.ResponseLoginn
-import com.example.wp.data.WarungPojokService
-import com.example.wp.data.utils.SessionManager
+import com.example.wp.data.api.WarungPojokService
+import com.example.wp.data.preference.SessionManager
+import com.example.wp.utils.NetworkUtils.Companion.create
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +26,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
             view?.showLoginFailed("Isi data anda")
         }
 
-        val api = WarungPojokService.create(sm)
+        val api = create(sm)
         val loginBody = RequestLogin(username, password)
         api.login(loginBody).enqueue(object : Callback<ResponseLoginn> {
             override fun onFailure(call: Call<ResponseLoginn>, t: Throwable) {
@@ -42,7 +42,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
                     var responseBody = response.body()
                     view?.showLoginSuccess("Selamat Datang" + "${responseBody?.token}")
                     if (responseBody?.token != null) {
-                        sm.saveBoolean(true)
+                        sm.saveUserLogin(true)
                         sm.saveToken(responseBody?.token.toString())
                         view?.moveHome()
                     } else {
@@ -59,7 +59,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
     }
 
     override fun checkLogin() {
-        if (sm.getBoolean()) {
+        if (sm.isUserLogin()) {
             view?.moveHome()
         } else {
             view?.showLoginFailed("Token Tidak Dapat")
@@ -67,7 +67,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
     }
 
     override fun instencePrefence(context: Context) {
-        sm.SessionManager(context)
+        sm.initSessionManager(context)
     }
 
 }

@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:orientation="horizontal"
     android:weightSum="5"
-    tools:context=".view.MainActivity">
+    tools:context=".presentation.main.MainActivity">
 
 
     <View

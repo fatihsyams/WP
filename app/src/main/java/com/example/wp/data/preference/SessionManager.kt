@@ -1,4 +1,4 @@
-package com.example.wp.data.utils
+package com.example.wp.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,7 +13,7 @@ class SessionManager {
     var mSharedPrefence: SharedPreferences? = null
     var mEditor: SharedPreferences.Editor? = null
 
-    fun SessionManager(context: Context) {
+    fun initSessionManager(context: Context) {
         mSharedPrefence = context.getSharedPreferences(KEY_NAME, Context.MODE_PRIVATE)
     }
 
@@ -36,12 +36,12 @@ class SessionManager {
         return mSharedPrefence?.getString(KEY_TOKEN, null)
     }
 
-    fun saveBoolean(boolean: Boolean) {
+    fun saveUserLogin(boolean: Boolean) {
         mEditor = mSharedPrefence?.edit()
         mEditor?.putBoolean(KEY_BOOLEAN, boolean)?.apply()
     }
 
-    fun getBoolean(): Boolean {
+    fun isUserLogin(): Boolean {
         return mSharedPrefence?.getBoolean(KEY_BOOLEAN, false)!!
     }
 

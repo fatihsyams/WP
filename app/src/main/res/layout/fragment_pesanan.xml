@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    tools:context=".view.pesanan.PesananFragment">
+    tools:context=".presentation.pesanan.PesananFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
