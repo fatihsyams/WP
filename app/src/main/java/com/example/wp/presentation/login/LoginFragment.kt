@@ -6,19 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.wp.R
-import com.example.wp.presentation.pesanan.PesananFragment
-import com.example.wp.utils.loadFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : Fragment(), LoginInterface.View {
 
-
     lateinit var presenter: LoginPresenter
 
+    var onLoginSuccessListener:OnLoginSuccessListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +52,10 @@ class LoginFragment : Fragment(), LoginInterface.View {
     }
 
     override fun moveHome() {
-        loadFragment(R.id.fl_container, PesananFragment())
+       onLoginSuccessListener?.moveToHomeFragment()
+    }
+
+    interface OnLoginSuccessListener{
+        fun moveToHomeFragment()
     }
 }

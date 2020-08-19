@@ -10,8 +10,9 @@ import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.pesanan.PesananFragment
 import com.example.wp.utils.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.log
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener {
 
     private var sm = SessionManager()
 
@@ -24,12 +25,18 @@ class MainActivity : AppCompatActivity() {
         if (sm.isUserLogin()){
             loadFragment(R.id.fl_container, PesananFragment())
         }else{
-            loadFragment(R.id.fl_container, LoginFragment())
+            val loginFragment = LoginFragment()
+            loginFragment.onLoginSuccessListener = this
+            loadFragment(R.id.fl_container, loginFragment)
         }
 
         tvInputMenuMain.setOnClickListener {
             loadFragment(R.id.fl_container, CreateMenuFragment())
         }
+    }
+
+    override fun moveToHomeFragment() {
+        loadFragment(R.id.fl_container, PesananFragment())
     }
 
 }
