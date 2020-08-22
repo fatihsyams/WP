@@ -1,19 +1,15 @@
 package com.example.wp.presentation.pesanan
 
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.wp.data.DataItem
+import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.presentation.adapter.MenusAdapter
 import kotlinx.android.synthetic.main.fragment_pesanan.*
 
-class PesananFragment : Fragment(),
+class PesananFragment : WarungPojokFragment(),
     PesananInterface.View {
 
     lateinit var presenter: PesananPresenter
@@ -24,24 +20,21 @@ class PesananFragment : Fragment(),
 
     var listMenu = listOf<DataItem>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pesanan, container, false)
+    override val layoutView: Int = R.layout.fragment_pesanan
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onPreparation() {
         presenter = PesananPresenter(this)
         context?.let { presenter.initSession(it) }
         presenter.logicData()
+    }
 
+    override fun onIntent() {
+    }
 
+    override fun onView() {
+    }
 
+    override fun onAction() {
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -55,8 +48,9 @@ class PesananFragment : Fragment(),
             }
 
         })
+    }
 
-//
+    override fun onObserver() {
     }
 
     override fun showData(data: List<DataItem>) {
@@ -65,7 +59,7 @@ class PesananFragment : Fragment(),
         listMenu = data
         rvMenus.apply {
             adapter = menuAdapter
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 3)
         }
     }
 

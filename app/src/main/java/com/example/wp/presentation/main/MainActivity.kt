@@ -1,38 +1,49 @@
 package com.example.wp.presentation.main
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import com.example.wp.R
+import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.pesanan.PesananFragment
 import com.example.wp.utils.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.log
 
-class MainActivity : AppCompatActivity(), LoginFragment.OnLoginSuccessListener {
+class MainActivity : WarungPojokActivity(), LoginFragment.OnLoginSuccessListener {
 
-    private var sm = SessionManager()
+    private var sm: SessionManager? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override val layoutView: Int = R.layout.activity_main
 
-        sm.initSessionManager(this)
+    override fun onPreparation() {
+        sm = SessionManager(this)
+    }
 
-        if (sm.isUserLogin()){
+    override fun onIntent() {
+    }
+
+    override fun onView() {
+        if (sm?.isUserLogin() == true) {
             loadFragment(R.id.fl_container, PesananFragment())
-        }else{
+        } else {
             val loginFragment = LoginFragment()
             loginFragment.onLoginSuccessListener = this
             loadFragment(R.id.fl_container, loginFragment)
         }
 
-        tvInputMenuMain.setOnClickListener {
+    }
+
+    override fun onAction() {
+        tvOrder.setOnClickListener {
+            loadFragment(R.id.fl_container, PesananFragment())
+        }
+
+        tvMenu.setOnClickListener {
             loadFragment(R.id.fl_container, CreateMenuFragment())
         }
+    }
+
+    override fun onObserver() {
     }
 
     override fun moveToHomeFragment() {

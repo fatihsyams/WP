@@ -1,6 +1,6 @@
 package com.example.wp.utils
 
-import com.example.wp.data.api.WarungPojokService
+import com.example.wp.data.api.service.MenuService
 import com.example.wp.data.preference.SessionManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,7 +13,7 @@ class NetworkUtils {
     companion object {
         private val BASE_URL = "http://warungpojok.snip-id.com/"
 
-        fun create(preferences: SessionManager): WarungPojokService {
+        fun create(preferences: SessionManager): MenuService {
 
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BODY
@@ -29,7 +29,7 @@ class NetworkUtils {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-            return retrofit.create(WarungPojokService::class.java)
+            return retrofit.create(MenuService::class.java)
         }
     }
 }

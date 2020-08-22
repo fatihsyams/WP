@@ -1,7 +1,7 @@
 package com.example.wp.presentation.pesanan
 
 import android.content.Context
-import com.example.wp.data.DataItem
+import com.example.wp.data.api.model.response.DataItem
 
 interface PesananInterface {
     interface View{

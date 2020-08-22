@@ -5,20 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wp.data.DataItem
+import com.bumptech.glide.Glide
 import com.example.wp.R
+import com.example.wp.data.api.model.response.DataItem
 import kotlinx.android.synthetic.main.item_menu.view.*
 
 class MenusAdapter(val context: Context, var data: List<DataItem>) :
     RecyclerView.Adapter<MenusAdapter.ViewHolder>() {
-
-
-//    var filterNamaMenus : List<ResponseMenu>? = null
-//
-//    init {
-//        filterNamaMenus = data
-//    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
@@ -34,27 +27,24 @@ class MenusAdapter(val context: Context, var data: List<DataItem>) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val harga = view.tvHargaMenus
-
-        //        val kategori = view.tvKeteranganMenus
-        val namaMenu = view.tvNamaMenus
-
         fun bindItem(item: DataItem) {
-            harga.text = item.price.toString()
-//            kategori.text = item.category
-            namaMenu.text = item.name
+            with(itemView) {
+                if (!item.images.isNullOrEmpty()) {
+                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                }
+                tvHargaMenus.text = item.price.toString()
+                tvNamaMenus.text = item.name
+            }
         }
     }
 
-   fun updateDataMenu(newData: List<DataItem>) {
-       data = newData
-       notifyDataSetChanged()
-   }
+    fun updateDataMenu(newData: List<DataItem>) {
+        data = newData
+        notifyDataSetChanged()
+    }
 
     fun addDataMenus(newData: List<DataItem>) {
         data = newData
     }
-
 
 }

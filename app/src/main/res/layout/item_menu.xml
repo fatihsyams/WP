@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#ffffff"
-    android:layout_marginRight="15dp"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_8dp"
+    android:layout_marginBottom="@dimen/dimen_8dp"
+    android:background="@color/colorWhite">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dimem_20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:cardCornerRadius="9dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/dimen_9dp"
             app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/imgMenus"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher" />
-
 
         </androidx.cardview.widget.CardView>
 
@@ -38,20 +39,19 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgCircle"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="#ffff"
-
+        android:layout_width="@dimen/dimen_80dp"
+        android:layout_height="@dimen/dimen_80dp"
+        android:src="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dimen_10dp"
         android:background="@drawable/icon_circle_white"
-        android:backgroundTint="@color/base_color"
+        android:backgroundTint="@color/colorBase"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="@+id/imgCircle"
         app:layout_constraintEnd_toEndOf="@+id/imgCircle"
@@ -63,41 +63,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="235dp" />
+        app:layout_constraintGuide_end="@dimen/dimen_37dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="220dp" />
-
+        app:layout_constraintGuide_begin="270dp" />
 
     <TextView
         android:id="@+id/tvNamaMenus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Ikan Gurame"
-        android:textSize="30sp"
+        android:layout_marginTop="@dimen/dimem_20dp"
+        android:text="@string/sample_menu"
+        android:textSize="@dimen/text_size_30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
-
 
     <TextView
         android:id="@+id/tvHargaMenus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="19.000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        android:hint="@string/sample_price"
+        android:textSize="@dimen/text_size_20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

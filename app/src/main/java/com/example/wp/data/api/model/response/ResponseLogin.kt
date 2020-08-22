@@ -1,4 +1,4 @@
-package com.example.wp.data
+package com.example.wp.data.api.model.response
 
 import com.google.gson.annotations.SerializedName
 

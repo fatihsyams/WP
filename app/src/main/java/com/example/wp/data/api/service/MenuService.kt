@@ -1,11 +1,11 @@
-package com.example.wp.data.api
+package com.example.wp.data.api.service
 
-import com.example.wp.data.*
+import com.example.wp.data.api.model.response.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.http.*
 
-interface WarungPojokService {
+interface MenuService {
 
     @GET("api/menu")
     suspend fun getDataMenu(): TopResponseMenu

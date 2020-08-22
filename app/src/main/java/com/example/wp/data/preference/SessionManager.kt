@@ -3,7 +3,7 @@ package com.example.wp.data.preference
 import android.content.Context
 import android.content.SharedPreferences
 
-class SessionManager {
+class SessionManager(context: Context) {
     private val KEY_NAME = "NAMA"
     private val KEY_PASS = "PASS"
     private val KEY_BOOLEAN = "BOOLEAN"
@@ -13,8 +13,12 @@ class SessionManager {
     var mSharedPrefence: SharedPreferences? = null
     var mEditor: SharedPreferences.Editor? = null
 
-    fun initSessionManager(context: Context) {
+    init {
         mSharedPrefence = context.getSharedPreferences(KEY_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun initSessionManager(context: Context) {
+
     }
 
     fun saveEmail(email: String) {

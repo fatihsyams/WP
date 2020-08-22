@@ -5,16 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.wp.R
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import java.io.File
 
 
 fun String.toRequestBody(): RequestBody? {
-    return RequestBody.create(MediaType.parse("text/plain"), this)
+    return RequestBody.create("text/plain".toMediaTypeOrNull(), this)
 }
 
 fun File.toRequestBody():RequestBody{
-    return RequestBody.create(MediaType.parse("image/png"), this)
+    return RequestBody.create("image/png".toMediaTypeOrNull(), this)
 }
 
 fun AppCompatActivity.loadFragment(layoutResourceId:Int, fragment: Fragment, isBackStack:Boolean = false) {
