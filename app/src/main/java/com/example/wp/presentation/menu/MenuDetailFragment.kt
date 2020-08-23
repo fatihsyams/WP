@@ -10,8 +10,12 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.utils.AppConstants.KEY_MENU
+import com.example.wp.utils.generateCustomAlertDialog
+import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
+import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
 import kotlinx.android.synthetic.main.item_menu.view.*
+import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
 
 class MenuDetailFragment : WarungPojokFragment() {
 
@@ -40,6 +44,7 @@ class MenuDetailFragment : WarungPojokFragment() {
     }
 
     override fun onAction() {
+        btnOk.setOnClickListener { showAdditionalNoteDialog() }
     }
 
     override fun onObserver() {
@@ -53,6 +58,21 @@ class MenuDetailFragment : WarungPojokFragment() {
             tvDescription.text  = description
             tvPrice.text = "Rp $price"
         }
+    }
+
+    private fun showAdditionalNoteDialog(){
+        context?.let { generateCustomAlertDialog(it, R.layout.layout_order_additional_note_dialog, false).apply {
+
+            menu?.apply {
+                tvNamaMenu.text = name
+                tvPrice.text = "Rp $price"
+
+                btnCancel.setOnClickListener { dismiss() }
+
+                btnDone.setOnClickListener { showToast("${edtNote.text.toString()}")}
+            }
+
+        } }
     }
 
 }

@@ -74,12 +74,12 @@
             android:layout_marginRight="16dp"
             android:elevation="@dimen/dimen_8dp"
             android:src="@drawable/ic_minus_circle"
-            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatTextView"
-            app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />
+            app:layout_constraintBottom_toBottomOf="@+id/tvQuantity"
+            app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
+            app:layout_constraintTop_toTopOf="@+id/tvQuantity" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextView"
+            android:id="@+id/tvQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -110,16 +110,16 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_30sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="ok"
+            android:text="@string/action_ok"
             android:textColor="@color/colorWhite"
-            app:cornerRadius="@dimen/dimen_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

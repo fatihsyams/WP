@@ -5,4 +5,7 @@
     <string name="sample_price">19.000</string>
     <string name="sample_menu">Ikan Gurame</string>
     <string name="format_table_number">No Meja : 10</string>
+    <string name="action_done">Selesai</string>
+    <string name="action_cancel">Batal</string>
+    <string name="action_ok">ok</string>
 </resources>
