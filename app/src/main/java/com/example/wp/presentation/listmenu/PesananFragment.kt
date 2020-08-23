@@ -1,4 +1,4 @@
-package com.example.wp.presentation.pesanan
+package com.example.wp.presentation.listmenu
 
 import android.util.Log
 import android.widget.Toast
@@ -7,6 +7,7 @@ import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.presentation.adapter.MenusAdapter
+import com.example.wp.utils.loadFragment
 import kotlinx.android.synthetic.main.fragment_pesanan.*
 
 class PesananFragment : WarungPojokFragment(),
@@ -14,8 +15,12 @@ class PesananFragment : WarungPojokFragment(),
 
     lateinit var presenter: PesananPresenter
 
+    var onMenuClickListener:OnMenuClickListener? = null
+
     private val menuAdapter: MenusAdapter by lazy {
-        MenusAdapter(requireContext(), listOf())
+        MenusAdapter(requireContext(), listOf()){
+            onMenuClicked(it)
+        }
     }
 
     var listMenu = listOf<DataItem>()
@@ -71,12 +76,19 @@ class PesananFragment : WarungPojokFragment(),
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
+    private fun onMenuClicked(menu:DataItem){
+        onMenuClickListener?.onMenuClicked(menu)
+    }
 
     fun filter(query: String) {
         val result = listMenu.filter {
             it.name?.contains(query, true)!!.or(false)
         }
         menuAdapter.updateDataMenu(result)
+    }
+
+    interface OnMenuClickListener{
+        fun onMenuClicked(menu: DataItem)
     }
 
 }

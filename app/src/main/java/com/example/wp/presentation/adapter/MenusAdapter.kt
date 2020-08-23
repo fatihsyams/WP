@@ -10,7 +10,7 @@ import com.example.wp.R
 import com.example.wp.data.api.model.response.DataItem
 import kotlinx.android.synthetic.main.item_menu.view.*
 
-class MenusAdapter(val context: Context, var data: List<DataItem>) :
+class MenusAdapter(val context: Context, var data: List<DataItem>, val onMenuClickListener:((menu:DataItem)->Unit)? = null) :
     RecyclerView.Adapter<MenusAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,7 +26,7 @@ class MenusAdapter(val context: Context, var data: List<DataItem>) :
         holder.bindItem(data[position])
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(item: DataItem) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
@@ -34,6 +34,10 @@ class MenusAdapter(val context: Context, var data: List<DataItem>) :
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
+
+                setOnClickListener {
+                    onMenuClickListener?.invoke(item)
+                }
             }
         }
     }
