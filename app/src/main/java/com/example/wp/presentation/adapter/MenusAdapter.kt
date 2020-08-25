@@ -9,24 +9,53 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.data.api.model.response.DataItem
 import kotlinx.android.synthetic.main.item_menu.view.*
+import kotlinx.android.synthetic.main.item_menu.view.imgMenus
+import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
+import kotlinx.android.synthetic.main.item_menu.view.tvNamaMenus
+import kotlinx.android.synthetic.main.item_order.view.*
 
-class MenusAdapter(val context: Context, var data: List<DataItem>, val onMenuClickListener:((menu:DataItem)->Unit)? = null) :
-    RecyclerView.Adapter<MenusAdapter.ViewHolder>() {
+class MenusAdapter(
+    val context: Context,
+    var data: List<DataItem>,
+    val onMenuClickListener: ((menu: DataItem) -> Unit)? = null,
+    val type:Int = MENU_TYPE
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
-        return ViewHolder(v)
+    companion object{
+        const val MENU_TYPE = 0
+        const val ORDER_TYPE = 1
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when(viewType){
+            R.layout.item_menu -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
+            R.layout.item_order -> OrderViewHolder(LayoutInflater.from(context).inflate(R.layout.item_order, parent, false))
+            else -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
+        }
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(data[position])
+    override fun getItemViewType(position: Int): Int {
+        return when(type){
+            MENU_TYPE -> R.layout.item_menu
+            ORDER_TYPE -> R.layout.item_order
+            else -> R.layout.item_menu
+        }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (type == MENU_TYPE){
+            (holder as MenuViewHolder).bindItem(data[position])
+        }else{
+            (holder as OrderViewHolder).bindItem(data[position])
+        }
+    }
+
+    inner class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(item: DataItem) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
@@ -38,6 +67,19 @@ class MenusAdapter(val context: Context, var data: List<DataItem>, val onMenuCli
                 setOnClickListener {
                     onMenuClickListener?.invoke(item)
                 }
+            }
+        }
+    }
+
+    inner class OrderViewHolder(view:View):RecyclerView.ViewHolder(view){
+        fun bindItem(item:DataItem){
+            with(itemView){
+                if (!item.images.isNullOrEmpty()) {
+                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                }
+                tvHargaMenus.text = item.price.toString()
+                tvNamaMenus.text = item.name
+                tvInformation.text = item.additionalInformation
             }
         }
     }

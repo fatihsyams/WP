@@ -18,9 +18,12 @@ class PesananFragment : WarungPojokFragment(),
     var onMenuClickListener:OnMenuClickListener? = null
 
     private val menuAdapter: MenusAdapter by lazy {
-        MenusAdapter(requireContext(), listOf()){
+        MenusAdapter(
+            context = requireContext(),
+            data = listOf(),
+            onMenuClickListener = {
             onMenuClicked(it)
-        }
+        })
     }
 
     var listMenu = listOf<DataItem>()

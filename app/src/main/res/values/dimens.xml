@@ -15,4 +15,6 @@
     <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="dimen_400dp">400dp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="dimen_100dp">100dp</dimen>
+    <dimen name="dimen_24dp">24dp</dimen>
 </resources>

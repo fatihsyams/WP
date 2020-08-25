@@ -8,4 +8,8 @@
     <string name="action_done">Selesai</string>
     <string name="action_cancel">Batal</string>
     <string name="action_ok">ok</string>
+    <string name="label_information">Keterangan : </string>
+    <string name="action_dine_in">Dine In</string>
+    <string name="action_take_away">Take Away</string>
+    <string name="action_pre_order">Pre Order</string>
 </resources>

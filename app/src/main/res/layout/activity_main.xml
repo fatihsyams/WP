@@ -9,7 +9,6 @@
     android:weightSum="5"
     tools:context=".presentation.main.MainActivity">
 
-
     <View
         android:id="@+id/view"
         android:layout_width="235dp"
@@ -78,17 +77,6 @@
         app:layout_constraintStart_toStartOf="@+id/tvOrder"
         app:layout_constraintTop_toBottomOf="@+id/tvOrder" />
 
-    <!--    <FrameLayout-->
-    <!--        android:id="@+id/container"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_weight="4"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-
-
-    <!--    </FrameLayout>-->
-
     <TextView
         android:id="@+id/tvJournalMain"
         android:layout_width="0dp"
@@ -119,13 +107,6 @@
         app:layout_constraintStart_toStartOf="@+id/tvJournalMain"
         app:layout_constraintTop_toBottomOf="@+id/tvJournalMain" />
 
-    <!--    <androidx.constraintlayout.widget.Guideline-->
-    <!--        android:id="@+id/guideline"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintGuide_begin="246dp" />-->
-
     <FrameLayout
         android:id="@+id/fl_container"
         android:layout_width="0dp"
@@ -137,6 +118,19 @@
         app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="@dimen/dimen_100dp"
+        android:layout_height="@dimen/dimen_100dp"
+        android:id="@+id/btnOrder"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/dimen_24dp"
+        android:layout_marginRight="@dimen/dimen_24dp"
+        android:layout_marginBottom="@dimen/dimen_24dp"
+        app:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

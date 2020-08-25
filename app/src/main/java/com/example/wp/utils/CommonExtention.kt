@@ -35,3 +35,7 @@ fun Fragment.loadFragment(layoutResourceId:Int, fragment: Fragment, isBackStack:
 fun Fragment.showToast(message:String){
     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }
+
+fun Fragment.removeFragment(){
+    activity?.supportFragmentManager?.popBackStack()
+}
