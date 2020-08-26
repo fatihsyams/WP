@@ -7,15 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_TYPE
+import com.example.wp.presentation.listener.OpenMenuPageListener
 import com.example.wp.utils.AppConstants
+import com.example.wp.utils.gone
+import com.example.wp.utils.showToast
+import com.example.wp.utils.visible
 import kotlinx.android.synthetic.main.fragment_order.*
 import java.util.ArrayList
 
-class OrderFragment : Fragment() {
+class OrderFragment : WarungPojokFragment() {
 
     companion object {
         @JvmStatic
@@ -29,20 +34,46 @@ class OrderFragment : Fragment() {
 
     private var menus = listOf<DataItem>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order, container, false)
+    var onAddMenuListener:OpenMenuPageListener? = null
+
+    override val layoutView: Int = R.layout.fragment_order
+
+            override
+    fun onPreparation() {
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onIntent() {
         menus = arguments?.getParcelableArrayList<DataItem>(AppConstants.KEY_MENU).orEmpty()
+    }
 
+    override fun onView() {
         showMenus()
+    }
+
+    override fun onAction() {
+        btnDineIn.setOnClickListener {
+            dineInContainer.visible()
+            orderTypeContainer.gone()
+        }
+
+        btnTakeAway.setOnClickListener {
+            takeAwayContainer.visible()
+            orderTypeContainer.gone()
+        }
+
+        btnPreOrder.setOnClickListener {
+            preOrderContainer.visible()
+            orderTypeContainer.gone()
+        }
+
+        btnAdd.setOnClickListener {
+            onAddMenuListener?.onOpenMenuPage()
+        }
+
+        btnPrint.setOnClickListener { showToast("print") }
+    }
+
+    override fun onObserver() {
     }
 
     private fun showMenus(){

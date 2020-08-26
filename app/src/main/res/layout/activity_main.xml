@@ -128,7 +128,8 @@
         android:layout_marginRight="@dimen/dimen_24dp"
         android:layout_marginBottom="@dimen/dimen_24dp"
         app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_baseline_shopping_cart_24"
+        app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
+        app:tint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

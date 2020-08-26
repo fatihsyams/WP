@@ -80,6 +80,21 @@ class MenusAdapter(
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation
+                tvQuantity.text = item.quantity.toString()
+
+                btnMinus.setOnClickListener {
+                    if (item.quantity!! < 0) item.quantity =- 1
+                    notifyItemChanged(adapterPosition)
+                }
+
+                btnPlus.setOnClickListener {
+                    item.quantity =+ 1
+                    notifyItemChanged(adapterPosition)
+                }
+
+                btnDelete.setOnClickListener {
+                    notifyItemRemoved(adapterPosition)
+                }
             }
         }
     }

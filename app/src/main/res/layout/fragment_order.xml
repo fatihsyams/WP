@@ -19,7 +19,7 @@
             android:text="@string/action_dine_in"
             app:layout_constraintEnd_toStartOf="@+id/btnPreOrder"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLabelTakeAwayType"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
@@ -93,6 +93,32 @@
             app:layout_constraintTop_toTopOf="@+id/tvLabelTakeAwayType" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLabelPickupOrder"
+            style="@style/WarungPojokTextView"
+            android:layout_width="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Tanggal Pengambilan: "
+            android:textSize="@dimen/text_size_20sp"
+            app:layout_constraintEnd_toStartOf="@+id/btnTableNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtPickupOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan Tanggal Pengambilan"
+            android:padding="@dimen/dimen_8dp"
+            android:textSize="@dimen/text_size_20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvLabelPickupOrder"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@id/tvLabelPickupOrder" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLabelCustomerName"
             style="@style/WarungPojokTextView"
             android:layout_width="0dp"
@@ -143,8 +169,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOrders"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_height="0dp"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/dimen_24dp"
             app:layout_constraintBottom_toTopOf="@id/btnPrint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -156,22 +183,29 @@
             android:id="@+id/orderTypeContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="btnDineIn,btnTakeAway,btnPreOrder" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/takeAwayContainer"
+            android:id="@+id/dineInContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             app:constraint_referenced_ids="tvLabelTableNumber,btnTableNumber" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/dineInContainer"
+            android:id="@+id/takeAwayContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="tvLabelTakeAwayType,btnTakeAwayType" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/preOrderContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvLabelPickupOrder,edtPickupOrder" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"

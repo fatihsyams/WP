@@ -32,6 +32,8 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private var menu: DataItem? = null
 
+    private var quantity = 0
+
     var onMenuSelectListener: MenuListener? = null
 
     override val layoutView: Int = R.layout.fragment_menu_detail
@@ -48,7 +50,21 @@ class MenuDetailFragment : WarungPojokFragment() {
     }
 
     override fun onAction() {
+        btnMinus.setOnClickListener {
+            if (quantity > 0) quantity--
+            setMenuQuantity()
+        }
+
+        btnPlus.setOnClickListener {
+            quantity++
+            setMenuQuantity()
+        }
+
         btnOk.setOnClickListener { showAdditionalNoteDialog() }
+    }
+
+    private fun setMenuQuantity(){
+        tvQuantity.text = quantity.toString()
     }
 
     override fun onObserver() {
@@ -79,6 +95,8 @@ class MenuDetailFragment : WarungPojokFragment() {
                     btnCancel.setOnClickListener { dismiss() }
 
                     btnDone.setOnClickListener {
+                        this.quantity = quantity
+                        additionalInformation = edtNote.text.toString()
                         onMenuSelectListener?.onSelectMenu(this)
                         dismiss()
                         removeFragment()

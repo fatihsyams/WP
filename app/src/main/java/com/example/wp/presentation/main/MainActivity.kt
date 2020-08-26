@@ -7,6 +7,7 @@ import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
+import com.example.wp.presentation.listener.OpenMenuPageListener
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.listmenu.PesananFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
@@ -14,7 +15,7 @@ import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : WarungPojokActivity(), LoginFragment.OnLoginSuccessListener, PesananFragment.OnMenuClickListener,
+class MainActivity : WarungPojokActivity(), OpenMenuPageListener, PesananFragment.OnMenuClickListener,
 MenuListener{
 
     private var sm: SessionManager? = null
@@ -34,7 +35,6 @@ MenuListener{
 
     override fun onView() {
         if (sm?.isUserLogin() == true) {
-            menuFragment.onMenuClickListener = this
             loadFragment(R.id.fl_container, menuFragment)
         } else {
             val loginFragment = LoginFragment()
@@ -44,6 +44,8 @@ MenuListener{
     }
 
     override fun onAction() {
+        menuFragment.onMenuClickListener = this
+
         tvOrder.setOnClickListener {
             loadFragment(R.id.fl_container, menuFragment)
         }
@@ -53,15 +55,13 @@ MenuListener{
         }
 
         btnOrder.setOnClickListener {
-            loadFragment(R.id.fl_container, OrderFragment.newInstance(selectedMenus))
+            val orderFragment = OrderFragment.newInstance(selectedMenus)
+            orderFragment.onAddMenuListener = this
+            loadFragment(R.id.fl_container, orderFragment)
         }
     }
 
     override fun onObserver() {
-    }
-
-    override fun moveToHomeFragment() {
-        loadFragment(R.id.fl_container, PesananFragment())
     }
 
     override fun onMenuClicked(menu: DataItem) {
@@ -77,5 +77,9 @@ MenuListener{
 
     private fun setupOrderButton(){
         btnOrder.visibility = if (selectedMenus.isNotEmpty()) View.VISIBLE else View.GONE
+    }
+
+    override fun onOpenMenuPage() {
+        loadFragment(R.id.fl_container, menuFragment)
     }
 }

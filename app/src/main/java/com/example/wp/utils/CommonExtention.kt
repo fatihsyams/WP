@@ -1,5 +1,6 @@
 package com.example.wp.utils
 
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -38,4 +39,16 @@ fun Fragment.showToast(message:String){
 
 fun Fragment.removeFragment(){
     activity?.supportFragmentManager?.popBackStack()
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
 }

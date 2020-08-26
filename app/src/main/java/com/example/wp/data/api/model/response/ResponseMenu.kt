@@ -23,7 +23,7 @@ data class DataItem(
     val images: List<MenuImage>? = null,
 
     @SerializedName("additional_information")
-    val additionalInformation: String? = null,
+    var additionalInformation: String? = null,
 
     @SerializedName("updated_at")
     val updatedAt: String? = null,
@@ -47,7 +47,10 @@ data class DataItem(
     val stock: Int? = null,
 
     @SerializedName("category")
-    val category: String? = null
+    val category: String? = null,
+
+//    @SerializedName("category")
+    var quantity: Int? = null
 ) : Parcelable
 
 @Parcelize
