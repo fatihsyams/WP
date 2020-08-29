@@ -36,7 +36,7 @@ class PesananPresenter(model: PesananInterface.View) :
                     if (response.isSuccessful) {
                         if (sm.isUserLogin()) {
                             view?.alertSuccess("${responseBody?.message}")
-                            view?.showData(responseBody?.data.orEmpty())
+//                            view?.showMenus(responseBody?.data.orEmpty())
                             Log.d("BISA", "${responseBody?.message}")
 
                         } else {

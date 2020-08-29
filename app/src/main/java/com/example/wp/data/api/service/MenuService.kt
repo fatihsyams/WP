@@ -1,17 +1,16 @@
 package com.example.wp.data.api.service
 
+import com.example.wp.data.api.model.request.RequestLogin
 import com.example.wp.data.api.model.response.*
 import okhttp3.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface MenuService {
 
-    @GET("api/menu")
-    suspend fun getDataMenu(): TopResponseMenu
-
-    @GET("api/menu")
-    suspend fun getMenu(): ResponseMenuWp
+    @GET("api/menu?category_menu_id=0")
+    suspend fun getMenu(): Response<ResponseMenuWp>
 
     @GET("api/menu?category_menu_id=0")
     fun getMenuMVP(): Call<ResponseMenuWp>

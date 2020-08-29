@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class ResponseMenuWp(
 
     @SerializedName("menu")
-    val data: List<DataItem>? = null,
+    val data: List<MenuApi>? = null,
 
     @SerializedName("success")
     val success: Boolean? = null,
@@ -17,10 +17,10 @@ data class ResponseMenuWp(
 )
 
 @Parcelize
-data class DataItem(
+data class MenuApi(
 
     @SerializedName("menu_images")
-    val images: List<MenuImage>? = null,
+    val images: List<MenuImageApi>? = null,
 
     @SerializedName("additional_information")
     var additionalInformation: String? = null,
@@ -54,7 +54,7 @@ data class DataItem(
 ) : Parcelable
 
 @Parcelize
-data class MenuImage(
+data class MenuImageApi(
     @SerializedName("updated_at")
     val updatedAt: String? = null,
 

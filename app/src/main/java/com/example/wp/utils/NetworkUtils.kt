@@ -52,3 +52,11 @@ class CustomInterceptor(var preferences: SessionManager) : Interceptor {
 
     }
 }
+
+fun <T: Any> handleApiSuccess(data: T) : Load.Success<T>{
+    return Load.Success(data)
+}
+
+fun <T : Any> handleApiError(response: retrofit2.Response<T>): Load.Fail<T> {
+    return Load.Fail(Throwable(response.message()))
+}

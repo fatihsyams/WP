@@ -130,6 +130,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
         app:tint="@color/colorWhite"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

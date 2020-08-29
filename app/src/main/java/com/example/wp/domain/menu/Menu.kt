@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Menu(
     val images: List<MenuImage> = mutableListOf(),
-    val additionalInformation: String = emptyString(),
+    var additionalInformation: String = emptyString(),
     val updatedAt: String = emptyString(),
     val price: Int = 0,
     val name: String = emptyString(),
@@ -17,7 +17,7 @@ data class Menu(
     val id: Int = 0,
     val stock: Int = 0,
     val category: String = emptyString(),
-    val quantity: Int = 0
+    var quantity: Int = 0
 ) : Parcelable
 
 @Parcelize

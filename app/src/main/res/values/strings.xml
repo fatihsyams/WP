@@ -12,4 +12,7 @@
     <string name="action_dine_in">Dine In</string>
     <string name="action_take_away">Take Away</string>
     <string name="action_pre_order">Pre Order</string>
+    <string name="sample_category">Ikan</string>
+    <string name="label_select_table">Pilih Meja</string>
+    <string name="sample_table_number">1</string>
 </resources>
