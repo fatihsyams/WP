@@ -5,6 +5,7 @@ import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.api.model.response.DataItem
 import com.example.wp.data.preference.SessionManager
+import com.example.wp.presentation.checkstock.CheckStockFragment
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
@@ -59,6 +60,11 @@ MenuListener{
             orderFragment.onAddMenuListener = this
             loadFragment(R.id.fl_container, orderFragment)
         }
+        tvCekStokMain.setOnClickListener {
+            loadFragment(R.id.fl_container, CheckStockFragment())
+
+        }
+
     }
 
     override fun onObserver() {
