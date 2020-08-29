@@ -65,6 +65,8 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private fun setMenuQuantity(){
         tvQuantity.text = quantity.toString()
+        val totalPrice = menu?.price?.times(quantity)
+        tvPrice.text = "Rp $totalPrice"
     }
 
     override fun onObserver() {
