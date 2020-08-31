@@ -100,6 +100,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onObserver() {
+
     }
 
     private fun showMenus() {
