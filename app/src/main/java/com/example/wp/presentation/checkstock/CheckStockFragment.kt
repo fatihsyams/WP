@@ -33,10 +33,10 @@ class CheckStockFragment : Fragment(), CheckStockInterface.View {
         super.onViewCreated(view, savedInstanceState)
 
         presenter = CheckStockPresenter(this)
-        presenter.getDataStock()
         context?.let {
             presenter.instencePrefence(it)
         }
+        presenter.getDataStock()
 
 
     }
