@@ -15,4 +15,20 @@
     <string name="sample_category">Ikan</string>
     <string name="label_select_table">Pilih Meja</string>
     <string name="sample_table_number">1</string>
+    <string name="sample_month_year">September 2020</string>
+
+    <string name="dayFriday">Jum</string>
+
+    <string name="dayMonday">Sen</string>
+
+    <string name="daySaturday">Sab</string>
+
+    <string name="daySunday">Min</string>
+
+    <string name="dayThursday">Kam</string>
+
+    <string name="dayTuesday">Sel</string>
+
+    <string name="dayWednesday">Rab</string>
+    <string name="action_save">Simpan</string>
 </resources>

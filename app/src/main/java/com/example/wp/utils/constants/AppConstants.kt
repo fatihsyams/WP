@@ -1,4 +1,4 @@
-package com.example.wp.utils
+package com.example.wp.utils.constants
 
 object AppConstants {
 

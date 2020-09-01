@@ -1,5 +1,6 @@
 package com.example.wp.presentation.order
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,8 @@ import com.example.wp.presentation.listener.TableListener
 import com.example.wp.presentation.listener.TakeAwayListener
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.utils.*
+import com.example.wp.utils.constants.AppConstants
+import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
@@ -40,6 +43,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     var onAddMenuListener: OpenMenuPageListener? = null
 
     private var selectedOrderType = 0
+
+    private var selectedTable:Table? = null
+
+    private var selectedTakeAway:TakeAway? = null
 
     override val layoutView: Int = R.layout.fragment_order
 
@@ -96,6 +103,14 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             onAddMenuListener?.onOpenMenuPage()
         }
 
+        edtPickupOrder.setOnClickListener {
+          DialogDatePicker(requireContext(), object :DialogDatePicker.DateDialogListener{
+              override fun onSelectDate(date: String) {
+                  edtPickupOrder.setText(date)
+              }
+          }).show()
+        }
+
         btnPrint.setOnClickListener { showToast("print") }
     }
 
@@ -136,7 +151,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 datas = tables,
                 listener = object : TableListener {
                     override fun onTableSelected(data: Table) {
-                        onTableSelected(data)
+                        selectedTable = data
+                        getSelectedTable()
                         dismiss()
                     }
                 }
@@ -177,7 +193,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 datas = takeAways,
                 listener = object : TakeAwayListener {
                     override fun onTakeAwaySelected(data: TakeAway) {
-                        onTakeAwaySelected(data)
+                        selectedTakeAway = data
+                        getSelectedTakeAway()
                         dismiss()
                     }
                 }
@@ -190,16 +207,18 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
     }
 
+
+
     override fun onDeleteClicked(menu: Menu, position: Int) {
         menus.remove(menu)
     }
 
-    fun onTableSelected(data: Table) {
-        btnTableNumber.text = data.number
+    fun getSelectedTable() {
+        btnTableNumber.text = selectedTable?.number.orEmpty()
     }
 
-    fun onTakeAwaySelected(data: TakeAway) {
-        btnTakeAwayType.text = data.name
+    fun getSelectedTakeAway() {
+        btnTakeAwayType.text = selectedTakeAway?.name.orEmpty()
     }
 
 }

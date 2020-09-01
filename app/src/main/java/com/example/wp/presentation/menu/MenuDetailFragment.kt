@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.utils.AppConstants.KEY_MENU
+import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import com.example.wp.utils.generateCustomAlertDialog
 import com.example.wp.utils.removeFragment
 import kotlinx.android.synthetic.main.fragment_menu_detail.*

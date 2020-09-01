@@ -116,12 +116,17 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edtPickupOrder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:hint="Masukkan Tanggal Pengambilan"
         android:padding="@dimen/dimen_8dp"
         android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@id/tvLabelPickupOrder"
+        app:layout_constraintEnd_toStartOf="@+id/btnEditOrderType"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@id/tvLabelPickupOrder" />
 
