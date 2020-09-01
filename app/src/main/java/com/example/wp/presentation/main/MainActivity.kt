@@ -8,7 +8,7 @@ import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
-import com.example.wp.presentation.listmenu.PesananFragment
+import com.example.wp.presentation.listmenu.MenusFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.order.OrderFragment
@@ -17,12 +17,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
-    PesananFragment.OnMenuClickListener,
+    MenusFragment.OnMenuClickListener,
     MenuListener {
 
     private var sm: SessionManager? = null
 
-    private val menuFragment: PesananFragment by lazy { PesananFragment() }
+    private val menuFragment: MenusFragment by lazy { MenusFragment() }
 
     private var selectedMenus = mutableListOf<Menu>()
 

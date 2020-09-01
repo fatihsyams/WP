@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wp.R
 import com.example.wp.domain.menu.Category
+import com.example.wp.presentation.listener.MenuCategoryListener
 import kotlinx.android.synthetic.main.item_category.view.*
 
-class CategoryAdapter(val context:Context, var datas:List<Category>):RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
+class CategoryAdapter(val context:Context, var datas:List<Category>, val menuCategoryListener: MenuCategoryListener? = null):RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category, parent, false))
@@ -25,6 +26,10 @@ class CategoryAdapter(val context:Context, var datas:List<Category>):RecyclerVie
         fun bind(data:Category){
             with(itemView){
                 btnCategory.text = data.name
+
+                setOnClickListener {
+                    menuCategoryListener?.onCategoryClicked(data)
+                }
             }
         }
     }

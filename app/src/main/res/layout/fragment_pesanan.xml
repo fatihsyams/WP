@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".presentation.listmenu.PesananFragment">
+    tools:context=".presentation.listmenu.MenusFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"

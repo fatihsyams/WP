@@ -9,11 +9,11 @@ import retrofit2.http.*
 
 interface MenuService {
 
-    @GET("api/menu?category_menu_id=0")
-    suspend fun getMenu(): Response<ResponseMenuWp>
+    @GET("api/kategori-menu")
+    suspend fun getMenuCategories():Response<ResponseCategory>
 
-    @GET("api/menu?category_menu_id=0")
-    fun getMenuMVP(): Call<ResponseMenuWp>
+    @GET("api/menu")
+    suspend fun getMenu(@Query("category_menu_id") categoryId:Int): Response<ResponseMenuWp>
 
     @POST("api/login")
     fun login(@Body requestLogin: RequestLogin): Call<ResponseLoginn>

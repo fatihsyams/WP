@@ -9,33 +9,33 @@ import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenusAdapter
+import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
-import com.example.wp.utils.Load
-import com.example.wp.utils.showContentView
-import com.example.wp.utils.showLoadingView
-import com.example.wp.utils.showToast
+import com.example.wp.utils.*
 import kotlinx.android.synthetic.main.fragment_pesanan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PesananFragment : WarungPojokFragment() {
+class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
 
-    private val menuViewModel : MenuViewModel by viewModel()
+    private val menuViewModel: MenuViewModel by viewModel()
 
-    var onMenuClickListener:OnMenuClickListener? = null
+    var onMenuClickListener: OnMenuClickListener? = null
 
     private val menuAdapter: MenusAdapter by lazy {
         MenusAdapter(
             context = requireContext(),
             data = listOf(),
             onMenuClickListener = {
-            onMenuClicked(it)
-        })
+                onMenuClicked(it)
+            })
     }
 
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(
             context = requireContext(),
-            datas = mutableListOf())
+            datas = mutableListOf(),
+            menuCategoryListener = this
+        )
     }
 
     private var listMenu = listOf<Menu>()
@@ -70,35 +70,42 @@ class PesananFragment : WarungPojokFragment() {
     override fun onObserver() {
         menuViewModel.getMenus()
         menuViewModel.menusLoad.observe(this, Observer {
-            when(it){
+            when (it) {
                 is Load.Loading -> msvMenu.showLoadingView()
                 is Load.Fail -> {
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
-                is Load.Success-> {
+                is Load.Success -> {
                     msvMenu.showContentView()
                     showMenus(it.data)
+                    if (it.data.isEmpty()) showToast("Tidak ada data")
+                }
+            }
+        })
+
+        menuViewModel.getCategories()
+        menuViewModel.categoriesLoad.observe(this, Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    showCategories(it.data)
                 }
             }
         })
     }
 
-    private fun showCategories(){
-        val menus = mutableListOf(
-            Category("Ikan"),
-            Category("Snack"),
-            Category("Minuman")
-        )
-
-        categoryAdapter.updateData(menus)
+    private fun showCategories(categories: List<Category>) {
+        categoryAdapter.updateData(categories)
         rvCategory.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryAdapter
         }
     }
 
     private fun showMenus(data: List<Menu>) {
-        showCategories()
         menuAdapter.addDataMenus(data)
         listMenu = data
         rvMenus.apply {
@@ -107,7 +114,7 @@ class PesananFragment : WarungPojokFragment() {
         }
     }
 
-    private fun onMenuClicked(menu:Menu){
+    private fun onMenuClicked(menu: Menu) {
         onMenuClickListener?.onMenuClicked(menu)
     }
 
@@ -118,8 +125,12 @@ class PesananFragment : WarungPojokFragment() {
         menuAdapter.updateDataMenu(result)
     }
 
-    interface OnMenuClickListener{
+    interface OnMenuClickListener {
         fun onMenuClicked(menu: Menu)
+    }
+
+    override fun onCategoryClicked(data: Category) {
+        menuViewModel.getMenus(data.id)
     }
 
 }
