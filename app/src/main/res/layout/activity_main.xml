@@ -109,14 +109,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnOrder"
-        android:layout_width="@dimen/dimen_100dp"
-        android:layout_height="@dimen/dimen_100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dimen_24dp"
         android:layout_marginRight="@dimen/dimen_24dp"
         android:layout_marginBottom="@dimen/dimen_24dp"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
+        app:maxImageSize="@dimen/dimen_48dp"
         app:fabSize="normal"
+        app:fabCustomSize="@dimen/dimen_100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_shopping_cart_24"

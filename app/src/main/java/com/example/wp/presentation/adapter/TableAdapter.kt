@@ -30,7 +30,7 @@ class TableAdapter(val context: Context, var datas: List<Table>, val listener:Ta
             with(itemView) {
                 btnTable.text = data.number
 
-                setOnClickListener {
+                btnTable.setOnClickListener {
                     listener?.onTableSelected(data)
                 }
             }

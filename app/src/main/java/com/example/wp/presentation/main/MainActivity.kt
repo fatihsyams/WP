@@ -13,6 +13,7 @@ import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
+import com.example.wp.utils.visible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -43,6 +44,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
             loginFragment.onLoginSuccessListener = this
             loadFragment(R.id.fl_container, loginFragment)
         }
+
+        if (selectedMenus.isNotEmpty()) btnOrder.visible()
     }
 
     override fun onAction() {
@@ -83,6 +86,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     override fun onOpenMenuPage() {
         loadFragment(R.id.fl_container, menuFragment)
+        setupOrderButton()
     }
 
     fun getOrderButton():FloatingActionButton{

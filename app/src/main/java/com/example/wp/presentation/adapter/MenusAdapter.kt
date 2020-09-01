@@ -84,12 +84,14 @@ class MenusAdapter(
                 tvQuantity.text = item.quantity.toString()
 
                 btnMinus.setOnClickListener {
-                    if (item.quantity < 1) item.quantity =- 1
+                    if (item.quantity > 1) item.quantity--
+                    onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnPlus.setOnClickListener {
-                    item.quantity =+ 1
+                    item.quantity++
+                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 

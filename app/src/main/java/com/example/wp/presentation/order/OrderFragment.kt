@@ -61,6 +61,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
         showMenus()
+        showTotalPrice()
     }
 
     override fun onAction() {
@@ -118,6 +119,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     }
 
+    private fun showTotalPrice(){
+        val totalPrice = menus.map { it.price.times(it.quantity) }.sum()
+        tvTotalPrice.text = "Rp $totalPrice"
+    }
+
     private fun showMenus() {
 
         val menuAdapter = MenusAdapter(
@@ -136,7 +142,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private fun showTableOptions() {
         val tables = mutableListOf<Table>()
-        for (i in 0 until 9) {
+        for (i in 1 until 9) {
             tables.add(Table(i.toString()))
         }
 
@@ -212,6 +218,15 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onDeleteClicked(menu: Menu, position: Int) {
         menus.remove(menu)
+        showTotalPrice()
+    }
+
+    override fun onPlusClicked(menu: Menu, position: Int) {
+        showTotalPrice()
+    }
+
+    override fun onMinuslicked(menu: Menu, position: Int) {
+        showTotalPrice()
     }
 
     fun getSelectedTable() {

@@ -13,6 +13,8 @@ interface OpenMenuPageListener{
 
 interface CalculateMenuListener{
     fun onDeleteClicked(menu: Menu, position:Int)
+    fun onPlusClicked(menu: Menu, position: Int)
+    fun onMinuslicked(menu: Menu, position: Int)
 }
 
 interface MenuCategoryListener{

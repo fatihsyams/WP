@@ -12,7 +12,7 @@ import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.*
-import kotlinx.android.synthetic.main.fragment_pesanan.*
+import kotlinx.android.synthetic.main.fragment_menus.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
@@ -40,7 +40,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
 
     private var listMenu = listOf<Menu>()
 
-    override val layoutView: Int = R.layout.fragment_pesanan
+    override val layoutView: Int = R.layout.fragment_menus
 
     override fun onPreparation() {
     }
