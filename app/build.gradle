@@ -27,7 +27,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://warungpojok.snip-id.com/\"")
+            buildConfigField("String", "BASE_URL", "\"http://warungpojok.snip-id.com/api/\"")
         }
 
         release {

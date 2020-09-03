@@ -2,6 +2,7 @@ package com.example.wp.base
 
 import android.app.Application
 import com.example.wp.di.feature.menuModule
+import com.example.wp.di.feature.orderModule
 import com.example.wp.di.networkModule
 import com.example.wp.di.preferenceModule
 import com.example.wp.di.remoteModule
@@ -18,7 +19,8 @@ class WarungPojokApplication : Application() {
                     networkModule,
                     preferenceModule,
                     remoteModule,
-                    menuModule
+                    menuModule,
+                    orderModule
                 )
             )
         }

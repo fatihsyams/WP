@@ -1,6 +1,5 @@
 package com.example.wp.presentation.order
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +17,14 @@ import com.example.wp.presentation.listener.OpenMenuPageListener
 import com.example.wp.presentation.listener.TableListener
 import com.example.wp.presentation.listener.TakeAwayListener
 import com.example.wp.presentation.main.MainActivity
+import com.example.wp.presentation.viewmodel.OrderViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
@@ -37,6 +38,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 }
             }
     }
+
+    private val orderViewModel:OrderViewModel by viewModel()
 
     private var menus = mutableListOf<Menu>()
 

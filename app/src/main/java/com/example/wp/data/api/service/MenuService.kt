@@ -9,17 +9,17 @@ import retrofit2.http.*
 
 interface MenuService {
 
-    @GET("api/kategori-menu")
+    @GET("kategori-menu")
     suspend fun getMenuCategories():Response<ResponseCategory>
 
-    @GET("api/menu")
+    @GET("menu")
     suspend fun getMenu(@Query("category_menu_id") categoryId:Int): Response<ResponseMenuWp>
 
-    @POST("api/login")
+    @POST("login")
     fun login(@Body requestLogin: RequestLogin): Call<ResponseLoginn>
 
     @Multipart
-    @POST("api/menu")
+    @POST("menu")
     fun createMenu(
         @Part("name") name: RequestBody?,
         @Part("description") description: RequestBody?,
