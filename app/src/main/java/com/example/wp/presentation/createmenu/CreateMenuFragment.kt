@@ -1,6 +1,7 @@
 package com.example.wp.presentation.createmenu
 
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +22,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View {
 
     lateinit var presenter: CreateMenuPresenter
 
-    private var selectedImageFile:File? = null
+    private var selectedImageFile: File? = null
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -38,22 +39,52 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View {
 
         setUpImage()
 
+        setBackgroundEditText()
+
+
         presenter = CreateMenuPresenter(this)
         context?.let { presenter.instencePrefence(it) }
         btnCreateMenu.setOnClickListener {
             selectedImageFile?.let { imageFile ->
                 presenter.logicInputMenus(
-                    name =   edtNameCreateMenu.text.toString(),
-                    description =  edtDescriptionCreateMenu.text.toString(),
-                    price =   edtPriceCreateMenu.text.toString(),
+                    name = edtNameCreateMenu.text.toString(),
+                    description = edtDescriptionCreateMenu.text.toString(),
+                    price = edtPriceCreateMenu.text.toString(),
                     category = edtCategoryMenuIdCreateMenu.text.toString(),
-                    stock =  edtStockCreateMenu.text.toString(),
+                    stock = edtStockCreateMenu.text.toString(),
                     image = imageFile
                 )
             }
 
         }
 
+    }
+
+    private fun setBackgroundEditText() {
+        edtCategoryMenuIdCreateMenu.background.setColorFilter(
+            resources.getColor(R.color.colorBase),
+            PorterDuff.Mode.SRC_ATOP
+        )
+
+        edtStockCreateMenu.background.setColorFilter(
+            resources.getColor(R.color.colorBase),
+            PorterDuff.Mode.SRC_ATOP
+        )
+
+        edtPriceCreateMenu.background.setColorFilter(
+            resources.getColor(R.color.colorBase),
+            PorterDuff.Mode.SRC_ATOP
+        )
+
+        edtDescriptionCreateMenu.background.setColorFilter(
+            resources.getColor(R.color.colorBase),
+            PorterDuff.Mode.SRC_ATOP
+        )
+
+        edtNameCreateMenu.background.setColorFilter(
+            resources.getColor(R.color.colorBase),
+            PorterDuff.Mode.SRC_ATOP
+        )
     }
 
     private fun setUpImage() {

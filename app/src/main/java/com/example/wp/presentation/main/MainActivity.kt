@@ -5,12 +5,14 @@ import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.domain.menu.Menu
+import com.example.wp.presentation.checkmenu.CheckMenuFragment
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
 import com.example.wp.presentation.listmenu.PesananFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
+import com.example.wp.presentation.menuscontainer.MenusContainerFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,7 +55,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         tvMenu.setOnClickListener {
-            loadFragment(R.id.fl_container, CreateMenuFragment())
+            loadFragment(R.id.fl_container, MenusContainerFragment())
         }
 
         btnOrder.setOnClickListener {

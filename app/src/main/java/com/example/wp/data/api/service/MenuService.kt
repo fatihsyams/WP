@@ -18,6 +18,9 @@ interface MenuService {
     @POST("api/login")
     fun login(@Body requestLogin: RequestLogin): Call<ResponseLoginn>
 
+    @POST("api/menu/{id}/delete")
+    suspend fun deleteMenu(@Path("id") id: Int): Response<ResponseDeleteMenu>
+
     @Multipart
     @POST("api/menu")
     fun createMenu(

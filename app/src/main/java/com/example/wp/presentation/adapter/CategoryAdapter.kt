@@ -33,4 +33,5 @@ class CategoryAdapter(val context:Context, var datas:List<Category>):RecyclerVie
         datas = newData
         notifyDataSetChanged()
     }
+
 }
