@@ -39,7 +39,11 @@ object OrderMapper {
     fun mapToRequestOrderApi(domain:OrderResult):RequestOrderApi{
         return RequestOrderApi(
             customerName = domain.order.customerName,
-            information = domain.order.information
+            information = domain.order.information,
+            orderCategory = domain.order.orderCategory,
+            tableId = domain.order.tableId,
+            menuIds = domain.menu.map { it.id }.joinToString(),
+            amounts = domain.menu.map { it.quantity }.joinToString()
         )
     }
 

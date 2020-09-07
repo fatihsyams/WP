@@ -1,6 +1,7 @@
 package com.example.wp.presentation.main
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
@@ -13,6 +14,7 @@ import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
+import com.example.wp.utils.resfreshFragment
 import com.example.wp.utils.visible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
@@ -91,5 +93,9 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     fun getOrderButton():FloatingActionButton{
         return btnOrder
+    }
+
+    fun refreshPage(fragment:Fragment){
+        resfreshFragment(fragment)
     }
 }

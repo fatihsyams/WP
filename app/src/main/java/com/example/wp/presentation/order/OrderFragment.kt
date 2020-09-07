@@ -8,8 +8,11 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.Table
 import com.example.wp.domain.menu.TakeAway
+import com.example.wp.domain.order.Order
+import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.adapter.MenusAdapter
-import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_TYPE
+import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
+import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_TYPE
 import com.example.wp.presentation.adapter.TableAdapter
 import com.example.wp.presentation.adapter.TakeAwayAdapter
 import com.example.wp.presentation.listener.CalculateMenuListener
@@ -22,6 +25,7 @@ import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
+import kotlinx.android.synthetic.main.fragment_menus.*
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,16 +34,20 @@ import java.util.*
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     companion object {
+        const val EDIT_MODE = 304
+        const val READ_MODE = 302
+
         @JvmStatic
-        fun newInstance(menus: List<Menu>) =
+        fun newInstance(menus: List<Menu>, mode: Int = EDIT_MODE) =
             OrderFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(AppConstants.KEY_MENU, menus as ArrayList<Menu>)
+                    putInt(AppConstants.KEY_ORDER_MODE, mode)
                 }
             }
     }
 
-    private val orderViewModel:OrderViewModel by viewModel()
+    private val orderViewModel: OrderViewModel by viewModel()
 
     private var menus = mutableListOf<Menu>()
 
@@ -47,9 +55,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private var selectedOrderType = 0
 
-    private var selectedTable:Table? = null
+    private var selectedTable: Table? = null
 
-    private var selectedTakeAway:TakeAway? = null
+    private var selectedTakeAway: TakeAway? = null
+
+    private var orderMode = EDIT_MODE
 
     override val layoutView: Int = R.layout.fragment_order
 
@@ -59,12 +69,31 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onIntent() {
         menus =
             arguments?.getParcelableArrayList<Menu>(AppConstants.KEY_MENU) ?: mutableListOf()
+
+        orderMode = arguments?.getInt(AppConstants.KEY_ORDER_MODE) ?: EDIT_MODE
     }
 
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
-        showMenus()
         showTotalPrice()
+        setupOrderView()
+    }
+
+    private fun setupOrderView() {
+        when (orderMode) {
+            EDIT_MODE -> {
+                orderTypeContainer.visible()
+                btnAdd.visible()
+                btnPrint.text = "Submit"
+                showMenus(ORDER_EDIT_TYPE)
+            }
+            READ_MODE -> {
+                orderTypeContainer.gone()
+                btnAdd.gone()
+                btnPrint.text = "Cetak"
+                showMenus(ORDER_READ_TYPE)
+            }
+        }
     }
 
     override fun onAction() {
@@ -108,31 +137,75 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
 
         edtPickupOrder.setOnClickListener {
-          DialogDatePicker(requireContext(), object :DialogDatePicker.DateDialogListener{
-              override fun onSelectDate(date: String) {
-                  edtPickupOrder.setText(date)
-              }
-          }).show()
+            DialogDatePicker(requireContext(), object : DialogDatePicker.DateDialogListener {
+                override fun onSelectDate(date: String) {
+                    edtPickupOrder.setText(date)
+                }
+            }).show()
         }
 
-        btnPrint.setOnClickListener { showToast("print") }
+        btnPrint.setOnClickListener {
+//            if (orderMode == EDIT_MODE) (activity as MainActivity).refreshPage(
+//                newInstance(
+//                    menus,
+//                    READ_MODE
+//                )
+//            ) else showToast("print")
+            orderViewModel.postOrder(getOrderResult())
+        }
     }
 
     override fun onObserver() {
+        orderViewModel.orderLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Loading ->pbOrder.visible()
+                is Load.Fail -> {
+                    pbOrder.gone()
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    pbOrder.visible()
+                    showToast("Berhasil Submit Order")
+                    removeFragment()
+                }
+            }
+        })
 
     }
 
-    private fun showTotalPrice(){
+    private fun getOrderResult():OrderResult{
+        return OrderResult(
+            order = Order(
+                customerName = edtCustomerName.text.toString(),
+                orderCategory = when(selectedOrderType){
+                    OrderTypeEnum.TAKE_AWAY.type ->{
+                        btnTakeAwayType.text.toString()
+                    }
+                    OrderTypeEnum.DINE_IN.type ->{
+                       "dine in"
+                    }
+                    OrderTypeEnum.PRE_ORDER.type ->{
+                       "po"
+                    }
+                    else -> "take away"
+                },
+                tableId = if (selectedOrderType == OrderTypeEnum.DINE_IN.type) btnTableNumber.text.toString() else null
+            ),
+            menu = menus
+        )
+    }
+
+    private fun showTotalPrice() {
         val totalPrice = menus.map { it.price.times(it.quantity) }.sum()
         tvTotalPrice.text = "Rp $totalPrice"
     }
 
-    private fun showMenus() {
+    private fun showMenus(orderType: Int) {
 
         val menuAdapter = MenusAdapter(
             context = requireContext(),
             data = menus,
-            type = ORDER_TYPE,
+            type = orderType,
             onCalculateMenuListener = this
         )
 
@@ -216,7 +289,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
         }
     }
-
 
 
     override fun onDeleteClicked(menu: Menu, position: Int) {

@@ -40,6 +40,10 @@ fun Fragment.removeFragment(){
     activity?.supportFragmentManager?.popBackStack()
 }
 
+fun AppCompatActivity.resfreshFragment(fragment: Fragment){
+    supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commitAllowingStateLoss()
+}
+
 fun View.visible() {
     this.visibility = View.VISIBLE
 }
