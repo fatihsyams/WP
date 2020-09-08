@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
-import com.example.wp.domain.menu.Table
 import com.example.wp.domain.menu.TakeAway
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.table.Table
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_TYPE
@@ -21,11 +21,11 @@ import com.example.wp.presentation.listener.TableListener
 import com.example.wp.presentation.listener.TakeAwayListener
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.OrderViewModel
+import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
-import kotlinx.android.synthetic.main.fragment_menus.*
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,6 +48,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     private val orderViewModel: OrderViewModel by viewModel()
+    private val tableViewModel: TableViewModel by viewModel()
 
     private var menus = mutableListOf<Menu>()
 
@@ -126,9 +127,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 OrderTypeEnum.TAKE_AWAY.type -> takeAwayContainer.invisible()
                 OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
             }
+            selectedOrderType = 0
         }
 
-        btnTableNumber.setOnClickListener { showTableOptions() }
+        btnTableNumber.setOnClickListener { tableViewModel.getTables() }
 
         btnTakeAwayType.setOnClickListener { showTakeAwayOptions() }
 
@@ -145,20 +147,14 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
 
         btnPrint.setOnClickListener {
-//            if (orderMode == EDIT_MODE) (activity as MainActivity).refreshPage(
-//                newInstance(
-//                    menus,
-//                    READ_MODE
-//                )
-//            ) else showToast("print")
-            orderViewModel.postOrder(getOrderResult())
+            if (isOrderValid()) orderViewModel.postOrder(getOrderResult())
         }
     }
 
     override fun onObserver() {
         orderViewModel.orderLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
-                is Load.Loading ->pbOrder.visible()
+                is Load.Loading -> pbOrder.visible()
                 is Load.Fail -> {
                     pbOrder.gone()
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
@@ -171,21 +167,50 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
         })
 
+        tableViewModel.tablesLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    showTableOptions(it.data)
+                }
+            }
+        })
+
     }
 
-    private fun getOrderResult():OrderResult{
+    private fun isOrderValid(): Boolean {
+        var valid = true
+        if (selectedOrderType == 0) {
+            valid = false
+            showToast("Pilih Tipe Pesanan Terlebih Dahulu")
+        } else if (selectedOrderType == OrderTypeEnum.DINE_IN.type && selectedTable == null) {
+            valid = false
+            showToast("Pilih Nomer Meja Terlebih Dahulu")
+        } else if (selectedOrderType == OrderTypeEnum.TAKE_AWAY.type && selectedTakeAway == null) {
+            valid = false
+            showToast("Pilih Jenis Take Away Terlebih Dahulu")
+        } else if (selectedOrderType == OrderTypeEnum.PRE_ORDER.type && edtPickupOrder.text.isNullOrEmpty()) {
+            valid = false
+            showToast("Pilih Tanggal Pengambilan Pesanan Terlebih Dahulu")
+        }
+        return valid
+    }
+
+    private fun getOrderResult(): OrderResult {
         return OrderResult(
             order = Order(
                 customerName = edtCustomerName.text.toString(),
-                orderCategory = when(selectedOrderType){
-                    OrderTypeEnum.TAKE_AWAY.type ->{
+                orderCategory = when (selectedOrderType) {
+                    OrderTypeEnum.TAKE_AWAY.type -> {
                         btnTakeAwayType.text.toString()
                     }
-                    OrderTypeEnum.DINE_IN.type ->{
-                       "dine in"
+                    OrderTypeEnum.DINE_IN.type -> {
+                        "dine in"
                     }
-                    OrderTypeEnum.PRE_ORDER.type ->{
-                       "po"
+                    OrderTypeEnum.PRE_ORDER.type -> {
+                        "po"
                     }
                     else -> "take away"
                 },
@@ -216,12 +241,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     }
 
-    private fun showTableOptions() {
-        val tables = mutableListOf<Table>()
-        for (i in 1 until 9) {
-            tables.add(Table(i.toString()))
-        }
-
+    private fun showTableOptions(tables: List<Table>) {
         generateCustomBottomSheetDialog(
             context = requireContext(),
             layoutRes = R.layout.layout_alert_option,
@@ -305,7 +325,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     fun getSelectedTable() {
-        btnTableNumber.text = selectedTable?.number.orEmpty()
+        btnTableNumber.text = selectedTable?.number.toString()
     }
 
     fun getSelectedTakeAway() {

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wp.R
-import com.example.wp.domain.menu.Table
+import com.example.wp.domain.table.Table
 import com.example.wp.presentation.listener.TableListener
 import kotlinx.android.synthetic.main.item_table.view.*
 
@@ -28,7 +28,7 @@ class TableAdapter(val context: Context, var datas: List<Table>, val listener:Ta
     inner class TableViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: Table) {
             with(itemView) {
-                btnTable.text = data.number
+                btnTable.text = data.number.toString()
 
                 btnTable.setOnClickListener {
                     listener?.onTableSelected(data)

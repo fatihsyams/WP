@@ -14,11 +14,8 @@ class OrderViewModel (private val repository: OrderRepository): ViewModel() {
     private val _orderLoad = MutableLiveData<Load<OrderResult>>()
     val orderLoad = _orderLoad as LiveData<Load<OrderResult>>
 
-    init {
-        _orderLoad.value = Load.Loading
-    }
-
     fun postOrder(orderResult: OrderResult) = viewModelScope.launch {
+        _orderLoad.value = Load.Loading
         val order = repository.postOrder(orderResult)
         _orderLoad.value = order
     }
