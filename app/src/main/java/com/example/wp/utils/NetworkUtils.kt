@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class NetworkUtils {
     companion object {
-        private val BASE_URL = "http://warungpojok.snip-id.com/"
+        private val BASE_URL = "http://newarung-pojok.com/"
 
         fun create(preferences: SessionManager): MenuService {
 

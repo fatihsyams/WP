@@ -87,7 +87,9 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         loadFragment(R.id.fl_container, menuFragment)
     }
 
-    fun getOrderButton():FloatingActionButton{
+    fun getOrderButton(): FloatingActionButton {
         return btnOrder
     }
+
+
 }

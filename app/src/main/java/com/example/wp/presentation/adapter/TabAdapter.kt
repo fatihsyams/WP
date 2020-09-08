@@ -6,13 +6,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.wp.presentation.checkmenu.CheckMenuFragment
 import com.example.wp.presentation.createmenu.CreateMenuFragment
 
-class TabAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class TabAdapter(fm: FragmentManager, val pages: List<Fragment>) :
+    FragmentPagerAdapter(fm) {
 
-
-    private val pages = listOf(
-        CreateMenuFragment(),
-        CheckMenuFragment()
-    )
 
     override fun getItem(position: Int): Fragment {
         return pages[position]

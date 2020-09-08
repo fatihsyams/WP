@@ -60,7 +60,7 @@ class MenusAdapter(
         fun bindItem(item: Menu) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
@@ -76,7 +76,7 @@ class MenusAdapter(
         fun bindItem(item:Menu){
             with(itemView){
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name

@@ -15,7 +15,9 @@ import kotlinx.android.synthetic.main.item_menu.view.*
 class CheckMenusAdapter(
     val context: Context,
     var data: List<Menu>,
-    val onDeleteMenusListener: DeleteMenuListener? = null
+    val onDeleteMenusListener: DeleteMenuListener? = null,
+    val onCheckMenuClickListener: ((menu: Menu) -> Unit)? = null
+
 
 ) : RecyclerView.Adapter<CheckMenusAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -31,6 +33,7 @@ class CheckMenusAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItem(data[position])
+
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -42,11 +45,15 @@ class CheckMenusAdapter(
                 }
                 floatingActionButton.setImageResource(R.drawable.ic_baseline_restore_from_trash_24)
 
-                if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    if (!item.images.isNullOrEmpty()) {
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
+
+                setOnClickListener {
+                    onCheckMenuClickListener?.invoke(item)
+                }
             }
 
         }

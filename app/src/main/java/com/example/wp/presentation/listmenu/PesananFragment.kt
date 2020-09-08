@@ -1,5 +1,6 @@
 package com.example.wp.presentation.listmenu
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,11 +10,10 @@ import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenusAdapter
+import com.example.wp.presentation.listener.MenuListener
+import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.viewmodel.MenuViewModel
-import com.example.wp.utils.Load
-import com.example.wp.utils.showContentView
-import com.example.wp.utils.showLoadingView
-import com.example.wp.utils.showToast
+import com.example.wp.utils.*
 import kotlinx.android.synthetic.main.fragment_pesanan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,6 +31,11 @@ class PesananFragment : WarungPojokFragment() {
             onMenuClicked(it)
         })
     }
+
+
+
+
+
 
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(

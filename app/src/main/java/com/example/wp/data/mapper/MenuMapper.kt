@@ -11,14 +11,14 @@ import com.example.wp.utils.handleApiSuccess
 object MenuMapper {
 
     fun map(
-        response:ResponseMenuWp
-    ):Load<List<Menu>>{
+        response: ResponseMenuWp
+    ): Load<List<Menu>> {
         return handleApiSuccess(data = response.data?.map { mapToMenu(it) }.orEmpty())
     }
 
-    private fun mapToMenu(response: MenuApi):Menu{
+    private fun mapToMenu(response: MenuApi): Menu {
         return Menu(
-            images = response.images?.map { mapToMenuImage(it) }.orEmpty(),
+            images = response.images.orEmpty(),
             additionalInformation = response.additionalInformation.orEmpty(),
             updatedAt = response.updatedAt.orEmpty(),
             price = response.price ?: 0,
@@ -32,7 +32,7 @@ object MenuMapper {
         )
     }
 
-    private fun mapToMenuImage(data:MenuImageApi):MenuImage{
+    private fun mapToMenuImage(data: MenuImageApi): MenuImage {
         return MenuImage(
             updatedAt = data.updatedAt.orEmpty(),
             imageUrl = data.imageUrl.orEmpty(),
