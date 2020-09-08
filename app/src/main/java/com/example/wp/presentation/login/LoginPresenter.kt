@@ -2,7 +2,7 @@ package com.example.wp.presentation.login
 
 import android.content.Context
 import android.util.Log
-import com.example.wp.data.api.model.response.RequestLogin
+import com.example.wp.data.api.model.request.RequestLogin
 import com.example.wp.data.api.model.response.ResponseLoginn
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.utils.NetworkUtils.Companion.create

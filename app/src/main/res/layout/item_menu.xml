@@ -14,6 +14,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/dimem_20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +44,8 @@
         android:layout_height="@dimen/dimen_80dp"
         android:src="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -70,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="270dp" />
+        app:layout_constraintGuide_begin="261dp" />
 
     <TextView
         android:id="@+id/tvNamaMenus"
@@ -80,7 +82,7 @@
         android:text="@string/sample_menu"
         android:textSize="@dimen/text_size_30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
@@ -92,8 +94,15 @@
         android:layout_marginTop="5dp"
         android:hint="@string/sample_price"
         android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="124dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

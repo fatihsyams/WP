@@ -7,43 +7,113 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wp.R
-import com.example.wp.data.api.model.response.DataItem
-import kotlinx.android.synthetic.main.item_menu.view.*
+import com.example.wp.domain.menu.Menu
+import com.example.wp.presentation.listener.CalculateMenuListener
+import kotlinx.android.synthetic.main.item_menu.view.imgMenus
+import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
+import kotlinx.android.synthetic.main.item_menu.view.tvNamaMenus
+import kotlinx.android.synthetic.main.item_order.view.*
 
-class MenusAdapter(val context: Context, var data: List<DataItem>) :
-    RecyclerView.Adapter<MenusAdapter.ViewHolder>() {
+class MenusAdapter(
+    val context: Context,
+    var data: List<Menu>,
+    val onMenuClickListener: ((menu: Menu) -> Unit)? = null,
+    val type:Int = MENU_TYPE,
+    val onCalculateMenuListener: CalculateMenuListener? = null
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
-        return ViewHolder(v)
+    companion object{
+        const val MENU_TYPE = 0
+        const val ORDER_EDIT_TYPE = 1
+        const val ORDER_READ_TYPE = 2
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when(viewType){
+            R.layout.item_menu -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
+            R.layout.item_order -> OrderViewHolder(LayoutInflater.from(context).inflate(R.layout.item_order, parent, false))
+            else -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
+        }
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(data[position])
+    override fun getItemViewType(position: Int): Int {
+        return when(type){
+            MENU_TYPE -> R.layout.item_menu
+            ORDER_EDIT_TYPE, ORDER_READ_TYPE -> R.layout.item_order
+            else -> R.layout.item_menu
+        }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindItem(item: DataItem) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (type == MENU_TYPE){
+            (holder as MenuViewHolder).bindItem(data[position])
+        }else{
+            (holder as OrderViewHolder).bindItem(data[position])
+        }
+    }
+
+    inner class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bindItem(item: Menu) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
                     Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
+
+                setOnClickListener {
+                    onMenuClickListener?.invoke(item)
+                }
             }
         }
     }
 
-    fun updateDataMenu(newData: List<DataItem>) {
+    inner class OrderViewHolder(view:View):RecyclerView.ViewHolder(view){
+        fun bindItem(item:Menu){
+            with(itemView){
+                if (!item.images.isNullOrEmpty()) {
+                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                }
+                tvHargaMenus.text = item.price.toString()
+                tvNamaMenus.text = item.name
+                tvInformation.text = item.additionalInformation
+                tvQuantity.text = item.quantity.toString()
+
+                btnDelete.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+                btnPlus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+                btnMinus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+
+                btnMinus.setOnClickListener {
+                    if (item.quantity > 1) item.quantity--
+                    onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
+                    notifyItemChanged(adapterPosition)
+                }
+
+                btnPlus.setOnClickListener {
+                    item.quantity++
+                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
+                    notifyItemChanged(adapterPosition)
+                }
+
+                btnDelete.setOnClickListener {
+                    onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
+                    notifyItemRemoved(adapterPosition)
+                }
+            }
+        }
+    }
+
+    fun updateDataMenu(newData: List<Menu>) {
         data = newData
         notifyDataSetChanged()
     }
 
-    fun addDataMenus(newData: List<DataItem>) {
+    fun addDataMenus(newData: List<Menu>) {
         data = newData
     }
 

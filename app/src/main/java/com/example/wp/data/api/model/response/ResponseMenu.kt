@@ -1,11 +1,13 @@
 package com.example.wp.data.api.model.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ResponseMenuWp(
 
     @SerializedName("menu")
-    val data: List<DataItem>? = null,
+    val data: List<MenuApi>? = null,
 
     @SerializedName("success")
     val success: Boolean? = null,
@@ -14,13 +16,14 @@ data class ResponseMenuWp(
     val message: String? = null
 )
 
-data class DataItem(
+@Parcelize
+data class MenuApi(
 
     @SerializedName("menu_images")
-    val images: List<MenuImage>? = null,
+    val images: List<MenuImageApi>? = null,
 
     @SerializedName("additional_information")
-    val additionalInformation: String? = null,
+    var additionalInformation: String? = null,
 
     @SerializedName("updated_at")
     val updatedAt: String? = null,
@@ -44,10 +47,14 @@ data class DataItem(
     val stock: Int? = null,
 
     @SerializedName("category")
-    val category: String? = null
-)
+    val category: String? = null,
 
-data class MenuImage(
+//    @SerializedName("category")
+    var quantity: Int? = null
+) : Parcelable
+
+@Parcelize
+data class MenuImageApi(
     @SerializedName("updated_at")
     val updatedAt: String? = null,
 
@@ -62,4 +69,4 @@ data class MenuImage(
 
     @SerializedName("created_at")
     val createdAt: String? = null
-)
+) : Parcelable

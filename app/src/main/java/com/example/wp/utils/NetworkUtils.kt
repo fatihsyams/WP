@@ -8,6 +8,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class NetworkUtils {
     companion object {
@@ -17,10 +18,13 @@ class NetworkUtils {
 
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BODY
-            val httpClientBuilder =
-                OkHttpClient.Builder().addInterceptor(CustomInterceptor(preferences))
-                    .addInterceptor(logger)
-                    .build()
+            val httpClientBuilder = OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(CustomInterceptor(preferences))
+                .addInterceptor(logger)
+                .build()
 
 
             val retrofit = Retrofit.Builder()
@@ -47,4 +51,12 @@ class CustomInterceptor(var preferences: SessionManager) : Interceptor {
         return chain.proceed(newRequest.build())
 
     }
+}
+
+fun <T: Any> handleApiSuccess(data: T) : Load.Success<T>{
+    return Load.Success(data)
+}
+
+fun <T : Any> handleApiError(response: retrofit2.Response<T>): Load.Fail<T> {
+    return Load.Fail(Throwable(response.message()))
 }
