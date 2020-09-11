@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wp.R
-import com.example.wp.data.api.model.response.DataItem
-import kotlinx.android.synthetic.main.item_menu.view.*
+import com.example.wp.domain.menu.Menu
+import com.example.wp.presentation.listener.CalculateMenuListener
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvNamaMenus
@@ -16,13 +16,14 @@ import kotlinx.android.synthetic.main.item_order.view.*
 
 class MenusAdapter(
     val context: Context,
-    var data: List<DataItem>,
-    val onMenuClickListener: ((menu: DataItem) -> Unit)? = null,
-    val type: Int = MENU_TYPE
+    var data: List<Menu>,
+    val onMenuClickListener: ((menu: Menu) -> Unit)? = null,
+    val type:Int = MENU_TYPE,
+    val onCalculateMenuListener: CalculateMenuListener? = null
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    companion object {
+    companion object{
         const val MENU_TYPE = 0
         const val ORDER_TYPE = 1
     }
@@ -46,7 +47,7 @@ class MenusAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (type) {
+        return when(type){
             MENU_TYPE -> R.layout.item_menu
             ORDER_TYPE -> R.layout.item_order
             else -> R.layout.item_menu
@@ -54,18 +55,18 @@ class MenusAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (type == MENU_TYPE) {
+        if (type == MENU_TYPE){
             (holder as MenuViewHolder).bindItem(data[position])
-        } else {
+        }else{
             (holder as OrderViewHolder).bindItem(data[position])
         }
     }
 
     inner class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindItem(item: DataItem) {
+        fun bindItem(item: Menu) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
@@ -77,11 +78,11 @@ class MenusAdapter(
         }
     }
 
-    inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindItem(item: DataItem) {
-            with(itemView) {
+    inner class OrderViewHolder(view:View):RecyclerView.ViewHolder(view){
+        fun bindItem(item:Menu){
+            with(itemView){
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
@@ -89,28 +90,29 @@ class MenusAdapter(
                 tvQuantity.text = item.quantity.toString()
 
                 btnMinus.setOnClickListener {
-                    if (item.quantity!! < 0) item.quantity = -1
+                    if (item.quantity!! < 0) item.quantity =- 1
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnPlus.setOnClickListener {
-                    item.quantity = +1
+                    item.quantity =+ 1
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnDelete.setOnClickListener {
+                    onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
                     notifyItemRemoved(adapterPosition)
                 }
             }
         }
     }
 
-    fun updateDataMenu(newData: List<DataItem>) {
+    fun updateDataMenu(newData: List<Menu>) {
         data = newData
         notifyDataSetChanged()
     }
 
-    fun addDataMenus(newData: List<DataItem>) {
+    fun addDataMenus(newData: List<Menu>) {
         data = newData
     }
 

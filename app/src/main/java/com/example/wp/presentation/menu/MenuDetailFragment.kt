@@ -1,28 +1,22 @@
 package com.example.wp.presentation.menu
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.bumptech.glide.Glide
 import com.example.wp.R
-import com.example.wp.data.api.model.response.DataItem
+import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.utils.AppConstants.KEY_MENU
 import com.example.wp.utils.generateCustomAlertDialog
 import com.example.wp.utils.removeFragment
-import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
-import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
 
 class MenuDetailFragment : WarungPojokFragment() {
 
     companion object {
-        fun newInstance(menu: DataItem) =
+        fun newInstance(menu: Menu) =
             MenuDetailFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_MENU, menu)
@@ -30,9 +24,9 @@ class MenuDetailFragment : WarungPojokFragment() {
             }
     }
 
-    private var menu: DataItem? = null
+    private var menu: Menu? = null
 
-    private var quantity = 0
+    private var quantity = 1
 
     var onMenuSelectListener: MenuListener? = null
 
@@ -51,7 +45,7 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     override fun onAction() {
         btnMinus.setOnClickListener {
-            if (quantity > 0) quantity--
+            if (quantity > 1) quantity--
             setMenuQuantity()
         }
 
@@ -63,8 +57,10 @@ class MenuDetailFragment : WarungPojokFragment() {
         btnOk.setOnClickListener { showAdditionalNoteDialog() }
     }
 
-    private fun setMenuQuantity(){
+    private fun setMenuQuantity() {
         tvQuantity.text = quantity.toString()
+        val totalPrice = menu?.price?.times(quantity)
+        tvPrice.text = "Rp $totalPrice"
     }
 
     override fun onObserver() {
@@ -73,7 +69,7 @@ class MenuDetailFragment : WarungPojokFragment() {
     private fun showMenuDetail() {
         menu?.apply {
             if (!images.isNullOrEmpty()) {
-                Glide.with(this@MenuDetailFragment).load(images.first().imageUrl).into(imgMenu)
+                Glide.with(this@MenuDetailFragment).load(images).into(imgMenu)
             }
             tvDescription.text = description
             tvPrice.text = "Rp $price"

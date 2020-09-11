@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/WarungPojokButton"
+    android:id="@+id/btnCategory"
+    app:cornerRadius="@dimen/dimen_8dp"
+    android:text="@string/sample_category" />

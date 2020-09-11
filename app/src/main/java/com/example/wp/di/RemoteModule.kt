@@ -1,10 +1,11 @@
 package com.example.wp.di
 
+import com.example.wp.data.api.service.MenuService
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val remoteModule = module {
-//    single { provideMembershipApi(get()) }
+    single { provideMenuApi(get()) }
 }
 
-//fun provideMembershipApi(retrofit: Retrofit): Membership = retrofit.create(Membership::class.java)
+fun provideMenuApi(retrofit: Retrofit): MenuService = retrofit.create(MenuService::class.java)

@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.BaseInputMenu">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager_main"
-        android:layout_width="0dp"
-        android:layout_height="65dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabsMain"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            app:tabMode="fixed" />
-
-    </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
         android:id="@+id/linearLayout2"

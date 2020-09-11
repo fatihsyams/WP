@@ -1,19 +1,25 @@
 package com.example.wp.presentation.listmenu
 
-import android.util.Log
-import android.widget.Toast
+import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
-import com.example.wp.data.api.model.response.DataItem
+import com.example.wp.domain.menu.Category
+import com.example.wp.domain.menu.Menu
+import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenusAdapter
-import com.example.wp.utils.loadFragment
+import com.example.wp.presentation.listener.MenuListener
+import com.example.wp.presentation.menu.MenuDetailFragment
+import com.example.wp.presentation.viewmodel.MenuViewModel
+import com.example.wp.utils.*
 import kotlinx.android.synthetic.main.fragment_pesanan.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PesananFragment : WarungPojokFragment(),
-    PesananInterface.View {
+class PesananFragment : WarungPojokFragment() {
 
-    lateinit var presenter: PesananPresenter
+    private val menuViewModel : MenuViewModel by viewModel()
 
     var onMenuClickListener:OnMenuClickListener? = null
 
@@ -26,14 +32,22 @@ class PesananFragment : WarungPojokFragment(),
         })
     }
 
-    var listMenu = listOf<DataItem>()
+
+
+
+
+
+    private val categoryAdapter: CategoryAdapter by lazy {
+        CategoryAdapter(
+            context = requireContext(),
+            datas = mutableListOf())
+    }
+
+    private var listMenu = listOf<Menu>()
 
     override val layoutView: Int = R.layout.fragment_pesanan
 
     override fun onPreparation() {
-        presenter = PesananPresenter(this)
-        context?.let { presenter.initSession(it) }
-        presenter.logicData()
     }
 
     override fun onIntent() {
@@ -59,10 +73,37 @@ class PesananFragment : WarungPojokFragment(),
     }
 
     override fun onObserver() {
+        menuViewModel.getMenus()
+        menuViewModel.menusLoad.observe(this, Observer {
+            when(it){
+                is Load.Loading -> msvMenu.showLoadingView()
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success-> {
+                    msvMenu.showContentView()
+                    showMenus(it.data)
+                }
+            }
+        })
     }
 
-    override fun showData(data: List<DataItem>) {
-        Log.d("data", "${data.size}")
+    private fun showCategories(){
+        val menus = mutableListOf(
+            Category("Ikan"),
+            Category("Snack"),
+            Category("Minuman")
+        )
+
+        categoryAdapter.updateData(menus)
+        rvCategory.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = categoryAdapter
+        }
+    }
+
+    private fun showMenus(data: List<Menu>) {
+        showCategories()
         menuAdapter.addDataMenus(data)
         listMenu = data
         rvMenus.apply {
@@ -71,27 +112,19 @@ class PesananFragment : WarungPojokFragment(),
         }
     }
 
-    override fun alertSuccess(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-    }
-
-    override fun alertFailed(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-    }
-
-    private fun onMenuClicked(menu:DataItem){
+    private fun onMenuClicked(menu:Menu){
         onMenuClickListener?.onMenuClicked(menu)
     }
 
     fun filter(query: String) {
         val result = listMenu.filter {
-            it.name?.contains(query, true)!!.or(false)
+            it.name.contains(query, true).or(false)
         }
         menuAdapter.updateDataMenu(result)
     }
 
     interface OnMenuClickListener{
-        fun onMenuClicked(menu: DataItem)
+        fun onMenuClicked(menu: Menu)
     }
 
 }

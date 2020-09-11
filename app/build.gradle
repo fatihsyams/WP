@@ -27,7 +27,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://warungpojok.snip-id.com/\"")
+            buildConfigField("String", "BASE_URL", "\"http://newarung-pojok.com/api/\"")
         }
 
         release {
@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.android.material:material:1.3.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -80,6 +80,9 @@ dependencies {
     //DI Koin
     implementation 'org.koin:koin-android:2.1.5'
     implementation 'org.koin:koin-androidx-viewmodel:2.1.5'
+
+    //multistateview
+    implementation  'com.github.Kennyc1012:MultiStateView:2.1.2'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

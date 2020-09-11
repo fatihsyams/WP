@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:background="#ffffff"
     tools:context=".presentation.listmenu.PesananFragment">
 
     <androidx.appcompat.widget.SearchView
@@ -12,11 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMenus"
-        android:layout_margin="10dp"
-        android:layout_marginRight="15dp"
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/msvMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_menu" />
+        app:msv_loadingView="@layout/layout_loading"
+        app:msv_viewState="loading">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMenus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginRight="15dp"
+                tools:listitem="@layout/item_menu" />
+
+        </LinearLayout>
+
+    </com.kennyc.view.MultiStateView>
+
 </LinearLayout>
