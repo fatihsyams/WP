@@ -1,5 +1,6 @@
 package com.example.wp.presentation.listener
 
+import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 
 interface MenuListener{
@@ -12,11 +13,18 @@ interface OpenMenuPageListener{
 
 interface CalculateMenuListener{
     fun onDeleteClicked(menu: Menu, position:Int)
+    fun onPlusClicked(menu: Menu, position: Int)
+    fun onMinuslicked(menu: Menu, position: Int)
 }
 
 interface DeleteMenuListener{
     fun onDeleteClicked(menu: Menu, position:Int)
 }
+
 interface StockListener{
     fun onSeveClicked(menu : Menu)
+}
+
+interface MenuCategoryListener{
+    fun onCategoryClicked(data:Category)
 }

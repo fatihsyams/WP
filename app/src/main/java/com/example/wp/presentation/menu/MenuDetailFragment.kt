@@ -6,8 +6,10 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.utils.AppConstants.KEY_MENU
+import com.example.wp.presentation.main.MainActivity
+import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import com.example.wp.utils.generateCustomAlertDialog
+import com.example.wp.utils.gone
 import com.example.wp.utils.removeFragment
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
@@ -26,7 +28,7 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private var menu: Menu? = null
 
-    private var quantity = 1
+    private var selectedQuantity = 1
 
     var onMenuSelectListener: MenuListener? = null
 
@@ -40,26 +42,28 @@ class MenuDetailFragment : WarungPojokFragment() {
     }
 
     override fun onView() {
+        (activity as MainActivity).getOrderButton().gone()
         showMenuDetail()
     }
 
     override fun onAction() {
         btnMinus.setOnClickListener {
-            if (quantity > 1) quantity--
+            if (selectedQuantity > 1) selectedQuantity--
             setMenuQuantity()
         }
 
         btnPlus.setOnClickListener {
-            quantity++
+            selectedQuantity++
             setMenuQuantity()
         }
 
         btnOk.setOnClickListener { showAdditionalNoteDialog() }
     }
 
-    private fun setMenuQuantity() {
-        tvQuantity.text = quantity.toString()
-        val totalPrice = menu?.price?.times(quantity)
+
+    private fun setMenuQuantity(){
+        tvQuantity.text = selectedQuantity.toString()
+        val totalPrice = menu?.price?.times(selectedQuantity)
         tvPrice.text = "Rp $totalPrice"
     }
 
@@ -91,7 +95,7 @@ class MenuDetailFragment : WarungPojokFragment() {
                     btnCancel.setOnClickListener { dismiss() }
 
                     btnDone.setOnClickListener {
-                        this.quantity = quantity
+                        this.quantity = selectedQuantity
                         additionalInformation = edtNote.text.toString()
                         onMenuSelectListener?.onSelectMenu(this)
                         dismiss()

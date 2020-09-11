@@ -25,7 +25,8 @@ class MenusAdapter(
 
     companion object{
         const val MENU_TYPE = 0
-        const val ORDER_TYPE = 1
+        const val ORDER_EDIT_TYPE = 1
+        const val ORDER_READ_TYPE = 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -49,7 +50,7 @@ class MenusAdapter(
     override fun getItemViewType(position: Int): Int {
         return when(type){
             MENU_TYPE -> R.layout.item_menu
-            ORDER_TYPE -> R.layout.item_order
+            ORDER_EDIT_TYPE, ORDER_READ_TYPE -> R.layout.item_order
             else -> R.layout.item_menu
         }
     }
@@ -89,13 +90,19 @@ class MenusAdapter(
                 tvInformation.text = item.additionalInformation
                 tvQuantity.text = item.quantity.toString()
 
+                btnDelete.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+                btnPlus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+                btnMinus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
+
                 btnMinus.setOnClickListener {
-                    if (item.quantity!! < 0) item.quantity =- 1
+                    if (item.quantity > 1) item.quantity--
+                    onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnPlus.setOnClickListener {
-                    item.quantity =+ 1
+                    item.quantity++
+                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 

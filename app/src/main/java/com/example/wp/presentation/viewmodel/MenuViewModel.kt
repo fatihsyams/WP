@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.repository.MenuRepository
 import com.example.wp.utils.Load
@@ -16,19 +17,29 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
     private val _deleteMenu = MutableLiveData<Load<Boolean>>()
     val deleteMenu = _deleteMenu as LiveData<Load<Boolean>>
 
+    private val _categoriesLoad = MutableLiveData<Load<List<Category>>>()
+    val categoriesLoad = _categoriesLoad as LiveData<Load<List<Category>>>
+
+
     init {
         _menusLoad.value = Load.Loading
         _deleteMenu.value = Load.Loading
+        _categoriesLoad.value = Load.Loading
     }
 
-    fun getMenus() = viewModelScope.launch {
-        val menus = repository.getMenus()
+    fun getMenus(categoryId:Int = 0) = viewModelScope.launch {
+        val menus = repository.getMenus(categoryId)
         _menusLoad.value = menus
     }
 
     fun deleteMenus(id: Int) = viewModelScope.launch {
         val delete = repository.deleteMenus(id)
         _deleteMenu.value = delete
+    }
+
+    fun getCategories() = viewModelScope.launch {
+        val categories = repository.getCategories()
+        _categoriesLoad.value = categories
     }
 
 }

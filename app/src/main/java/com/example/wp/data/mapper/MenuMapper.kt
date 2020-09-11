@@ -16,7 +16,7 @@ object MenuMapper {
         return handleApiSuccess(data = response.data?.map { mapToMenu(it) }.orEmpty())
     }
 
-    fun mapToMenu(response: MenuApi): Menu {
+    fun mapToMenu(response: MenuApi):Menu{
         return Menu(
             images = response.images.orEmpty(),
             additionalInformation = response.additionalInformation.orEmpty(),

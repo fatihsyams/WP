@@ -2,7 +2,6 @@ package com.example.wp.presentation.createmenu
 
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,14 +14,10 @@ import com.esafirm.imagepicker.features.ImagePicker
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.presentation.listmenu.PesananFragment
 import com.example.wp.presentation.menuscontainer.MenusContainerFragment
-import com.example.wp.utils.AppConstants
-import com.example.wp.utils.AppConstants.KEY_MENU
+import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_create_menu.*
-import kotlinx.android.synthetic.main.fragment_menu_detail.*
-import kotlinx.android.synthetic.main.item_menu.view.*
 import java.io.File
 
 

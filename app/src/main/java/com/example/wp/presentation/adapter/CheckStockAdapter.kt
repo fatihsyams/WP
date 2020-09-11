@@ -56,9 +56,7 @@ class CheckStockAdapter(
 
                 btnSave.setOnClickListener {
                     onSaveListener?.onSeveClicked(item)
-
                 }
-
 
                 tvValueAddStok.text = item.quantity.toString()
 

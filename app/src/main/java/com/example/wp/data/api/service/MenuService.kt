@@ -15,7 +15,13 @@ interface MenuService {
     @GET("menu?category_menu_id=0")
     fun getMenuMVP(): Call<ResponseMenuWp>
 
-    @POST("api/login")
+    @GET("kategori-menu")
+    suspend fun getMenuCategories():Response<ResponseCategory>
+
+    @GET("menu")
+    suspend fun getMenu(@Query("category_menu_id") categoryId:Int): Response<ResponseMenuWp>
+
+    @POST("login")
     fun login(@Body requestLogin: RequestLogin): Call<ResponseLoginn>
 
     @POST("menu/{id}/delete")
