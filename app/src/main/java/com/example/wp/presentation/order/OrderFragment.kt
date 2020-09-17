@@ -162,6 +162,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 is Load.Success -> {
                     pbOrder.visible()
                     showToast("Berhasil Submit Order")
+                    (activity as MainActivity).clearSelectedMenus()
                     removeFragment()
                 }
             }
@@ -229,7 +230,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         val menuAdapter = MenusAdapter(
             context = requireContext(),
-            data = menus,
+            data = menus.distinct(),
             type = orderType,
             onCalculateMenuListener = this
         )
@@ -271,16 +272,16 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private fun showTakeAwayOptions() {
         val takeAways = mutableListOf(
             TakeAway(
-                "Gojek",
+                "gofood",
                 "https://cdn2.tstatic.net/jakarta/foto/bank/images/logo-gojek-baru.jpg"
             ),
             TakeAway(
-                "Grab",
+                "grabfood ",
                 "https://media.suara.com/pictures/970x544/2016/08/22/o_1aqpc505a7vr17au5e0s3ifgka.jpg"
             ),
             TakeAway(
                 "Personal",
-                "https://icon-library.com/images/personal-icon/personal-icon-4.jpg"
+                "https://icon-library.com/images/personal-icon/personal-icon-6.jpg"
             )
         )
 
@@ -317,6 +318,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
+        if (menu.quantity == menu.stock) showToast("Tidak bisa melebih stok")
         showTotalPrice()
     }
 

@@ -101,7 +101,7 @@ class MenusAdapter(
                 }
 
                 btnPlus.setOnClickListener {
-                    item.quantity++
+                    if (item.quantity < item.stock) item.quantity++
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }

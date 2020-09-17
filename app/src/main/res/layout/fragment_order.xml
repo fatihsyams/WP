@@ -40,6 +40,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditOrderType"
         style="@style/WarungPojokButtonOutlined"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="@dimen/dimen_16dp"
         android:layout_marginRight="@dimen/dimen_16dp"
         android:text="Ganti Jenis Pesanan"
@@ -47,6 +49,7 @@
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnTableNumber"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -56,18 +59,16 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:text="Pesanan Meja : "
         android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnTableNumber"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTableNumber"
         style="@style/WarungPojokButtonOutlined"
         android:text="Pilih Meja"
+        android:textAllCaps="false"
         android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelTableNumber"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -80,12 +81,10 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:text="Jenis Take Away : "
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/btnTableNumber"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,6 +94,7 @@
         android:text="Pilih Jenis"
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelTakeAwayType"
         app:layout_constraintStart_toStartOf="@+id/btnTableNumber"
         app:layout_constraintTop_toTopOf="@+id/tvLabelTakeAwayType" />
@@ -106,11 +106,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:text="Tanggal Pengambilan: "
         android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toStartOf="@+id/btnTableNumber"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,11 +116,13 @@
         android:id="@+id/edtPickupOrder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:hint="Masukkan Tanggal Pengambilan"
+        android:hint="Pilih Tanggal"
         android:padding="@dimen/dimen_8dp"
         android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@id/tvLabelPickupOrder"
@@ -183,6 +183,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dimen_24dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@id/btnPrint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

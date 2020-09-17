@@ -1,7 +1,6 @@
 package com.example.wp.presentation.main
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
@@ -15,8 +14,6 @@ import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.menuscontainer.MenusContainerFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
-import com.example.wp.utils.resfreshFragment
-import com.example.wp.utils.visible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -48,7 +45,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
             loadFragment(R.id.fl_container, loginFragment)
         }
 
-        if (selectedMenus.isNotEmpty()) btnOrder.visible()
+        setupOrderButton()
     }
 
     override fun onAction() {
@@ -77,6 +74,11 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     override fun onObserver() {
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupOrderButton()
+    }
+
     override fun onMenuClicked(menu: Menu) {
         val menuDetailFragment = MenuDetailFragment.newInstance(menu)
         menuDetailFragment.onMenuSelectListener = this
@@ -101,7 +103,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         return btnOrder
     }
 
-    fun refreshPage(fragment:Fragment){
-        resfreshFragment(fragment)
+    fun clearSelectedMenus(){
+        selectedMenus.clear()
     }
 }
