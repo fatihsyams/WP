@@ -1,6 +1,6 @@
 package com.example.wp.data.api.datasource
 
-import com.example.wp.data.api.model.response.ResponseMenuWp
+
 import com.example.wp.data.api.service.MenuService
 import com.example.wp.data.mapper.CategoryMapper
 import com.example.wp.data.mapper.MenuMapper
@@ -19,10 +19,23 @@ class MenuRepositoryImpl(val service:MenuService):MenuRepository{
                 response.body()?.let {response->
                     MenuMapper.map(response)
                 } ?: Load.Fail(Throwable(response.message()))
-            }else{
+            } else {
                 Load.Fail(Throwable(response.message()))
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun deleteMenus(id: Int): Load<Boolean> {
+        return try {
+            val response = service.deleteMenu(id)
+            if (response.isSuccessful) {
+                Load.Success(true)
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
             Load.Fail(e)
         }
     }

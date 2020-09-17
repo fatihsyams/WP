@@ -1,6 +1,7 @@
 package com.example.wp.presentation.createmenu
 
 import android.content.Context
+import android.content.LocusId
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -21,5 +22,15 @@ interface CreateMenuInterface {
             image: File
         )
         fun instencePrefence(context: Context)
+
+        fun updateMenus(
+            id : Int,
+            name: String,
+            description: String,
+            price: String,
+            category: String,
+            stock: String,
+            image: File
+        )
     }
 }

@@ -16,11 +16,17 @@ data class ResponseMenuWp(
     val message: String? = null
 )
 
+data class ResponseDeleteMenu(
+    val status: String?,
+    val status_code: String?,
+    val message: String?
+)
+
 @Parcelize
 data class MenuApi(
 
-    @SerializedName("menu_images")
-    val images: List<MenuImageApi>? = null,
+    @SerializedName("image")
+    val images: String? = null,
 
     @SerializedName("additional_information")
     var additionalInformation: String? = null,

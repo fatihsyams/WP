@@ -60,6 +60,7 @@ class MenuDetailFragment : WarungPojokFragment() {
         btnOk.setOnClickListener { showAdditionalNoteDialog() }
     }
 
+
     private fun setMenuQuantity(){
         tvQuantity.text = selectedQuantity.toString()
         val totalPrice = menu?.price?.times(selectedQuantity)
@@ -72,7 +73,7 @@ class MenuDetailFragment : WarungPojokFragment() {
     private fun showMenuDetail() {
         menu?.apply {
             if (!images.isNullOrEmpty()) {
-                Glide.with(this@MenuDetailFragment).load(images.first().imageUrl).into(imgMenu)
+                Glide.with(this@MenuDetailFragment).load(images).into(imgMenu)
             }
             tvDescription.text = description
             tvPrice.text = "Rp $price"

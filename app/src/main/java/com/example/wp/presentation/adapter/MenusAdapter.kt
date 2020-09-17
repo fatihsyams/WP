@@ -30,10 +30,16 @@ class MenusAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType){
-            R.layout.item_menu -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
-            R.layout.item_order -> OrderViewHolder(LayoutInflater.from(context).inflate(R.layout.item_order, parent, false))
-            else -> MenuViewHolder(LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false))
+        return when (viewType) {
+            R.layout.item_menu -> MenuViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
+            )
+            R.layout.item_order -> OrderViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.item_order, parent, false)
+            )
+            else -> MenuViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
+            )
         }
     }
 
@@ -61,7 +67,7 @@ class MenusAdapter(
         fun bindItem(item: Menu) {
             with(itemView) {
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name
@@ -77,7 +83,7 @@ class MenusAdapter(
         fun bindItem(item:Menu){
             with(itemView){
                 if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images.first().imageUrl).into(imgMenus)
+                    Glide.with(context).load(item.images).into(imgMenus)
                 }
                 tvHargaMenus.text = item.price.toString()
                 tvNamaMenus.text = item.name

@@ -38,4 +38,5 @@ class CategoryAdapter(val context:Context, var datas:List<Category>, val menuCat
         datas = newData
         notifyDataSetChanged()
     }
+
 }

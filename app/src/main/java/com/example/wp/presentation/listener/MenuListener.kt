@@ -17,6 +17,14 @@ interface CalculateMenuListener{
     fun onMinuslicked(menu: Menu, position: Int)
 }
 
+interface DeleteMenuListener{
+    fun onDeleteClicked(menu: Menu, position:Int)
+}
+
+interface StockListener{
+    fun onSeveClicked(menu : Menu)
+}
+
 interface MenuCategoryListener{
     fun onCategoryClicked(data:Category)
 }

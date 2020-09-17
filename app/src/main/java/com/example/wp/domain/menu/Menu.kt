@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Menu(
-    val images: List<MenuImage> = mutableListOf(),
+    val images: String = emptyString(),
     var additionalInformation: String = emptyString(),
     val updatedAt: String = emptyString(),
     val price: Int = 0,

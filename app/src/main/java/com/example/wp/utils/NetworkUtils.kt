@@ -1,5 +1,6 @@
 package com.example.wp.utils
 
+import com.example.wp.BuildConfig
 import com.example.wp.data.api.service.MenuService
 import com.example.wp.data.preference.SessionManager
 import okhttp3.Interceptor
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class NetworkUtils {
     companion object {
-        private val BASE_URL = "http://warungpojok.snip-id.com/"
+//        private val BASE_URL = "http://newarung-pojok.com/"
 
         fun create(preferences: SessionManager): MenuService {
 
@@ -28,7 +29,7 @@ class NetworkUtils {
 
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(httpClientBuilder)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -53,7 +54,7 @@ class CustomInterceptor(var preferences: SessionManager) : Interceptor {
     }
 }
 
-fun <T: Any> handleApiSuccess(data: T) : Load.Success<T>{
+fun <T : Any> handleApiSuccess(data: T): Load.Success<T> {
     return Load.Success(data)
 }
 

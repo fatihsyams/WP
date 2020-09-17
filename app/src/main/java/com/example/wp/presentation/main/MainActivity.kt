@@ -6,12 +6,13 @@ import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.domain.menu.Menu
-import com.example.wp.presentation.createmenu.CreateMenuFragment
+import com.example.wp.presentation.checkstock.CheckStockFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
 import com.example.wp.presentation.listmenu.MenusFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
+import com.example.wp.presentation.menuscontainer.MenusContainerFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.utils.loadFragment
 import com.example.wp.utils.resfreshFragment
@@ -58,7 +59,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         tvMenu.setOnClickListener {
-            loadFragment(R.id.fl_container, CreateMenuFragment())
+            loadFragment(R.id.fl_container, MenusContainerFragment())
         }
 
         btnOrder.setOnClickListener {
@@ -66,6 +67,11 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
             orderFragment.onAddMenuListener = this
             loadFragment(R.id.fl_container, orderFragment)
         }
+        tvCekStokMain.setOnClickListener {
+            loadFragment(R.id.fl_container, CheckStockFragment())
+
+        }
+
     }
 
     override fun onObserver() {
@@ -82,7 +88,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         setupOrderButton()
     }
 
-    private fun setupOrderButton() {
+    private fun setupOrderButton(){
         btnOrder.visibility = if (selectedMenus.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
@@ -91,7 +97,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         setupOrderButton()
     }
 
-    fun getOrderButton():FloatingActionButton{
+    fun getOrderButton(): FloatingActionButton {
         return btnOrder
     }
 
