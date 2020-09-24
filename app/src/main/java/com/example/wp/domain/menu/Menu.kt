@@ -17,7 +17,9 @@ data class Menu(
     val id: Int = 0,
     val stock: Int = 0,
     val category: String = emptyString(),
-    var quantity: Int = 0
+    var quantity: Int = 0,
+    val goFoodPrice:Int = 0,
+    val grabFoodPrice:Int = 0
 ) : Parcelable
 
 @Parcelize

@@ -43,7 +43,8 @@ object OrderMapper {
             orderCategory = domain.order.orderCategory,
             tableId = domain.order.tableId,
             menuIds = domain.menu.map { it.id }.joinToString(),
-            amounts = domain.menu.map { it.quantity }.joinToString()
+            amounts = domain.menu.map { it.quantity }.joinToString(),
+            discount = domain.order.discount
         )
     }
 
