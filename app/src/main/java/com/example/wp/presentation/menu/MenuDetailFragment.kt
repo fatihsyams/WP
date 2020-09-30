@@ -55,10 +55,10 @@ class MenuDetailFragment : WarungPojokFragment() {
 
         btnPlus.setOnClickListener {
             menu?.let {
-                if (selectedQuantity < it.stock){
+                if (selectedQuantity < it.stock) {
                     selectedQuantity++
                     setMenuQuantity()
-                }else{
+                } else {
                     showToast("Tidak bisa melebihi stok")
                 }
             }
@@ -68,7 +68,7 @@ class MenuDetailFragment : WarungPojokFragment() {
     }
 
 
-    private fun setMenuQuantity(){
+    private fun setMenuQuantity() {
         tvQuantity.text = selectedQuantity.toString()
         val totalPrice = menu?.price?.times(selectedQuantity)
         tvPrice.text = "Rp $totalPrice"
@@ -79,9 +79,10 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private fun showMenuDetail() {
         menu?.apply {
-            if (!images.isNullOrEmpty()) {
+            if (images.isNotEmpty()) {
                 Glide.with(this@MenuDetailFragment).load(images).into(imgMenu)
             }
+            tvName.text = name
             tvDescription.text = description
             tvPrice.text = "Rp $price"
         }

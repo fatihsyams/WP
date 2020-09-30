@@ -7,38 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".presentation.menuscontainer.MenusContainerFragment">
 
-
-<!--<com.google.android.material.tabs.TabLayout-->
-<!--    android:id="@+id/tabLayout"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:minHeight="?actionBarSize"-->
-<!--    app:tabBackground="@color/colorPrimary"-->
-<!--    app:tabGravity="fill"-->
-<!--    app:tabIndicatorColor="@color/colorWhite"-->
-<!--    app:tabIndicatorHeight="4dp"-->
-<!--    app:tabMode="scrollable"-->
-<!--    app:tabSelectedTextColor="@color/colorWhite" />-->
-
-<!--    <androidx.viewpager.widget.ViewPager-->
-<!--        android:id="@+id/viewPager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"/>
+        android:layout_gravity="top"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-    </androidx.viewpager.widget.ViewPager>
-
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

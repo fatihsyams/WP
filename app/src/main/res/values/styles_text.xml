@@ -12,4 +12,38 @@
         <item name="fontFamily">@font/nunitosans_bold</item>
     </style>
 
+    <style name="WarungPojokTextView.Header">
+        <item name="android:textSize">@dimen/text_size_20sp</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_size_30sp</item>
+        <item name="autoSizeMinTextSize">15sp</item>
+        <item name="autoSizeStepGranularity">4sp</item>
+    </style>
+
+    <style name="WarungPojokTextView.Header.Bold">
+        <item name="fontFamily">@font/nunitosans_bold</item>
+    </style>
+
+    <style name="WarungPojokTextView.Title">
+        <item name="android:textSize">@dimen/text_size_18sp</item>
+        <item name="autoSizeMaxTextSize">28sp</item>
+        <item name="autoSizeMinTextSize">12sp</item>
+        <item name="autoSizeStepGranularity">4sp</item>
+    </style>
+
+    <style name="WarungPojokTextView.Title.Bold">
+        <item name="fontFamily">@font/nunitosans_bold</item>
+    </style>
+
+    <style name="WarungPojokTextView.Caption">
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="autoSizeMaxTextSize">24sp</item>
+        <item name="autoSizeMinTextSize">10sp</item>
+        <item name="autoSizeStepGranularity">4sp</item>
+    </style>
+
+    <style name="WarungPojokTextView.Caption.Bold">
+        <item name="fontFamily">@font/nunitosans_bold</item>
+    </style>
+
+    <dimen name="text_size_14sp">14sp</dimen>
 </resources>

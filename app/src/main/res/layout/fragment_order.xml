@@ -10,7 +10,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDineIn"
         style="@style/WarungPojokButton"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
         android:text="@string/action_dine_in"
         app:layout_constraintEnd_toStartOf="@+id/btnPreOrder"
         app:layout_constraintHorizontal_bias="0.5"
@@ -20,7 +20,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTakeAway"
         style="@style/WarungPojokButton"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
         android:text="@string/action_take_away"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -30,7 +30,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPreOrder"
         style="@style/WarungPojokButton"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
         android:text="@string/action_pre_order"
         app:layout_constraintEnd_toStartOf="@+id/btnTakeAway"
         app:layout_constraintHorizontal_bias="0.5"
@@ -39,39 +39,39 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditOrderType"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         style="@style/WarungPojokButton"
-        android:minWidth="@dimen/dimen_0dp"
+        android:layout_marginStart="@dimen/dimen_16dp"
+        android:layout_marginLeft="@dimen/dimen_16dp"
         android:layout_marginTop="@dimen/dimen_16dp"
         android:layout_marginRight="@dimen/dimen_16dp"
-        app:icon="@drawable/ic_baseline_edit_24"
+        android:minWidth="@dimen/dimen_0dp"
         android:textAllCaps="false"
-        app:iconPadding="@dimen/dimen_0dp"
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
+        app:icon="@drawable/ic_baseline_edit_24"
+        app:iconPadding="@dimen/dimen_0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnTableNumber"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTableNumber"
-        style="@style/WarungPojokTextView"
+        style="@style/WarungPojokTextView.Caption"
         android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Pesanan Meja : "
-        android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        android:layout_marginStart="@dimen/dimen_24dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:layout_marginTop="@dimen/dimen_24dp"
+        android:text="@string/label_table_order"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTableNumber"
         style="@style/WarungPojokButtonOutlined"
-        android:text="Pilih Meja"
+        android:text="@string/action_select_table"
         android:textAllCaps="false"
-        android:textSize="@dimen/text_size_20sp"
+        android:textSize="@dimen/text_size_16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelTableNumber"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tvLabelTableNumber" />
@@ -80,10 +80,10 @@
         android:id="@+id/tvLabelTakeAwayType"
         style="@style/WarungPojokTextView"
         android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Jenis Take Away : "
+        android:layout_marginStart="@dimen/dimen_24dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:layout_marginTop="@dimen/dimen_24dp"
+        android:text="@string/label_take_away_type"
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -93,10 +93,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTakeAwayType"
         style="@style/WarungPojokButtonOutlined"
-        android:text="Pilih Jenis"
+        android:text="@string/action_select_take_away"
+        android:textAllCaps="false"
         android:textSize="@dimen/text_size_20sp"
         android:visibility="gone"
-        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelTakeAwayType"
         app:layout_constraintStart_toStartOf="@+id/btnTableNumber"
         app:layout_constraintTop_toTopOf="@+id/tvLabelTakeAwayType" />
@@ -105,10 +105,10 @@
         android:id="@+id/tvLabelPickupOrder"
         style="@style/WarungPojokTextView"
         android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:text="Tanggal Pengambilan: "
+        android:layout_marginStart="@dimen/dimen_24dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:layout_marginTop="@dimen/dimen_24dp"
+        android:text="@string/label_date_takeaway"
         android:textSize="@dimen/text_size_20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,11 +120,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:hint="Pilih Tanggal"
+        android:hint="@string/label_date"
         android:padding="@dimen/dimen_8dp"
         android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@id/tvLabelPickupOrder"
@@ -134,73 +134,63 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelCustomerName"
-        style="@style/WarungPojokTextView"
+        style="@style/WarungPojokTextView.Caption"
         android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Nama Pelanggan : "
-        android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toStartOf="@+id/edtCustomerName"
+        android:layout_marginStart="@dimen/dimen_24dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:layout_marginTop="@dimen/dimen_24dp"
+        android:text="@string/label_customer_name"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTableNumber" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edtCustomerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Tulis Nama Pelanggan"
+        style="@style/WarungPojokTextView.Caption"
+        android:hint="@string/hint_write_your_customer"
         android:padding="@dimen/dimen_8dp"
-        android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@id/tvLabelCustomerName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@id/tvLabelCustomerName" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelDiscount"
-        style="@style/WarungPojokTextView"
+        style="@style/WarungPojokTextView.Caption"
         android:layout_width="0dp"
-        android:layout_marginTop="16dp"
-        android:text="Diskon (%) : "
-        android:textSize="@dimen/text_size_20sp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/label_discount"
         app:layout_constraintEnd_toEndOf="@+id/tvLabelTotalPrice"
         app:layout_constraintStart_toStartOf="@+id/tvLabelTotalPrice"
         app:layout_constraintTop_toBottomOf="@+id/tvLabelTotalPrice" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edtDiscount"
+        style="@style/WarungPojokTextView.Caption"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Opsional"
+        android:hint="@string/hint_optional"
         android:inputType="number"
         android:padding="@dimen/dimen_8dp"
-        android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelDiscount"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tvLabelDiscount" />
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTotalPrice"
         style="@style/WarungPojokTextView"
         android:layout_width="0dp"
-        android:layout_marginTop="24dp"
-        android:text="Total Harga :"
-        android:textSize="@dimen/text_size_20sp"
+        android:layout_marginTop="@dimen/dimen_24dp"
+        android:text="@string/label_total_price"
         app:layout_constraintEnd_toEndOf="@+id/tvLabelCustomerName"
         app:layout_constraintStart_toStartOf="@+id/tvLabelCustomerName"
         app:layout_constraintTop_toBottomOf="@+id/tvLabelCustomerName" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTotalPrice"
-        style="@style/WarungPojokTextView"
+        style="@style/WarungPojokTextView.Caption"
         android:layout_width="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:text="@string/sample_price"
-        android:textSize="@dimen/text_size_20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelTotalPrice"
         app:layout_constraintEnd_toEndOf="@+id/edtCustomerName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -211,7 +201,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dimen_24dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/dimen_16dp"
         app:layout_constraintBottom_toTopOf="@id/btnPrint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +213,7 @@
         android:id="@+id/orderTypeContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="btnDineIn,btnTakeAway,btnPreOrder" />
 
     <androidx.constraintlayout.widget.Group
@@ -249,25 +239,21 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:text="Tambah"
-        android:textSize="@dimen/text_size_20sp"
+        style="@style/WarungPojokButton"
+        android:layout_marginStart="@dimen/dimen_24dp"
+        android:layout_marginLeft="@dimen/dimen_24dp"
+        android:text="@string/action_add"
         app:layout_constraintBottom_toBottomOf="@id/btnPrint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnPrint" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPrint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Cetak"
-        android:textSize="@dimen/text_size_20sp"
+        style="@style/WarungPojokButton"
+        android:layout_marginEnd="@dimen/dimen_24dp"
+        android:layout_marginRight="@dimen/dimen_24dp"
+        android:layout_marginBottom="@dimen/dimen_24dp"
+        android:text="@string/action_print"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvOrders" />
@@ -294,6 +280,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="165dp" />
+        app:layout_constraintGuide_begin="214dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,10 +68,10 @@ class MenusAdapter(
     inner class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(item: Menu) {
             with(itemView) {
-                if (!item.images.isNullOrEmpty()) {
+                if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text = item.price.toString()
+                tvHargaMenus.text = "Rp ${item.price}"
                 tvNamaMenus.text = item.name
 
                 setOnClickListener {
@@ -84,16 +84,18 @@ class MenusAdapter(
     inner class OrderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(item: Menu) {
             with(itemView) {
-                if (!item.images.isNullOrEmpty()) {
+                if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text =
-                    when (type) {
-                        ORDER_READ_TYPE -> item.price.toString()
-                        ORDER_READ_GO_FOOD_TYPE -> item.goFoodPrice.toString()
-                        ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice.toString()
-                        else -> item.price.toString()
-                    }
+
+                val price = when (type) {
+                    ORDER_READ_TYPE -> item.price.toString()
+                    ORDER_READ_GO_FOOD_TYPE -> item.goFoodPrice.toString()
+                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice.toString()
+                    else -> item.price.toString()
+                }
+
+                tvHargaMenus.text = "Rp $price"
 
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation
