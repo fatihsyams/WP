@@ -10,12 +10,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dimem_20dp">
+        android:padding="@dimen/dimen_20dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/menuContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_400dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="3:1"
             app:cardCornerRadius="@dimen/dimen_16dp"
             android:elevation="@dimen/dimen_16dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,14 +34,16 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvName"
+                    style="@style/WarungPojokTextView.Title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/bg_rectangle_gradient_white_transparent"
-                    android:padding="@dimen/dimem_20dp"
-                    android:text="@string/sample_menu"
-                    android:textSize="@dimen/text_size_30sp"
-                    android:textStyle="bold" />
+                    android:padding="@dimen/dimen_20dp"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/sample_menu"/>
 
             </RelativeLayout>
 
@@ -48,21 +51,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimem_20dp"
+            style="@style/WarungPojokTextView.Caption"
+            android:layout_marginTop="@dimen/dimen_20dp"
             android:lineSpacingExtra="@dimen/dimen_8dp"
-            android:textSize="@dimen/text_size_20sp"
             app:layout_constraintTop_toBottomOf="@id/menuContainer"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="@tools:sample/lorem/random" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTableNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/WarungPojokTextView.Caption"
             android:layout_marginTop="@dimen/dimen_16dp"
             android:text="@string/format_table_number"
-            android:textSize="@dimen/text_size_30sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvDescription"
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
@@ -71,9 +71,10 @@
             android:id="@+id/btnMinus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
             android:elevation="@dimen/dimen_8dp"
+            android:foreground="?attr/selectableItemBackground"
             app:srcCompat="@drawable/ic_minus_circle"
             app:layout_constraintBottom_toBottomOf="@+id/tvQuantity"
             app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
@@ -81,13 +82,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            style="@style/WarungPojokTextView.Header"
+            android:layout_marginEnd="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
             android:text="1"
-            android:textSize="@dimen/text_size_30sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlus"
             app:layout_constraintEnd_toStartOf="@+id/btnPlus"
             app:layout_constraintTop_toTopOf="@+id/btnPlus" />
@@ -96,7 +94,8 @@
             android:id="@+id/btnPlus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:foreground="?attr/selectableItemBackground"
             android:elevation="@dimen/dimen_8dp"
             app:srcCompat="@drawable/ic_plus_circle"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,12 +103,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            style="@style/WarungPojokTextView.Caption"
+            android:layout_marginTop="@dimen/dimen_32dp"
             android:text="@string/sample_price"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
 
@@ -117,7 +114,7 @@
             android:id="@+id/btnOk"
             style="@style/WarungPojokButton"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
             android:text="@string/action_ok"
             android:textColor="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"

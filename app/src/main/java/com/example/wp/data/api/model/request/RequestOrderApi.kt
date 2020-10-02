@@ -14,5 +14,7 @@ data class RequestOrderApi (
     @SerializedName("menu_id")
     val menuIds:String,
     @SerializedName("amount")
-    val amounts:String
+    val amounts:String,
+    @SerializedName("discount_order")
+    val discount:Int?
 )

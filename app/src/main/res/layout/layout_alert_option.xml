@@ -13,7 +13,7 @@
         android:layout_width="@dimen/dimen_200dp"
         android:layout_height="@dimen/dimen_8dp"
         android:background="@color/colorGrey"
-        android:layout_marginTop="@dimen/dimem_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:layout_gravity="center_horizontal"/>
 
     <View
@@ -28,8 +28,8 @@
         style="@style/WarungPojokTextView.Bold"
         android:text="@string/label_select_table"
         android:layout_marginLeft="@dimen/dimen_8dp"
-        android:layout_marginBottom="@dimen/dimem_20dp"
-        android:layout_marginTop="@dimen/dimem_20dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:textSize="@dimen/text_size_30sp"/>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -29,7 +29,9 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
         price: String,
         category: String,
         stock: String,
-        image: File
+        image: File,
+        grabFoodPrice:String,
+        goFoodPrice:String
     ) {
 
         sm?.let { sm ->
@@ -45,7 +47,9 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
                         "image",
                         image.name,
                         image.toRequestBody()
-                    )
+                    ),
+                    grabFoodPrice = grabFoodPrice.toRequestBody(),
+                    goFoodPrice = goFoodPrice.toRequestBody()
                 )
                     .enqueue(object : Callback<ResponseCreateMenu> {
                         override fun onFailure(call: Call<ResponseCreateMenu>, t: Throwable) {

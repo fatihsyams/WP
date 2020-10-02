@@ -91,7 +91,9 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                     price = edtPriceCreateMenu.text.toString(),
                     category = selectedCategory?.id.toString(),
                     stock = edtStockCreateMenu.text.toString(),
-                    image = imageFile
+                    image = imageFile,
+                    grabFoodPrice = edtPriceGrabfood.text.toString(),
+                    goFoodPrice =  edtPriceGofood.text.toString()
                 )
             }
 

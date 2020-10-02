@@ -11,6 +11,7 @@ import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import com.example.wp.utils.generateCustomAlertDialog
 import com.example.wp.utils.gone
 import com.example.wp.utils.removeFragment
+import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
 import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
@@ -53,15 +54,21 @@ class MenuDetailFragment : WarungPojokFragment() {
         }
 
         btnPlus.setOnClickListener {
-            selectedQuantity++
-            setMenuQuantity()
+            menu?.let {
+                if (selectedQuantity < it.stock) {
+                    selectedQuantity++
+                    setMenuQuantity()
+                } else {
+                    showToast("Tidak bisa melebihi stok")
+                }
+            }
         }
 
         btnOk.setOnClickListener { showAdditionalNoteDialog() }
     }
 
 
-    private fun setMenuQuantity(){
+    private fun setMenuQuantity() {
         tvQuantity.text = selectedQuantity.toString()
         val totalPrice = menu?.price?.times(selectedQuantity)
         tvPrice.text = "Rp $totalPrice"
@@ -72,9 +79,10 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private fun showMenuDetail() {
         menu?.apply {
-            if (!images.isNullOrEmpty()) {
+            if (images.isNotEmpty()) {
                 Glide.with(this@MenuDetailFragment).load(images).into(imgMenu)
             }
+            tvName.text = name
             tvDescription.text = description
             tvPrice.text = "Rp $price"
         }

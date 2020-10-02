@@ -19,7 +19,9 @@ interface CreateMenuInterface {
             price: String,
             category: String,
             stock: String,
-            image: File
+            image: File,
+            grabFoodPrice:String,
+            goFoodPrice:String
         )
         fun instencePrefence(context: Context)
 

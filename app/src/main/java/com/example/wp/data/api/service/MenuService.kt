@@ -55,6 +55,8 @@ interface MenuService {
         @Part("price") price: RequestBody?,
         @Part("stock") stock: RequestBody?,
         @Part("category_menu_id") category_menu_id: RequestBody?,
+        @Part("price_grabfood") grabFoodPrice: RequestBody?,
+        @Part("price_gofood") goFoodPrice: RequestBody?,
         @Part image: MultipartBody.Part
     ): Call<ResponseCreateMenu>
 

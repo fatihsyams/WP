@@ -33,11 +33,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
             })
     }
 
-
-
-
-
-
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(
             context = requireContext(),

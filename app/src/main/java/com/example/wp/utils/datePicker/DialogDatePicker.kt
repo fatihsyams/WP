@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.dialog_date_picker.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DialogDatePicker(context: Context, private var dateDialogListener: DateDialogListener? = null) : Dialog(context), CalendarAdapter.DateAdapterListener {
+class
+DialogDatePicker(context: Context, private var dateDialogListener: DateDialogListener? = null) : Dialog(context), CalendarAdapter.DateAdapterListener {
 
     private val dateAdapter: CalendarAdapter by lazy {
         CalendarAdapter(

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_8dp"
@@ -13,7 +11,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/dimem_20dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -55,11 +53,11 @@
         android:layout_margin="@dimen/dimen_10dp"
         android:background="@drawable/icon_circle_white"
         android:backgroundTint="@color/colorBase"
-        app:srcCompat="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="@+id/imgCircle"
         app:layout_constraintEnd_toEndOf="@+id/imgCircle"
         app:layout_constraintStart_toStartOf="@+id/imgCircle"
-        app:layout_constraintTop_toTopOf="@+id/imgCircle" />
+        app:layout_constraintTop_toTopOf="@+id/imgCircle"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -77,12 +75,10 @@
 
     <TextView
         android:id="@+id/tvNamaMenus"
+        style="@style/WarungPojokTextView.Title.Bold"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimem_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:text="@string/sample_menu"
-        android:textSize="@dimen/text_size_30sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
@@ -90,11 +86,10 @@
 
     <TextView
         android:id="@+id/tvHargaMenus"
+        style="@style/WarungPojokTextView.Title"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
         android:hint="@string/sample_price"
-        android:textSize="@dimen/text_size_20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />

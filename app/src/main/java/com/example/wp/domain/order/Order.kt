@@ -10,5 +10,6 @@ data class Order(
     val orderCategory: String = emptyString(),
     val tableId: String? = null,
     val totalPayment: Int = 0,
-    val updatedAt: String = emptyString()
+    val updatedAt: String = emptyString(),
+    val discount:Int = 0
 )

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/colorWhite"
     android:orientation="horizontal"
     android:weightSum="5"
     tools:context=".presentation.main.MainActivity">
@@ -20,76 +20,69 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/imgLogoWpHome"
-        android:layout_width="166dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        app:layout_constraintDimensionRatio="2:1"
+        android:layout_marginTop="@dimen/dimen_48dp"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        android:src="@drawable/logowp"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/WarungPojokTextView.Header.Bold"
         android:layout_below="@+id/imgLogoWpHome"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:autoSizeMaxTextSize="30sp"
-        android:autoSizeStepGranularity="15sp"
+        android:layout_marginTop="@dimen/dimen_32dp"
         android:gravity="center"
-        android:text="Warung Pojok"
-        android:textColor="#ffff"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/imgLogoWpHome"
-        app:layout_constraintStart_toStartOf="@+id/imgLogoWpHome"
+        android:text="@string/label_warung_pojok"
+        android:textColor="@color/colorWhite"
+        app:autoSizeMaxTextSize="@dimen/text_size_30sp"
+        app:autoSizeStepGranularity="@dimen/text_size_8sp"
+        app:layout_constraintEnd_toEndOf="@id/view"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgLogoWpHome" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/tvOrder"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
-        android:autoSizeMaxTextSize="30sp"
-        android:autoSizeStepGranularity="15sp"
+        style="@style/WarungPojokButton.Orange"
+        android:layout_marginLeft="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_108dp"
         android:gravity="center"
-        android:text="Pesanan"
-        android:textColor="#ffff"
-        android:textSize="20sp"
+        android:text="@string/label_menu_list"
+        android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/tvMenu"
+        style="@style/WarungPojokButton.Orange"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:autoSizeMaxTextSize="30sp"
-        android:autoSizeStepGranularity="15sp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Input Menu"
-        android:textColor="#ffff"
-        android:textSize="20sp"
+        android:text="@string/label_manage_menu"
+        android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="@+id/tvOrder"
         app:layout_constraintStart_toStartOf="@+id/tvOrder"
         app:layout_constraintTop_toBottomOf="@+id/tvOrder" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/tvCekStokMain"
+        style="@style/WarungPojokButton.Orange"
         android:layout_width="0dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="24dp"
-        android:autoSizeMaxTextSize="30sp"
-        android:autoSizeStepGranularity="15sp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Cek Stok"
-        android:textColor="#ffff"
-        android:textSize="20sp"
+        android:text="@string/label_manage_stock"
+        android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="@+id/tvMenu"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvMenu"
@@ -99,7 +92,7 @@
         android:id="@+id/fl_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#ffffff"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -116,11 +109,11 @@
         android:layout_marginBottom="@dimen/dimen_24dp"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
-        app:maxImageSize="@dimen/dimen_48dp"
-        app:fabSize="normal"
         app:fabCustomSize="@dimen/dimen_100dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/dimen_48dp"
         app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
         app:tint="@color/colorWhite" />
 
