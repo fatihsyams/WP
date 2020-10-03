@@ -65,4 +65,8 @@
     <string name="label_menu_list">Daftar Menu</string>
     <string name="label_manage_menu">Manajemen Menu</string>
     <string name="label_manage_stock">Manajemen Stok</string>
+    <string name="hint_material_name">Nama Material</string>
+    <string name="label_stock">Stok</string>
+    <string name="action_create_stock">Buat Stok</string>
+    <string name="hint_material">Bahan Menu</string>
 </resources>

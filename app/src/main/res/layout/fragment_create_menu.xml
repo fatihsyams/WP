@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.createmenu.CreateMenuFragment">
+    tools:context=".presentation.menu.createmenu.CreateMenuFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/formContainer"
@@ -152,6 +152,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="@dimen/dimen_24dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tilPriceGrabfood">
@@ -177,7 +178,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilStock">
+                app:layout_constraintTop_toBottomOf="@+id/tilMaterial">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtCategoryMenuIdCreateMenu"
@@ -187,6 +188,26 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:hint="@string/label_menu_Category" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMaterial"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilStock">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtMaterial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:hint="@string/hint_material" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -212,11 +233,11 @@
         android:id="@+id/btnCreateMenu"
         style="@style/WarungPojokButton"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/action_create_menu"
-        android:layout_alignParentBottom="true"/>
+        android:text="@string/action_create_menu" />
 
 </RelativeLayout>

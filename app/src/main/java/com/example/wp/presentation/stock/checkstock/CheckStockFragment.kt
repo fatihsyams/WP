@@ -1,4 +1,4 @@
-package com.example.wp.presentation.checkstock
+package com.example.wp.presentation.stock.checkstock
 
 import android.os.Bundle
 import android.util.Log
@@ -43,7 +43,6 @@ class CheckStockFragment : Fragment(), CheckStockInterface.View, StockListener {
     }
 
     override fun showData(data: List<Menu>) {
-        Log.d("data", data.size.toString())
         rvCheckStok.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = CheckStockAdapter(context, data, this@CheckStockFragment)
@@ -57,7 +56,6 @@ class CheckStockFragment : Fragment(), CheckStockInterface.View, StockListener {
     override fun showSuccess(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         presenter.getDataStock()
-
     }
 
     override fun onSeveClicked(menu: Menu) {

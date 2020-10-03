@@ -5,14 +5,15 @@ import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.domain.menu.Menu
-import com.example.wp.presentation.checkstock.CheckStockFragment
+import com.example.wp.presentation.stock.checkstock.CheckStockFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
-import com.example.wp.presentation.listmenu.MenusFragment
+import com.example.wp.presentation.menu.MenusFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
-import com.example.wp.presentation.menuscontainer.MenusContainerFragment
+import com.example.wp.presentation.menu.MenusContainerFragment
 import com.example.wp.presentation.order.OrderFragment
+import com.example.wp.presentation.stock.StockContainerFragment
 import com.example.wp.utils.loadFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
@@ -56,7 +57,9 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         tvMenu.setOnClickListener {
-            loadFragment(R.id.fl_container, MenusContainerFragment())
+            loadFragment(R.id.fl_container,
+                MenusContainerFragment()
+            )
         }
 
         btnOrder.setOnClickListener {
@@ -64,9 +67,9 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
             orderFragment.onAddMenuListener = this
             loadFragment(R.id.fl_container, orderFragment)
         }
-        tvCekStokMain.setOnClickListener {
-            loadFragment(R.id.fl_container, CheckStockFragment())
 
+        tvCekStokMain.setOnClickListener {
+            loadFragment(R.id.fl_container, StockContainerFragment())
         }
 
     }

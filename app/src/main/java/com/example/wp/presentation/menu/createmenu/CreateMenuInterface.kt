@@ -1,9 +1,6 @@
-package com.example.wp.presentation.createmenu
+package com.example.wp.presentation.menu.createmenu
 
 import android.content.Context
-import android.content.LocusId
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 
 interface CreateMenuInterface {

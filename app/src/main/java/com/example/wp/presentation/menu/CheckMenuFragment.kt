@@ -1,4 +1,4 @@
-package com.example.wp.presentation.checkmenu
+package com.example.wp.presentation.menu
 
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager

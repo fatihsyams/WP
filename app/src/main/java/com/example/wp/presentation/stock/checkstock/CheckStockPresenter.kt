@@ -1,8 +1,7 @@
-package com.example.wp.presentation.checkstock
+package com.example.wp.presentation.stock.checkstock
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.example.wp.data.api.model.response.ResponseMenuWp
 import com.example.wp.data.api.model.response.ResponseUpdateStock
 import com.example.wp.data.mapper.MenuMapper

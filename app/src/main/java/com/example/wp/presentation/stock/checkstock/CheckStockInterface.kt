@@ -1,4 +1,4 @@
-package com.example.wp.presentation.checkstock
+package com.example.wp.presentation.stock.checkstock
 
 import android.content.Context
 import com.example.wp.domain.menu.Menu

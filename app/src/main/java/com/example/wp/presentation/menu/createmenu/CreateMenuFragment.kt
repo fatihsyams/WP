@@ -1,4 +1,4 @@
-package com.example.wp.presentation.createmenu
+package com.example.wp.presentation.menu.createmenu
 
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -16,20 +16,16 @@ import com.esafirm.imagepicker.features.ImagePicker
 import com.example.wp.R
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
-import com.example.wp.domain.table.Table
 import com.example.wp.presentation.adapter.CategoryAdapter
-import com.example.wp.presentation.adapter.TableAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.presentation.listener.TableListener
-import com.example.wp.presentation.menuscontainer.MenusContainerFragment
+import com.example.wp.presentation.menu.MenusContainerFragment
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
 import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.generateCustomBottomSheetDialog
 import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_create_menu.*
-import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File

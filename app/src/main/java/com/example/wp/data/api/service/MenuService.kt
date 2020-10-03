@@ -1,6 +1,6 @@
 package com.example.wp.data.api.service
 
-import com.example.wp.data.api.model.request.RequestLogin
+import com.example.wp.data.api.model.request.RequestLoginApi
 import com.example.wp.data.api.model.response.*
 import okhttp3.*
 import retrofit2.Call
@@ -22,7 +22,7 @@ interface MenuService {
     suspend fun getMenu(@Query("category_menu_id") categoryId:Int): Response<ResponseMenuWp>
 
     @POST("login")
-    fun login(@Body requestLogin: RequestLogin): Call<ResponseLoginn>
+    fun login(@Body requestLoginApi: RequestLoginApi): Call<ResponseLoginn>
 
     @POST("menu/{id}/delete")
     suspend fun deleteMenu(@Path("id") id: Int): Response<ResponseDeleteMenu>

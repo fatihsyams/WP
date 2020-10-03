@@ -3,10 +3,8 @@ package com.example.wp.presentation.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.wp.presentation.checkmenu.CheckMenuFragment
-import com.example.wp.presentation.createmenu.CreateMenuFragment
 
-class TabAdapter(fm: FragmentManager, val pages: List<Fragment>) :
+class TabAdapter(fm: FragmentManager, val pages: List<Fragment>, val titles:List<String>) :
     FragmentPagerAdapter(fm) {
 
 
@@ -19,10 +17,7 @@ class TabAdapter(fm: FragmentManager, val pages: List<Fragment>) :
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return when (position) {
-            0 -> "Create Menu"
-            else -> "Check Menu"
-        }
+        return titles[position]
     }
 
 }

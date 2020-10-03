@@ -1,4 +1,4 @@
-package com.example.wp.presentation.menuscontainer
+package com.example.wp.presentation.menu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.TabAdapter
-import com.example.wp.presentation.checkmenu.CheckMenuFragment
-import com.example.wp.presentation.createmenu.CreateMenuFragment
+import com.example.wp.presentation.menu.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.utils.loadFragment
-import kotlinx.android.synthetic.main.fragment_base_input_menu.*
 import kotlinx.android.synthetic.main.fragment_menus_container.*
 
 class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickListener {
@@ -35,12 +32,14 @@ class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickLis
         super.onViewCreated(view, savedInstanceState)
 
         val createMenuFragment = CreateMenuFragment()
-        val checkMenuFragment = CheckMenuFragment()
+        val checkMenuFragment =
+            CheckMenuFragment()
         checkMenuFragment.onCheckMenuClickListener = this
 
 
         viewpager_main.adapter =
-            TabAdapter(childFragmentManager, listOf(createMenuFragment, checkMenuFragment))
+            TabAdapter(childFragmentManager, listOf(createMenuFragment, checkMenuFragment),
+            listOf("Tambah Menu", "Cek Menu"))
         tabs_main.setupWithViewPager(viewpager_main)
 
     }
