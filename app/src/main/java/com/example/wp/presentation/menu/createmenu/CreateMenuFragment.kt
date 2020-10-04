@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.esafirm.imagepicker.features.ImagePicker
 import com.example.wp.R
+import com.example.wp.domain.material.Material
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.menu.MenusContainerFragment
+import com.example.wp.presentation.viewmodel.MaterialViewModel
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
 import com.example.wp.utils.constants.AppConstants
@@ -39,8 +41,10 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
     private var menus: Menu? = null
 
     private var selectedCategory: Category? = null
+    private var selectedMaterial: Material? = null
 
     private val menuViewModel:MenuViewModel by viewModel()
+    private val materialViewModel:MaterialViewModel by viewModel()
 
     companion object {
         fun newInstance(menu: Menu) =
@@ -99,6 +103,10 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
             menuViewModel.getCategories()
         }
 
+        edtMaterial.setOnClickListener {
+            materialViewModel.getMaterials()
+        }
+
     }
 
     private fun onIntent() {
@@ -113,6 +121,17 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 }
                 is Load.Success -> {
                     showCategoryOptions(it.data)
+                }
+            }
+        })
+
+        materialViewModel.getMaterialLoad.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    showMaterialOptions(it.data)
                 }
             }
         })
@@ -210,6 +229,34 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
             }
         }
     }
+
+    private fun showMaterialOptions(materials: List<Material>) {
+        generateCustomBottomSheetDialog(
+            context = requireContext(),
+            layoutRes = R.layout.layout_alert_option,
+            isCancelable = true,
+            isExpandMode = true
+        ).apply {
+
+            val categoryAdapter = CategoryAdapter(
+                context = requireContext(),
+                datas = materials.map { it.toCategoryOption() },
+                menuCategoryListener = object : MenuCategoryListener {
+                    override fun onCategoryClicked(data: Category) {
+//                        selectedMaterial = data
+//                        getSelectedCategory()
+                        dismiss()
+                    }
+                }
+            )
+
+            rvOption.apply {
+                layoutManager = GridLayoutManager(requireContext(), 3)
+                adapter = categoryAdapter
+            }
+        }
+    }
+
 
     fun getSelectedCategory() {
         edtCategoryMenuIdCreateMenu.setText(selectedCategory?.name.orEmpty())

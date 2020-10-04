@@ -1,5 +1,6 @@
 package com.example.wp.presentation.listener
 
+import com.example.wp.domain.material.Material
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 
@@ -22,7 +23,7 @@ interface DeleteMenuListener{
 }
 
 interface StockListener{
-    fun onSeveClicked(menu : Menu)
+    fun onSaveStockClicked(material: Material)
 }
 
 interface MenuCategoryListener{

@@ -18,6 +18,7 @@ object MaterialMapper {
 
     private fun mapToMaterial(response: MaterialApi): Material {
         return Material(
+            id = response.id ?: 0,
             material = response.material.orEmpty(),
             stock = response.stock ?: 0
         )

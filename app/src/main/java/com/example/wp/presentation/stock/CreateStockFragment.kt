@@ -1,29 +1,64 @@
 package com.example.wp.presentation.stock
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.domain.material.Material
+import com.example.wp.presentation.main.MainActivity
+import com.example.wp.presentation.viewmodel.MaterialViewModel
+import com.example.wp.utils.*
+import kotlinx.android.synthetic.main.fragment_create_stock.*
+import kotlinx.android.synthetic.main.fragment_order.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class CreateStockFragment : WarungPojokFragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CreateStockFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class CreateStockFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_stock, container, false)
+    private val materialViewModel: MaterialViewModel by viewModel()
+
+    var onStockListener:OnStockListener? = null
+
+    override val layoutView: Int = R.layout.fragment_create_stock
+
+    override fun onPreparation() {
+    }
+
+    override fun onIntent() {
+    }
+
+    override fun onView() {
+    }
+
+    override fun onAction() {
+        btnCreateStock.setOnClickListener { submitMaterial() }
+    }
+
+    override fun onObserver() {
+        materialViewModel.materialLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Loading -> pbMaterial.visible()
+                is Load.Fail -> {
+                    pbMaterial.gone()
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    pbMaterial.visible()
+                    showToast("Berhasil menambahkan stok")
+                    onStockListener?.onSubmitStock()
+                }
+            }
+        })
+    }
+
+    private fun submitMaterial() {
+        materialViewModel.postMaterial(
+            material = Material(
+                material = edtMaterial.text.toString(),
+                stock = edtStock.text.toString().toIntOrNull() ?: 0
+            )
+        )
+    }
+
+    interface OnStockListener{
+        fun onSubmitStock()
     }
 
 }

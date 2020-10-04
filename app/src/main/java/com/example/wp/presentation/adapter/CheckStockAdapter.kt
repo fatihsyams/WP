@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.wp.R
-import com.example.wp.domain.menu.Menu
-import com.example.wp.presentation.listener.CalculateMenuListener
+import com.example.wp.domain.material.Material
 import com.example.wp.presentation.listener.StockListener
 import kotlinx.android.synthetic.main.item_checkstock.view.*
 
 class CheckStockAdapter(
     val context: Context,
-    var data: List<Menu>,
+    var data: List<Material>,
     val onSaveListener: StockListener? = null
 
 ) :
@@ -41,36 +39,32 @@ class CheckStockAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
-        fun bindItem(item: Menu) {
+        fun bindItem(item: Material) {
             with(itemView) {
 
                 btnPlusStok.setOnClickListener {
-                    item.quantity++
+                    item.stock++
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnMinesAddStok.setOnClickListener {
-                    if (item.quantity!! > 0) item.quantity--
+                    if (item.stock > 0) item.stock--
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnSave.setOnClickListener {
-                    onSaveListener?.onSeveClicked(item)
+                    onSaveListener?.onSaveStockClicked(item)
                 }
 
-                tvValueAddStok.text = item.quantity.toString()
+                tvValueAddStok.text = item.stock.toString()
 
-                tvName.text = item.name
+                tvName.text = item.material
                 tvTotalStok.text = item.stock.toString()
-                if (!item.images.isNullOrEmpty()) {
-                    Glide.with(context).load(item.images).into(imgStock)
-                }
-
             }
         }
     }
 
-    fun updateDataMenu(newData: List<Menu>) {
+    fun updateDataMenu(newData: List<Material>) {
         data = newData
         notifyDataSetChanged()
     }
