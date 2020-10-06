@@ -30,6 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/imgIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/ImgCreateMenu"
@@ -152,17 +153,17 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="@dimen/dimen_24dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilPriceGrabfood">
+                app:layout_constraintTop_toBottomOf="@+id/tilMaterial">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtStockCreateMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
-                    android:hint="@string/hint_menu_stock" />
+                    android:hint="@string/hint_menu_total_bahan" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -178,7 +179,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilMaterial">
+                app:layout_constraintTop_toBottomOf="@+id/tilStock">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtCategoryMenuIdCreateMenu"
@@ -200,7 +201,7 @@
                 android:layout_marginTop="@dimen/dimen_24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilStock">
+                app:layout_constraintTop_toBottomOf="@+id/tilPriceGrabfood">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtMaterial"
@@ -226,6 +227,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="134dp" />
+
+            <ProgressBar
+                android:id="@+id/pbCreateMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ImgCreateMenu"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

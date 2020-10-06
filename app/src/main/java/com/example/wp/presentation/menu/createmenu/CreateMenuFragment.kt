@@ -15,18 +15,18 @@ import com.bumptech.glide.Glide
 import com.esafirm.imagepicker.features.ImagePicker
 import com.example.wp.R
 import com.example.wp.domain.material.Material
+import com.example.wp.domain.material.MaterialMenu
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
+import com.example.wp.presentation.listener.CreateMenuListener
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.menu.MenusContainerFragment
 import com.example.wp.presentation.viewmodel.MaterialViewModel
 import com.example.wp.presentation.viewmodel.MenuViewModel
-import com.example.wp.utils.Load
+import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
-import com.example.wp.utils.generateCustomBottomSheetDialog
-import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_create_menu.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,8 +43,10 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
     private var selectedCategory: Category? = null
     private var selectedMaterial: Material? = null
 
-    private val menuViewModel:MenuViewModel by viewModel()
-    private val materialViewModel:MaterialViewModel by viewModel()
+    private val menuViewModel: MenuViewModel by viewModel()
+    private val materialViewModel: MaterialViewModel by viewModel()
+
+    var onMenuCreateListener:(()->Unit)? =null
 
     companion object {
         fun newInstance(menu: Menu) =
@@ -93,7 +95,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                     stock = edtStockCreateMenu.text.toString(),
                     image = imageFile,
                     grabFoodPrice = edtPriceGrabfood.text.toString(),
-                    goFoodPrice =  edtPriceGofood.text.toString()
+                    goFoodPrice = edtPriceGofood.text.toString()
                 )
             }
 
@@ -113,7 +115,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
         menus = (parentFragment as MenusContainerFragment).selectedMenu
     }
 
-    private fun onObserve(){
+    private fun onObserve() {
         menuViewModel.categoriesLoad.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Load.Fail -> {
@@ -135,6 +137,25 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 }
             }
         })
+
+        materialViewModel.materiaMenulLoad.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    showToast("Berhasil menambahkan menu")
+                    clearForm(views = listOf(
+                        edtNameCreateMenu, edtPriceCreateMenu, edtPriceGofood, edtPriceGrabfood, edtMaterial, edtStockCreateMenu, edtCategoryMenuIdCreateMenu, edtDescriptionCreateMenu
+                    ))
+                    ImgCreateMenu.setImageResource(R.color.colorPrimary)
+                    imgIcon.visible()
+
+                    onMenuCreateListener?.invoke()
+                }
+            }
+        })
+
     }
 
     private fun setBackgroundEditText() {
@@ -174,7 +195,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
 
     private fun showMenuDetail() {
         menus?.apply {
-            if (!images.isNullOrEmpty()) {
+            if (images.isNotEmpty()) {
                 Glide.with(requireContext())
                     .load(images)
                     .into(ImgCreateMenu)
@@ -243,8 +264,8 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 datas = materials.map { it.toCategoryOption() },
                 menuCategoryListener = object : MenuCategoryListener {
                     override fun onCategoryClicked(data: Category) {
-//                        selectedMaterial = data
-//                        getSelectedCategory()
+                        selectedMaterial = data.toMaterial()
+                        getSelectedMaterial()
                         dismiss()
                     }
                 }
@@ -262,6 +283,10 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
         edtCategoryMenuIdCreateMenu.setText(selectedCategory?.name.orEmpty())
     }
 
+    fun getSelectedMaterial() {
+        edtMaterial.setText(selectedMaterial?.material.orEmpty())
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
@@ -274,15 +299,26 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                     .load(path)
                     .into(ImgCreateMenu)
             }
+
+            imgIcon.gone()
         }
 
         super.onActivityResult(requestCode, resultCode, data)
 
     }
 
+    override fun showLoading(isLoading: Boolean) {
+        pbCreateMenu.visibility = if(isLoading) View.VISIBLE else View.GONE
+    }
 
-    override fun showAlertSuccess(msg: String) {
-        showToast(msg)
+    override fun showAlertSuccess(msg: String, menu: Menu?) {
+        materialViewModel.postMaterialMenu(
+            MaterialMenu(
+                materialId = selectedMaterial?.id ?: 0,
+                menuId = menu?.id ?: 0,
+                stockRequired = edtStockCreateMenu.text.toString().trim().toInt()
+            )
+        )
     }
 
     override fun showAlertFailed(msg: String) {
@@ -293,6 +329,5 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
         menus = menu
         showMenuDetail()
     }
-
 
 }

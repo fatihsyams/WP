@@ -6,6 +6,7 @@ import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CheckMenusAdapter
+import com.example.wp.presentation.listener.CreateMenuListener
 import com.example.wp.presentation.listener.DeleteMenuListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
@@ -15,7 +16,7 @@ import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_check_menu.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
+class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
     private val checkMenuAdapter: CheckMenusAdapter by lazy {
@@ -36,6 +37,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
 
 
     override fun onPreparation() {
+        (parentFragment as MenusContainerFragment).onCreateMenuListener = this
     }
 
     override fun onIntent() {
@@ -62,7 +64,6 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
     }
 
     private fun showMenus(data: List<Menu>) {
-//        showCategories()
         checkMenuAdapter.addDataMenus(data)
         listMenu = data
         rvCheckMenus.apply {
@@ -72,7 +73,6 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
     }
 
     override fun onObserver() {
-        menuViewModel.getMenus()
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
                 is Load.Loading -> msvCheckMenu.showLoadingView()
@@ -99,6 +99,11 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        menuViewModel.getMenus()
+    }
+
     fun filter(query: String) {
         val result = listMenu.filter {
             it.name.contains(query, true).or(false)
@@ -116,6 +121,10 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener {
 
     interface OnCheckMenuClickListener {
         fun onCheckMenuClicked(menu: Menu)
+    }
+
+    override fun onMenuCreated() {
+        menuViewModel.getMenus()
     }
 
 }

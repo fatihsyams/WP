@@ -1,5 +1,6 @@
 package com.example.wp.data.api.model.response
 
+import com.example.wp.domain.menu.Menu
 import com.google.gson.annotations.SerializedName
 
 data class ResponseCreateMenu(
@@ -11,7 +12,7 @@ data class ResponseCreateMenu(
     val message: String? = null,
 
     @field:SerializedName("menu")
-    val menu: CreateMenuApi? = null,
+    val menu: MenuApi? = null,
 
     @field:SerializedName("status")
     val status: String? = null
@@ -20,7 +21,7 @@ data class ResponseCreateMenu(
 data class CreateMenuApi(
 
     @field:SerializedName("additional_information")
-    val additionalInformation: Any? = null,
+    val additionalInformation: String? = null,
 
     @field:SerializedName("image")
     val image: String? = null,
@@ -29,7 +30,7 @@ data class CreateMenuApi(
     val updatedAt: String? = null,
 
     @field:SerializedName("price")
-    val price: String? = null,
+    val price: Int? = null,
 
     @field:SerializedName("name")
     val name: String? = null,
@@ -48,4 +49,21 @@ data class CreateMenuApi(
 
     @field:SerializedName("stock")
     val stock: String? = null
-)
+){
+
+//    fun toMenu():Menu{
+//        return Menu(
+//            images = image.orEmpty(),
+//            additionalInformation = additionalInformation.orEmpty(),
+//            updatedAt = updatedAt.orEmpty(),
+//            price = price ?: 0,
+//            name = name.orEmpty(),
+//            description = description.orEmpty(),
+//            createdAt = createdAt.orEmpty(),
+//            id = id ?: 0,
+//            stock = stock ?: 0,
+//
+//        )
+//    }
+
+}

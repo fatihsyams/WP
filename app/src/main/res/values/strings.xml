@@ -69,4 +69,5 @@
     <string name="label_stock">Stok</string>
     <string name="action_create_stock">Buat Stok</string>
     <string name="hint_material">Bahan Menu</string>
+    <string name="hint_menu_total_bahan">Total bahan yang dibutuhkan</string>
 </resources>

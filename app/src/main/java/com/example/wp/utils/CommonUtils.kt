@@ -1,5 +1,9 @@
 package com.example.wp.utils
 
+import android.view.View
+import androidx.appcompat.widget.AppCompatEditText
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,4 +30,14 @@ fun changeFormatLongDate(date: Long, format: String): String {
     val date = Date(date)
     val df2 = SimpleDateFormat(format, Locale("in"))
     return df2.format(date)
+}
+
+fun clearForm(views:List<View>){
+    views.forEach { view->
+        when(view){
+            is AppCompatEditText -> {
+                view.setText(emptyString())
+            }
+        }
+    }
 }

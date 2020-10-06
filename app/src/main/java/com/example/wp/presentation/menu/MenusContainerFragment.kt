@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.TabAdapter
+import com.example.wp.presentation.listener.CreateMenuListener
 import com.example.wp.presentation.menu.createmenu.CreateMenuFragment
 import com.example.wp.presentation.listener.MenuListener
 import kotlinx.android.synthetic.main.fragment_menus_container.*
@@ -16,7 +17,7 @@ class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickLis
 
     var selectedMenu: Menu? = null
     var onMenuSelectListener: MenuListener? = null
-
+    var onCreateMenuListener:CreateMenuListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,14 +25,14 @@ class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickLis
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menus_container, container, false)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val createMenuFragment = CreateMenuFragment()
+        createMenuFragment.onMenuCreateListener = onMenuCreated()
+
         val checkMenuFragment =
             CheckMenuFragment()
         checkMenuFragment.onCheckMenuClickListener = this
@@ -42,6 +43,13 @@ class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickLis
             listOf("Tambah Menu", "Cek Menu"))
         tabs_main.setupWithViewPager(viewpager_main)
 
+    }
+
+    private fun onMenuCreated(): (() -> Unit)? {
+        return {
+            viewpager_main.currentItem = 1
+            onCreateMenuListener?.onMenuCreated()
+        }
     }
 
     override fun onCheckMenuClicked(menu: Menu) {

@@ -1,12 +1,14 @@
 package com.example.wp.presentation.menu.createmenu
 
 import android.content.Context
+import com.example.wp.domain.menu.Menu
 import java.io.File
 
 interface CreateMenuInterface {
     interface View {
-        fun showAlertSuccess(msg: String)
+        fun showAlertSuccess(msg: String, menu:Menu? = null)
         fun showAlertFailed(msg: String)
+        fun showLoading(isLoading:Boolean)
     }
 
     interface Presenter {

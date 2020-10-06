@@ -6,6 +6,7 @@ import com.example.wp.R
 import com.example.wp.domain.material.Material
 import com.example.wp.presentation.adapter.CheckStockAdapter
 import com.example.wp.presentation.listener.StockListener
+import com.example.wp.presentation.stock.StockContainerFragment
 import com.example.wp.presentation.viewmodel.MaterialViewModel
 import com.example.wp.utils.Load
 import com.example.wp.utils.showContentView
@@ -21,6 +22,7 @@ class CheckStockFragment : WarungPojokFragment(), StockListener {
     override val layoutView: Int = R.layout.fragment_check_stock
 
     override fun onPreparation() {
+        (parentFragment as StockContainerFragment).onStockListener = this
     }
 
     override fun onIntent() {
@@ -68,6 +70,10 @@ class CheckStockFragment : WarungPojokFragment(), StockListener {
             material = material,
             materialId = material.id
         )
+    }
+
+    override fun onStockCreated() {
+        getMaterials()
     }
 
 }

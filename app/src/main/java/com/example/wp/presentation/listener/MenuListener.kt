@@ -24,8 +24,13 @@ interface DeleteMenuListener{
 
 interface StockListener{
     fun onSaveStockClicked(material: Material)
+    fun onStockCreated()
 }
 
 interface MenuCategoryListener{
     fun onCategoryClicked(data:Category)
+}
+
+interface CreateMenuListener{
+    fun onMenuCreated()
 }

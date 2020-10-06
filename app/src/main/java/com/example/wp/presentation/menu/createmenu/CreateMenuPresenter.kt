@@ -2,8 +2,10 @@ package com.example.wp.presentation.menu.createmenu
 
 import android.content.Context
 import android.util.Log
+import com.example.wp.data.api.model.response.MenuApi
 import com.example.wp.data.api.model.response.ResponseCreateMenu
 import com.example.wp.data.api.model.response.ResponseUpdateData
+import com.example.wp.data.mapper.MenuMapper
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.utils.NetworkUtils.Companion.create
 import com.example.wp.utils.toRequestBody
@@ -37,6 +39,7 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
         sm?.let { sm ->
             val api = create(sm)
             if (sm.isUserLogin()) {
+                view?.showLoading(true)
                 api.createMenu(
                     name = name.toRequestBody(),
                     description = description.toRequestBody(),
@@ -53,6 +56,7 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
                 )
                     .enqueue(object : Callback<ResponseCreateMenu> {
                         override fun onFailure(call: Call<ResponseCreateMenu>, t: Throwable) {
+                            view?.showLoading(false)
                             view?.showAlertFailed(t.message.orEmpty())
                             Log.d("failmenu", t.message.orEmpty())
                         }
@@ -61,11 +65,12 @@ class CreateMenuPresenter(model: CreateMenuInterface.View) : CreateMenuInterface
                             call: Call<ResponseCreateMenu>,
                             response: Response<ResponseCreateMenu>
                         ) {
-
                             if (response.isSuccessful) {
+                                view?.showLoading(false)
                                 val responseBody = response.body()
-                                view?.showAlertSuccess(responseBody?.status.toString())
+                                view?.showAlertSuccess(responseBody?.status.toString(), MenuMapper.mapToMenu(responseBody?.menu ?: MenuApi()))
                             } else {
+                                view?.showLoading(false)
                                 view?.showAlertFailed("error ${response.message()}")
                             }
 
