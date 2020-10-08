@@ -22,6 +22,8 @@ object MenuMapper {
             additionalInformation = response.additionalInformation.orEmpty(),
             updatedAt = response.updatedAt.orEmpty(),
             price = response.price ?: 0,
+            goFoodPrice = response.goFoodPrice ?: 0,
+            grabFoodPrice = response.grabFoodPrice ?: 0,
             name = response.name.orEmpty(),
             description = response.description.orEmpty(),
             createdAt = response.createdAt.orEmpty(),

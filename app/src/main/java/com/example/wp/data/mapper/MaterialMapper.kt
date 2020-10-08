@@ -16,7 +16,13 @@ object MaterialMapper {
         return handleApiSuccess(data = response.material?.map { mapToMaterial(it) }.orEmpty())
     }
 
-    private fun mapToMaterial(response: MaterialApi): Material {
+    fun mapMaterial(
+        response: ResponseMaterial
+    ): Load<Material> {
+        return handleApiSuccess(data = mapToMaterial(response.material ?: MaterialApi()))
+    }
+
+    fun mapToMaterial(response: MaterialApi): Material {
         return Material(
             id = response.id ?: 0,
             material = response.material.orEmpty(),
@@ -41,7 +47,8 @@ object MaterialMapper {
         return MaterialMenu(
             materialId = response.materialId ?: 0,
             stockRequired = response.stockRequired ?: 0,
-            menuId = response.menuId ?: 0
+            menuId = response.menuId ?: 0,
+            material = mapToMaterial(response.material ?: MaterialApi())
         )
     }
 

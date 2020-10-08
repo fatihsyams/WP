@@ -49,13 +49,19 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     override fun onAction() {
         btnMinus.setOnClickListener {
-            if (selectedQuantity > 1) selectedQuantity--
-            setMenuQuantity()
+            menu?.let { menu ->
+                val realQuantity = selectedQuantity*menu.stockRequired
+                if (realQuantity > menu.stockRequired) {
+                    selectedQuantity--
+                }
+                setMenuQuantity()
+            }
         }
 
         btnPlus.setOnClickListener {
-            menu?.let {
-                if (selectedQuantity < it.stock) {
+            menu?.let { menu ->
+                val realQuantity = selectedQuantity * menu.stockRequired
+                if (realQuantity < menu.stock) {
                     selectedQuantity++
                     setMenuQuantity()
                 } else {

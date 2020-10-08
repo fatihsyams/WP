@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.CalculateMenuListener
+import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvNamaMenus
@@ -74,8 +75,10 @@ class MenusAdapter(
                 tvHargaMenus.text = "Rp ${item.price}"
                 tvNamaMenus.text = item.name
 
+                tvSoldOut.visibility = if(item.stock != 0) View.GONE else View.VISIBLE
+
                 setOnClickListener {
-                    onMenuClickListener?.invoke(item)
+                    if (item.stock != 0) onMenuClickListener?.invoke(item)
                 }
             }
         }
@@ -106,13 +109,19 @@ class MenusAdapter(
                 btnMinus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
 
                 btnMinus.setOnClickListener {
-                    if (item.quantity > 1) item.quantity--
+                    val realQuantity = item.quantity*item.stockRequired
+                    if (realQuantity > item.stockRequired) {
+                        item.quantity--
+                    }
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 
                 btnPlus.setOnClickListener {
-                    if (item.quantity < item.stock) item.quantity++
+                    val realQuantity = item.quantity*item.stockRequired
+                    if (realQuantity < item.stock) {
+                        item.quantity++
+                    }
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }

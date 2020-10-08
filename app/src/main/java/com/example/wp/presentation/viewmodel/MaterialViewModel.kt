@@ -16,6 +16,8 @@ class MaterialViewModel (private val repository: MaterialRepository): ViewModel(
     val materialLoad = _postMaterialLoad as LiveData<Load<Boolean>>
     private val _getMaterialLoad = MutableLiveData<Load<List<Material>>>()
     val getMaterialLoad = _getMaterialLoad as LiveData<Load<List<Material>>>
+    private val _viewMaterialLoad = MutableLiveData<Load<Material>>()
+    val viewMaterialLoad = _viewMaterialLoad as LiveData<Load<Material>>
     private val _editMaterialLoad = MutableLiveData<Load<Boolean>>()
     val editMaterialLoad = _editMaterialLoad as LiveData<Load<Boolean>>
     private val _postMaterialMenuLoad = MutableLiveData<Load<Boolean>>()
@@ -44,13 +46,19 @@ class MaterialViewModel (private val repository: MaterialRepository): ViewModel(
         _editMaterialLoad.value = material
     }
 
+    fun viewMaterial(materialId:Int) = viewModelScope.launch {
+        _viewMaterialLoad.value = Load.Loading
+        val material = repository.getMaterial(materialId)
+        _viewMaterialLoad.value = material
+    }
+
     fun postMaterialMenu(material:MaterialMenu) = viewModelScope.launch {
         _postMaterialMenuLoad.value = Load.Loading
         val material = repository.postMaterialMenu(material)
         _postMaterialMenuLoad.value = material
     }
 
-    fun getMaterialMemnus(menuId:Int) = viewModelScope.launch {
+    fun getMaterialMenus(menuId:Int) = viewModelScope.launch {
         _getMaterialMenuLoad.value = Load.Loading
         val material = repository.getMaterialMenus(menuId)
         _getMaterialMenuLoad.value = material

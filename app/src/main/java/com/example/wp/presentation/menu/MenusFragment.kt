@@ -1,5 +1,6 @@
 package com.example.wp.presentation.menu
 
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
+import com.example.wp.presentation.viewmodel.MaterialViewModel
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
 import com.example.wp.utils.showContentView
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
+    private val materialViewModel: MaterialViewModel by viewModel()
 
     var onMenuClickListener: OnMenuClickListener? = null
 
@@ -42,6 +45,9 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
     }
 
     private var listMenu = listOf<Menu>()
+    private var listUpdatedMenu = mutableListOf<Menu>()
+
+    private var lastMenu:Menu? =null
 
     override val layoutView: Int = R.layout.fragment_menus
 
@@ -79,8 +85,9 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
                 is Load.Success -> {
-                    msvMenu.showContentView()
-                    showMenus(it.data)
+                    listMenu = it.data
+                    listUpdatedMenu.clear()
+                    getMenuMaterials(listMenu)
                     if (it.data.isEmpty()) showToast("Tidak ada data")
                 }
             }
@@ -97,6 +104,35 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                 }
             }
         })
+
+        materialViewModel.getMaterialMenuLoad.observe(this, Observer { it ->
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    msvMenu.showContentView()
+                    val materials = it.data
+
+                    if(materials.isNotEmpty()){
+                        val menuId = materials.first().menuId
+                        val menu = listMenu.find { menu ->  menu.id ==   menuId}
+                        menu?.let { newMenu->
+                            newMenu.materialMenus = materials
+                            newMenu.stock = materials.map { materialMenu ->  materialMenu.material.stock }.sum()
+                            menu.stockRequired = materials.map { it.stockRequired }.sum()
+                            listUpdatedMenu.remove(newMenu)
+                            listUpdatedMenu.add(newMenu)
+                            Log.d("UPDATEDMENU", "$listUpdatedMenu")
+                        }
+                    }
+
+                    if (listUpdatedMenu.size == listMenu.size){
+                        showMenus(listUpdatedMenu)
+                    }
+                }
+            }
+        })
     }
 
     private fun showCategories(categories: List<Category>) {
@@ -108,9 +144,14 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
         }
     }
 
+    private fun getMenuMaterials(data: List<Menu>){
+        data.forEach {menu->
+            materialViewModel.getMaterialMenus(menu.id)
+        }
+    }
+
     private fun showMenus(data: List<Menu>) {
         menuAdapter.addDataMenus(data)
-        listMenu = data
         rvMenus.apply {
             adapter = menuAdapter
             layoutManager = GridLayoutManager(context, 3)

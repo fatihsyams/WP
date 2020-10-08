@@ -15,13 +15,16 @@ interface MaterialService {
     @GET("bahan")
     suspend fun getMaterials() : Response<ResponseMaterials>
 
+    @POST("bahan/{id}/edit")
+    suspend fun getMaterial(@Path("id") materialId:Int) : Response<ResponseMaterial>
+
     @POST("bahan/{id}")
     suspend fun editMaterial(@Path("id") materialId:Int, @Body requestMaterialApi: RequestMaterialApi) : Response<ResponseMaterial>
 
     @POST("bahan-menu")
     suspend fun postMaterialMenu(@Body requestMaterialMenuApi: RequestMaterialMenuApi) : Response<ResponseMaterialMenu>
 
-    @POST("bahan-menu")
+    @GET("bahan-menu")
     suspend fun getMaterialMenu(@Query("menu_id") menuId:Int) : Response<ResponseMaterialsMenu>
 
     @POST("bahan-menu/{id}")

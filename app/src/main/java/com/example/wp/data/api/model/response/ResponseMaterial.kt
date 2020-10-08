@@ -27,13 +27,13 @@ data class ResponseMaterials(
 
 data class MaterialApi(
     @SerializedName("created_at")
-    val createdAt: String?,
+    val createdAt: String? = null,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int? = null,
     @SerializedName("material")
-    val material: String?,
+    val material: String? = null,
     @SerializedName("stock")
-    val stock: Int?,
+    val stock: Int? = null,
     @SerializedName("updated_at")
-    val updatedAt: String?
+    val updatedAt: String? = null
 )

@@ -8,10 +8,7 @@ import com.example.wp.presentation.adapter.CheckStockAdapter
 import com.example.wp.presentation.listener.StockListener
 import com.example.wp.presentation.stock.StockContainerFragment
 import com.example.wp.presentation.viewmodel.MaterialViewModel
-import com.example.wp.utils.Load
-import com.example.wp.utils.showContentView
-import com.example.wp.utils.showLoadingView
-import com.example.wp.utils.showToast
+import com.example.wp.utils.*
 import kotlinx.android.synthetic.main.fragment_check_stock.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,6 +41,20 @@ class CheckStockFragment : WarungPojokFragment(), StockListener {
                 is Load.Success -> {
                     msvMaterial.showContentView()
                     showData(it.data)
+                }
+            }
+        })
+
+        materialViewModel.editMaterialLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Loading -> pbStock.visible()
+                is Load.Fail -> {
+                    pbStock.gone()
+                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                }
+                is Load.Success -> {
+                    pbStock.gone()
+                    showToast("Berhasil memperbarui stok")
                 }
             }
         })

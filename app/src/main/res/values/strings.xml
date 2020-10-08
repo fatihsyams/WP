@@ -1,21 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="app_name">WP</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sample_price">19.000</string>
-    <string name="sample_menu">Ikan Gurame</string>
-    <string name="format_table_number">No Meja : 10</string>
-    <string name="action_done">Selesai</string>
+    <string name="action_add">Tambah</string>
     <string name="action_cancel">Batal</string>
-    <string name="action_ok">ok</string>
-    <string name="label_information">Keterangan : </string>
+    <string name="action_create">Buat</string>
+    <string name="action_create_menu">Buat Menu</string>
+    <string name="action_create_stock">Buat Stok</string>
     <string name="action_dine_in">Dine In</string>
-    <string name="action_take_away">Take Away</string>
+    <string name="action_done">Selesai</string>
+    <string name="action_login">Masuk</string>
+    <string name="action_ok">ok</string>
     <string name="action_pre_order">Pre Order</string>
-    <string name="sample_category">Ikan</string>
-    <string name="label_select_table">Pilih Meja</string>
-    <string name="sample_table_number">1</string>
-    <string name="sample_month_year">September 2020</string>
+    <string name="action_print">Cetak</string>
+    <string name="action_save">Simpan</string>
+    <string name="action_select_table">Pilih Meja</string>
+    <string name="action_select_take_away">Pilih Jenis</string>
+    <string name="action_take_away">Take Away</string>
+
+    <string name="app_name">WP</string>
 
     <string name="dayFriday">Jum</string>
 
@@ -30,44 +31,50 @@
     <string name="dayTuesday">Sel</string>
 
     <string name="dayWednesday">Rab</string>
-    <string name="action_save">Simpan</string>
-    <string name="label_warung_pojok">Warung Pojok</string>
-    <string name="label_order">Pesanan</string>
-    <string name="label_input_menu">Input Menu</string>
-    <string name="label_check_stock">Cek Stok</string>
-    <string name="label_login">Login</string>
-    <string name="action_login">Masuk</string>
-    <string name="hint_write_your_customer">Tulis Nama Pelanggan</string>
-    <string name="label_customer_name">Nama Pelanggan</string>
-    <string name="label_table_order">Pesanan Meja</string>
-    <string name="action_select_table">Pilih Meja</string>
-    <string name="label_discount">Diskon (%)</string>
-    <string name="hint_optional">Opsional</string>
-    <string name="label_total_price">Total Harga</string>
-    <string name="action_add">Tambah</string>
-    <string name="action_print">Cetak</string>
-    <string name="label_take_away_type">Jenis Take Away</string>
-    <string name="action_select_take_away">Pilih Jenis</string>
-    <string name="label_date_takeaway">Tanggal Pengambilan</string>
-    <string name="label_date">Pilih Tanggal</string>
-    <string name="label_menu_Category">Kategori Menu</string>
-    <string name="hint_menu_name">Nama Menu</string>
-    <string name="hint_price">Harga</string>
-    <string name="hint_price_grabfood">Harga Grab Food</string>
-    <string name="hint_price_gofood">Harga Go Food</string>
-    <string name="action_create">Buat</string>
-    <string name="action_create_menu">Buat Menu</string>
-    <string name="hint_menu_stock">Stok Menu</string>
+
+    <string name="format_table_number">No Meja : 10</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="hint_description">Deskripsi</string>
+    <string name="hint_material">Bahan Menu</string>
+    <string name="hint_material_name">Nama Material</string>
+    <string name="hint_menu_name">Nama Menu</string>
+    <string name="hint_menu_stock">Stok Menu</string>
+    <string name="hint_menu_total_bahan">Total bahan yang dibutuhkan</string>
+    <string name="hint_optional">Opsional</string>
+    <string name="hint_price">Harga</string>
+    <string name="hint_price_gofood">Harga Go Food</string>
+    <string name="hint_price_grabfood">Harga Grab Food</string>
     <string name="hint_price_menu">Harga Menu</string>
-    <string name="label_total_stock">Jumlah Stok</string>
+    <string name="hint_write_your_customer">Tulis Nama Pelanggan</string>
+
     <string name="label_add_stock">Tambah Stok</string>
-    <string name="label_menu_list">Daftar Menu</string>
+    <string name="label_check_stock">Cek Stok</string>
+    <string name="label_customer_name">Nama Pelanggan</string>
+    <string name="label_date">Pilih Tanggal</string>
+    <string name="label_date_takeaway">Tanggal Pengambilan</string>
+    <string name="label_discount">Diskon (%)</string>
+    <string name="label_information">Keterangan : </string>
+    <string name="label_input_menu">Input Menu</string>
+    <string name="label_login">Login</string>
     <string name="label_manage_menu">Manajemen Menu</string>
     <string name="label_manage_stock">Manajemen Stok</string>
-    <string name="hint_material_name">Nama Material</string>
+    <string name="label_menu_Category">Kategori Menu</string>
+    <string name="label_menu_list">Daftar Menu</string>
+    <string name="label_order">Pesanan</string>
+    <string name="label_select_table">Pilih Meja</string>
     <string name="label_stock">Stok</string>
-    <string name="action_create_stock">Buat Stok</string>
-    <string name="hint_material">Bahan Menu</string>
-    <string name="hint_menu_total_bahan">Total bahan yang dibutuhkan</string>
+    <string name="label_table_order">Pesanan Meja</string>
+    <string name="label_take_away_type">Jenis Take Away</string>
+    <string name="label_total_price">Total Harga</string>
+    <string name="label_total_stock">Jumlah Stok</string>
+    <string name="label_warung_pojok">Warung Pojok</string>
+
+    <string name="sample_category">Ikan</string>
+    <string name="sample_menu">Ikan Gurame</string>
+    <string name="sample_month_year">September 2020</string>
+    <string name="sample_price">19.000</string>
+    <string name="sample_table_number">1</string>
 </resources>

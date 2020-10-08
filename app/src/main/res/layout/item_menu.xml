@@ -94,6 +94,21 @@
         app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSoldOut"
+        android:visibility="gone"
+        style="@style/WarungPojokTextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorBlackTransparent"
+        android:text="Habis"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/frameLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"

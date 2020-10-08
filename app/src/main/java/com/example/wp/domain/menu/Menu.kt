@@ -1,6 +1,7 @@
 package com.example.wp.domain.menu
 
 import android.os.Parcelable
+import com.example.wp.domain.material.MaterialMenu
 import com.example.wp.utils.emptyString
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -15,11 +16,14 @@ data class Menu(
     val description: String = emptyString(),
     val createdAt: String = emptyString(),
     val id: Int = 0,
-    val stock: Int = 0,
+    var stock: Int = 0,
     val category: String = emptyString(),
     var quantity: Int = 0,
     val goFoodPrice:Int = 0,
-    val grabFoodPrice:Int = 0
+    val grabFoodPrice:Int = 0,
+    var materialMenus:List<MaterialMenu> = listOf(),
+    var isAvailable:Boolean = stock != 0,
+    var stockRequired:Int = materialMenus.map { it.stockRequired }.sum()
 ) : Parcelable
 
 @Parcelize

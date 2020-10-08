@@ -9,11 +9,24 @@
     app:msv_loadingView="@layout/layout_loading"
     tools:context=".presentation.stock.checkstock.CheckStockFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCheckStok"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_checkstock" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCheckStok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_checkstock" />
+
+        <ProgressBar
+            android:id="@+id/pbStock"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
 </com.kennyc.view.MultiStateView>

@@ -9,6 +9,7 @@ import com.example.wp.utils.Load
 interface MaterialRepository{
     suspend fun postMaterial(material:Material): Load<Boolean>
     suspend fun getMaterials(): Load<List<Material>>
+    suspend fun getMaterial(materialId:Int): Load<Material>
     suspend fun editMaterial(materialId:Int, material:Material): Load<Boolean>
     suspend fun postMaterialMenu(materialMenu:MaterialMenu): Load<Boolean>
     suspend fun getMaterialMenus(menuId:Int): Load<List<MaterialMenu>>

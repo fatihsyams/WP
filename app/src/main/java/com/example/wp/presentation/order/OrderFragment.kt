@@ -342,7 +342,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
-        if (menu.quantity == menu.stock) showToast("Tidak bisa melebih stok")
+        if (menu.quantity * menu.stockRequired == menu.stock) showToast("Tidak bisa melebih stok")
         showTotalPrice()
     }
 

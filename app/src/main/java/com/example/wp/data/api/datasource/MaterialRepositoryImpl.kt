@@ -1,5 +1,6 @@
 package com.example.wp.data.api.datasource
 
+import com.example.wp.data.api.model.response.MaterialApi
 import com.example.wp.data.api.service.MaterialService
 import com.example.wp.data.mapper.MaterialMapper
 import com.example.wp.domain.material.Material
@@ -29,6 +30,21 @@ class MaterialRepositoryImpl(private val service: MaterialService) : MaterialRep
             if (response.isSuccessful) {
                 response.body()?.let { response ->
                     MaterialMapper.map(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun getMaterial(materialId:Int): Load<Material> {
+        return try {
+            val response = service.getMaterial(materialId)
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    MaterialMapper.mapMaterial(response)
                 } ?: Load.Fail(Throwable(response.message()))
             } else {
                 Load.Fail(Throwable(response.message()))
