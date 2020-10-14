@@ -1,7 +1,9 @@
 package com.example.wp.data.api.model.response
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ResponseMaterialMenu(
     @SerializedName("material_menu")
@@ -25,6 +27,7 @@ data class ResponseMaterialsMenu(
     val statusCode: String?
 )
 
+@Parcelize
 data class MaterialMenuApi(
     @SerializedName("created_at")
     val createdAt: String?,
@@ -42,4 +45,4 @@ data class MaterialMenuApi(
     val menu: MenuApi?,
     @SerializedName("material")
     val material: MaterialApi?
-)
+) : Parcelable

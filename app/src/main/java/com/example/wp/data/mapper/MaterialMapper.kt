@@ -43,7 +43,7 @@ object MaterialMapper {
         return handleApiSuccess(data = response.materialMenu?.map { mapToMaterialMenu(it) }.orEmpty())
     }
 
-    private fun mapToMaterialMenu(response: MaterialMenuApi): MaterialMenu {
+    fun mapToMaterialMenu(response: MaterialMenuApi): MaterialMenu {
         return MaterialMenu(
             materialId = response.materialId ?: 0,
             stockRequired = response.stockRequired ?: 0,

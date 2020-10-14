@@ -28,9 +28,11 @@ object MenuMapper {
             description = response.description.orEmpty(),
             createdAt = response.createdAt.orEmpty(),
             id = response.id ?: 0,
-            stock = response.stock ?: 0,
+            stock =  response.materialMenus?.map { materialMenu ->  materialMenu.material?.stock ?: 0 }?.sum() ?: 0,
             category = response.category.orEmpty(),
-            quantity = response.quantity ?: 0
+            quantity = response.quantity ?: 0,
+            materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }.orEmpty(),
+            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0
         )
     }
 

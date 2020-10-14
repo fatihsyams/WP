@@ -85,9 +85,10 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
                 is Load.Success -> {
+                    msvMenu.showContentView()
                     listMenu = it.data
                     listUpdatedMenu.clear()
-                    getMenuMaterials(listMenu)
+                    showMenus(listMenu)
                     if (it.data.isEmpty()) showToast("Tidak ada data")
                 }
             }
@@ -111,7 +112,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
                 is Load.Success -> {
-                    msvMenu.showContentView()
                     val materials = it.data
 
                     if(materials.isNotEmpty()){
