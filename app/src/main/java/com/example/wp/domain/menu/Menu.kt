@@ -11,7 +11,7 @@ data class Menu(
     val images: String = emptyString(),
     var additionalInformation: String = emptyString(),
     val updatedAt: String = emptyString(),
-    val price: Int = 0,
+    var price: Double = 0.0,
     val name: String = emptyString(),
     val description: String = emptyString(),
     val createdAt: String = emptyString(),
@@ -19,11 +19,12 @@ data class Menu(
     var stock: Int = 0,
     val category: String = emptyString(),
     var quantity: Int = 0,
-    val goFoodPrice:Int = 0,
-    val grabFoodPrice:Int = 0,
+    var goFoodPrice:Double = 0.0,
+    var grabFoodPrice:Double = 0.0,
     var materialMenus:List<MaterialMenu> = listOf(),
     var isAvailable:Boolean = stock != 0,
-    var stockRequired:Int = materialMenus.map { it.stockRequired }.sum()
+    var stockRequired:Int = materialMenus.map { it.stockRequired }.sum(),
+    val totalPrice:Double = price*quantity
 ) : Parcelable
 
 @Parcelize

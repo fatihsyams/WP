@@ -32,7 +32,7 @@ object OrderMapper {
             information = response.information.orEmpty(),
             orderCategory = response.orderCategory.orEmpty(),
             tableId = response.tableId.orEmpty(),
-            totalPayment = response.totalPayment ?: 0
+            totalPayment = response.totalPayment ?: 0.0
         )
     }
 

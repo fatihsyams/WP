@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.CalculateMenuListener
+import com.example.wp.utils.toCurrencyFormat
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
@@ -72,13 +73,13 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text = "Rp ${item.price}"
+                tvHargaMenus.text = "Rp ${toCurrencyFormat(item.price)}"
                 tvNamaMenus.text = item.name
 
-                tvSoldOut.visibility = if(item.stock != 0) View.GONE else View.VISIBLE
+                tvSoldOut.visibility = if(item.stock > item.stockRequired) View.GONE else View.VISIBLE
 
                 setOnClickListener {
-                    if (item.stock != 0) onMenuClickListener?.invoke(item)
+                    if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
                 }
             }
         }
@@ -92,10 +93,10 @@ class MenusAdapter(
                 }
 
                 val price = when (type) {
-                    ORDER_READ_TYPE -> item.price.toString()
-                    ORDER_READ_GO_FOOD_TYPE -> item.goFoodPrice.toString()
-                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice.toString()
-                    else -> item.price.toString()
+                    ORDER_READ_TYPE -> toCurrencyFormat(item.price)
+                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice)
+                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice)
+                    else -> toCurrencyFormat(item.price)
                 }
 
                 tvHargaMenus.text = "Rp $price"
@@ -112,6 +113,9 @@ class MenusAdapter(
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity > item.stockRequired) {
                         item.quantity--
+                        item.price = item.price*item.quantity
+                        item.goFoodPrice = item.goFoodPrice*item.quantity
+                        item.grabFoodPrice = item.grabFoodPrice*item.quantity
                     }
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
@@ -121,6 +125,9 @@ class MenusAdapter(
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity < item.stock) {
                         item.quantity++
+                        item.price = item.price*item.quantity
+                        item.goFoodPrice = item.goFoodPrice*item.quantity
+                        item.grabFoodPrice = item.grabFoodPrice*item.quantity
                     }
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)

@@ -35,7 +35,7 @@ data class MenuApi(
     val updatedAt: String? = null,
 
     @SerializedName("price")
-    val price: Int? = null,
+    val price: Double? = null,
 
     @SerializedName("name")
     val name: String? = null,
@@ -59,10 +59,10 @@ data class MenuApi(
     var quantity: Int? = null,
 
     @SerializedName("price_gofood")
-    val goFoodPrice: Int? = null,
+    val goFoodPrice: Double? = null,
 
     @SerializedName("price_grabfood")
-    val grabFoodPrice: Int? = null,
+    val grabFoodPrice: Double? = null,
 
     @SerializedName("material_menus")
     val materialMenus: List<MaterialMenuApi>? = null

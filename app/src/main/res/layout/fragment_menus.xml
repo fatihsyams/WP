@@ -15,6 +15,7 @@
         android:background="@drawable/bg_rectangle_white_border_grey_radius_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="false"
         app:iconifiedByDefault="false"/>
 
     <com.kennyc.view.MultiStateView

@@ -2,8 +2,8 @@ package com.example.wp.utils
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,4 +40,9 @@ fun clearForm(views:List<View>){
             }
         }
     }
+}
+
+fun toCurrencyFormat(number:Double):String{
+    val formatter: NumberFormat = DecimalFormat("#,###")
+    return formatter.format(number)
 }

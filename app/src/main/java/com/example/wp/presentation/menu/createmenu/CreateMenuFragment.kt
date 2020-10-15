@@ -199,6 +199,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 Glide.with(requireContext())
                     .load(images)
                     .into(ImgCreateMenu)
+                imgIcon.gone()
             }
 
             edtNameCreateMenu.setText(name)
@@ -206,6 +207,8 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
             edtPriceCreateMenu.setText(price.toString())
             edtStockCreateMenu.setText(stock.toString())
             edtCategoryMenuIdCreateMenu.setText(category)
+            edtPriceGofood.setText(goFoodPrice.toString())
+            edtPriceGrabfood.setText(grabFoodPrice.toString())
             btnCreateMenu.text = "Update"
 
             btnCreateMenu.setOnClickListener {

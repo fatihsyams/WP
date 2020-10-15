@@ -30,7 +30,7 @@ data class OrderApi(
     @SerializedName("table_id")
     val tableId: String? = null,
     @SerializedName("total_payment")
-    val totalPayment: Int? = null,
+    val totalPayment: Double? = null,
     @SerializedName("updated_at")
     val updatedAt: String? = null
 )

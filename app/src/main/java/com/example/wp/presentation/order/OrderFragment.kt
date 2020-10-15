@@ -1,5 +1,8 @@
 package com.example.wp.presentation.order
 
+import android.app.AlertDialog
+import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.view.menu.MenuAdapter
@@ -8,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.base.WarungPojokPrinterFragment
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
 import com.example.wp.domain.order.Order
@@ -33,10 +37,13 @@ import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
+class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     companion object {
         const val EDIT_MODE = 304
@@ -55,7 +62,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private val orderViewModel: OrderViewModel by viewModel()
     private val tableViewModel: TableViewModel by viewModel()
 
-    private  val menuAdapter:MenusAdapter by lazy {
+    private val menuAdapter: MenusAdapter by lazy {
         MenusAdapter(
             context = requireContext(),
             data = menus.distinct(),
@@ -77,10 +84,17 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private var orderMode = EDIT_MODE
 
     private var discount = 0
+    private var totalPayment = 0.0
+    private var totalPaymentBeforeDiscount = 0.0
+
+    override var order: OrderResult = OrderResult()
+
+    private val progressDialog: ProgressDialog by lazy { ProgressDialog(requireContext()) }
 
     override val layoutView: Int = R.layout.fragment_order
 
     override fun onPreparation() {
+        progressDialog.setCancelable(false)
     }
 
     override fun onIntent() {
@@ -177,16 +191,16 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onObserver() {
         orderViewModel.orderLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
-                is Load.Loading -> pbOrder.visible()
+                is Load.Loading -> progressDialog.show()
                 is Load.Fail -> {
-                    pbOrder.gone()
+                    progressDialog.dismiss()
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
                 is Load.Success -> {
-                    pbOrder.visible()
-                    showToast("Berhasil Submit Order")
-                    (activity as MainActivity).clearSelectedMenus()
-                    removeFragment()
+                    order = getOrderResult()
+                    printBluetooth{
+                        showPrintAlert()
+                    }
                 }
             }
         })
@@ -202,6 +216,29 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
         })
 
+    }
+
+    private fun showPrintAlert(){
+        progressDialog.dismiss()
+        AlertDialog.Builder(requireContext())
+            .setTitle("Selesai Print")
+            .setMessage("Print lagi ?")
+            .setPositiveButton("Ya") { _, _ ->
+                progressDialog.show()
+                printBluetooth {
+                    onPrintFinish()
+                }
+
+            }
+            .setNegativeButton("Tidak"
+            ) { _, _ -> onPrintFinish() }
+            .show()
+    }
+
+    private fun onPrintFinish() {
+        if (progressDialog.isShowing) progressDialog.dismiss()
+        (activity as MainActivity).clearSelectedMenus()
+        removeFragment()
     }
 
     private fun isOrderValid(): Boolean {
@@ -239,23 +276,26 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     else -> "take away"
                 },
                 tableId = if (selectedOrderType == OrderTypeEnum.DINE_IN.type) btnTableNumber.text.toString() else null,
-                discount = discount
+                discount = discount,
+                totalPayment = totalPayment,
+                totalPaymentBeforeDiscount = totalPaymentBeforeDiscount
             ),
             menu = menus
         )
     }
 
-    private fun showTotalPrice(orderType:String = "dine in") {
-        val totalPrice = menus.map {
-            when(orderType){
-                "dine in" ->  it.price.times(it.quantity)
-                "gofood" ->  it.goFoodPrice.times(it.quantity)
-                "grabfood" ->  it.grabFoodPrice.times(it.quantity)
-                else -> it.price.times(it.quantity)
+    private fun showTotalPrice(orderType: String = "dine in") {
+        totalPaymentBeforeDiscount = menus.map {
+            when (orderType) {
+                "dine in" -> it.price
+                "gofood" -> it.goFoodPrice
+                "grabfood" -> it.grabFoodPrice
+                else -> it.price
             }
         }.sum()
-        val totalDiscount = totalPrice.times(discount) / 100
-        tvTotalPrice.text = "Rp ${totalPrice - totalDiscount}"
+        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
+        totalPayment = totalPaymentBeforeDiscount - totalDiscount
+        tvTotalPrice.text = "Rp ${toCurrencyFormat(totalPayment)}"
     }
 
     private fun showMenus(orderType: Int) {
@@ -363,7 +403,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             "grabfood" -> {
                 menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
             }
-            else ->  menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
+            else -> menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
         }
         showTotalPrice(selectedTakeAway?.name.orEmpty())
     }
