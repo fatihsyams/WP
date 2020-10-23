@@ -238,11 +238,16 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
             btnPositive.setOnClickListener {
                 dismiss()
-                printBluetooth {
-                    showPrintAlert()
-                }
-            }
+                progressDialog.show()
 
+                val handler = Handler()
+                val delayTime = 10000L
+                handler.postDelayed({
+                    printBluetooth {
+                        showPrintAlert()
+                    }
+                }, delayTime)
+            }
         }
     }
 

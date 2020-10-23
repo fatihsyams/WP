@@ -64,7 +64,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     ==============================================================================================*/
     open fun  printIt(printerConnection: DeviceConnection?, onPrintFinished:(()->Unit)? = null) {
         try {
-            val format = SimpleDateFormat("'on' dd-MM-yyyy 'at' HH:mm:ss")
+            val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss")
             val printer = EscPosPrinter(printerConnection, 203, 48f, 32)
             printer
                 .printFormattedText(
@@ -99,7 +99,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 )
 
             val handler = Handler()
-            val delayTime = order.menu.size * 100L
+            val delayTime = order.menu.size * 3000L
             handler.postDelayed({
                 onPrintFinished?.invoke()
             }, delayTime)
