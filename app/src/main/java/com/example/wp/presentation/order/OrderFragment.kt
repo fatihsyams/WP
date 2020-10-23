@@ -37,6 +37,8 @@ import com.example.wp.utils.datePicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
+import kotlinx.android.synthetic.main.layout_alert_option.tvTitle
+import kotlinx.android.synthetic.main.layout_print_dialog.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -220,19 +222,28 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     private fun showPrintAlert(){
         progressDialog.dismiss()
-        AlertDialog.Builder(requireContext())
-            .setTitle("Selesai Print")
-            .setMessage("Print lagi ?")
-            .setPositiveButton("Ya") { _, _ ->
-                progressDialog.show()
-                printBluetooth {
-                    onPrintFinish()
-                }
+        generateCustomAlertDialog(
+            context = requireContext(),
+            layoutRes = R.layout.layout_print_dialog,
+            isCancelable = false
+        ).apply {
 
+            tvTitle.text = "Selesai Mencetak Struk"
+            tvMessage.text = "Apakah anda ingin mencetak struk ini lagi?"
+
+            btnNegative.setOnClickListener {
+                dismiss()
+                onPrintFinish()
             }
-            .setNegativeButton("Tidak"
-            ) { _, _ -> onPrintFinish() }
-            .show()
+
+            btnPositive.setOnClickListener {
+                dismiss()
+                printBluetooth {
+                    showPrintAlert()
+                }
+            }
+
+        }
     }
 
     private fun onPrintFinish() {

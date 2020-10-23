@@ -56,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="text"
                     android:hint="@string/hint_menu_name" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -76,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="text"
                     android:hint="@string/hint_description" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -96,6 +98,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
                     android:hint="@string/hint_price_menu" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -118,6 +122,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
                     android:hint="@string/hint_price_gofood" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -140,6 +146,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
                     android:hint="@string/hint_price_grabfood" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -163,6 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
                     android:hint="@string/hint_menu_total_bahan" />
 
             </com.google.android.material.textfield.TextInputLayout>

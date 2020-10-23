@@ -46,7 +46,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
     private val menuViewModel: MenuViewModel by viewModel()
     private val materialViewModel: MaterialViewModel by viewModel()
 
-    var onMenuCreateListener:(()->Unit)? =null
+    var onMenuCreateListener: (() -> Unit)? = null
 
     companion object {
         fun newInstance(menu: Menu) =
@@ -86,19 +86,34 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
         context?.let { presenter.instencePrefence(it) }
 
         btnCreateMenu.setOnClickListener {
-            selectedImageFile?.let { imageFile ->
-                presenter.logicInputMenus(
-                    name = edtNameCreateMenu.text.toString(),
-                    description = edtDescriptionCreateMenu.text.toString(),
-                    price = edtPriceCreateMenu.text.toString(),
-                    category = selectedCategory?.id.toString(),
-                    stock = edtStockCreateMenu.text.toString(),
-                    image = imageFile,
-                    grabFoodPrice = edtPriceGrabfood.text.toString(),
-                    goFoodPrice = edtPriceGofood.text.toString()
+            if (isFormComplete(
+                    views = listOf(
+                        tilName,
+                        tilDescription,
+                        tilPrice,
+                        tilPriceGofood,
+                        tilPriceGrabfood,
+                        tilStock,
+                        tilCategoryId,
+                        tilMaterial
+                    )
                 )
+            ) {
+                selectedImageFile?.let { imageFile ->
+                    presenter.logicInputMenus(
+                        name = edtNameCreateMenu.text.toString(),
+                        description = edtDescriptionCreateMenu.text.toString(),
+                        price = edtPriceCreateMenu.text.toString(),
+                        category = selectedCategory?.id.toString(),
+                        stock = edtStockCreateMenu.text.toString(),
+                        image = imageFile,
+                        grabFoodPrice = edtPriceGrabfood.text.toString(),
+                        goFoodPrice = edtPriceGofood.text.toString()
+                    )
+                }
+            }else{
+                showToast("Mohon lengkapi data terlebih dahulu")
             }
-
         }
 
         edtCategoryMenuIdCreateMenu.setOnClickListener {
@@ -145,9 +160,18 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 }
                 is Load.Success -> {
                     showToast("Berhasil menambahkan menu")
-                    clearForm(views = listOf(
-                        edtNameCreateMenu, edtPriceCreateMenu, edtPriceGofood, edtPriceGrabfood, edtMaterial, edtStockCreateMenu, edtCategoryMenuIdCreateMenu, edtDescriptionCreateMenu
-                    ))
+                    clearForm(
+                        views = listOf(
+                            edtNameCreateMenu,
+                            edtPriceCreateMenu,
+                            edtPriceGofood,
+                            edtPriceGrabfood,
+                            edtMaterial,
+                            edtStockCreateMenu,
+                            edtCategoryMenuIdCreateMenu,
+                            edtDescriptionCreateMenu
+                        )
+                    )
                     ImgCreateMenu.setImageResource(R.color.colorPrimary)
                     imgIcon.visible()
 
@@ -212,16 +236,30 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
             btnCreateMenu.text = "Update"
 
             btnCreateMenu.setOnClickListener {
-                selectedImageFile?.let { imageFile ->
-                    presenter.updateMenus(
-                        id,
-                        name = edtNameCreateMenu.text.toString(),
-                        description = edtDescriptionCreateMenu.text.toString(),
-                        price = edtPriceCreateMenu.text.toString(),
-                        category = selectedCategory?.id.toString(),
-                        stock = edtStockCreateMenu.text.toString(),
-                        image = imageFile
+                if (isFormComplete(
+                        views = listOf(
+                            tilName,
+                            tilDescription,
+                            tilPrice,
+                            tilPriceGofood,
+                            tilPriceGrabfood,
+                            tilStock,
+                            tilCategoryId,
+                            tilMaterial
+                        )
                     )
+                ){
+                    selectedImageFile?.let { imageFile ->
+                        presenter.updateMenus(
+                            id,
+                            name = edtNameCreateMenu.text.toString(),
+                            description = edtDescriptionCreateMenu.text.toString(),
+                            price = edtPriceCreateMenu.text.toString(),
+                            category = selectedCategory?.id.toString(),
+                            stock = edtStockCreateMenu.text.toString(),
+                            image = imageFile
+                        )
+                    }
                 }
             }
         }
@@ -311,7 +349,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
     }
 
     override fun showLoading(isLoading: Boolean) {
-        pbCreateMenu.visibility = if(isLoading) View.VISIBLE else View.GONE
+        pbCreateMenu.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun showAlertSuccess(msg: String, menu: Menu?) {
