@@ -10,6 +10,7 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.CalculateMenuListener
 import com.example.wp.presentation.listener.DeleteMenuListener
+import com.example.wp.utils.toCurrencyFormat
 import kotlinx.android.synthetic.main.item_menu.view.*
 
 class CheckMenusAdapter(
@@ -45,10 +46,10 @@ class CheckMenusAdapter(
                 }
                 floatingActionButton.setImageResource(R.drawable.ic_baseline_restore_from_trash_24)
 
-                    if (!item.images.isNullOrEmpty()) {
+                if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text = item.price.toString()
+                tvHargaMenus.text = "Rp ${toCurrencyFormat(item.price)}"
                 tvNamaMenus.text = item.name
 
                 setOnClickListener {
