@@ -73,7 +73,7 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text = "Rp ${toCurrencyFormat(item.price)}"
+                tvHargaMenus.text =toCurrencyFormat(item.price)
                 tvNamaMenus.text = item.name
 
                 tvSoldOut.visibility = if(item.stock > item.stockRequired) View.GONE else View.VISIBLE
@@ -92,30 +92,27 @@ class MenusAdapter(
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
 
-                val price = when (type) {
-                    ORDER_READ_TYPE -> toCurrencyFormat(item.price)
-                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice)
-                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice)
-                    else -> toCurrencyFormat(item.price)
+                tvHargaMenus.text = when (type) {
+                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price*item.quantity)
+                    ORDER_READ_GO_FOOD_TYPE ->  toCurrencyFormat(item.goFoodPrice*item.quantity)
+                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice*item.quantity)
+                    else ->  toCurrencyFormat(item.price*item.quantity)
                 }
-
-                tvHargaMenus.text = "Rp $price"
 
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation
                 tvQuantity.text = item.quantity.toString()
 
-                btnDelete.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
-                btnPlus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
-                btnMinus.visibility = if (type == ORDER_EDIT_TYPE) View.VISIBLE else View.GONE
-
                 btnMinus.setOnClickListener {
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity > item.stockRequired) {
                         item.quantity--
-                        item.price = item.price*item.quantity
-                        item.goFoodPrice = item.goFoodPrice*item.quantity
-                        item.grabFoodPrice = item.grabFoodPrice*item.quantity
+                        item.totalPrice =  when (type) {
+                            ORDER_EDIT_TYPE -> item.price*item.quantity
+                            ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
+                            ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
+                            else ->  item.price*item.quantity
+                        }
                     }
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
@@ -125,9 +122,12 @@ class MenusAdapter(
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity < item.stock) {
                         item.quantity++
-                        item.price = item.price*item.quantity
-                        item.goFoodPrice = item.goFoodPrice*item.quantity
-                        item.grabFoodPrice = item.grabFoodPrice*item.quantity
+                        item.totalPrice =  when (type) {
+                            ORDER_EDIT_TYPE -> item.price*item.quantity
+                            ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
+                            ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
+                            else ->  item.price*item.quantity
+                        }
                     }
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)

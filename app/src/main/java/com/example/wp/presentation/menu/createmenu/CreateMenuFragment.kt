@@ -112,7 +112,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                     )
                 }
             }else{
-                showToast("Mohon lengkapi data terlebih dahulu")
+                showToast(getString(R.string.message_complete_form_first))
             }
         }
 
@@ -285,6 +285,9 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                 }
             )
 
+
+            tvTitle.text = getString(R.string.title_select_category)
+
             rvOption.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
                 adapter = categoryAdapter
@@ -311,6 +314,9 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
                     }
                 }
             )
+
+
+            tvTitle.text = getString(R.string.title_select_material)
 
             rvOption.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)

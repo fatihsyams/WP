@@ -45,7 +45,7 @@ fun clearForm(views:List<View>){
 
 fun toCurrencyFormat(number:Double):String{
     val formatter: NumberFormat = DecimalFormat("#,###")
-    return formatter.format(number)
+    return "Rp ${formatter.format(number)}"
 }
 
 fun isFormComplete(views: List<TextInputLayout>): Boolean {

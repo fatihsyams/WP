@@ -33,8 +33,8 @@ fun Fragment.loadFragment(layoutResourceId:Int, fragment: Fragment, isBackStack:
         .commit()
 }
 
-fun Fragment.showToast(message:String){
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+fun Fragment.showToast(message:String?){
+    Toast.makeText(context, message ?:  "Error tidak diketahui", Toast.LENGTH_LONG).show()
 }
 
 fun Fragment.removeFragment(){

@@ -49,7 +49,7 @@ class CheckMenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text = "Rp ${toCurrencyFormat(item.price)}"
+                tvHargaMenus.text = toCurrencyFormat(item.price)
                 tvNamaMenus.text = item.name
 
                 setOnClickListener {

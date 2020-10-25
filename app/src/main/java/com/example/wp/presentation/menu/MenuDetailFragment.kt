@@ -7,11 +7,8 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.main.MainActivity
+import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants.KEY_MENU
-import com.example.wp.utils.generateCustomAlertDialog
-import com.example.wp.utils.gone
-import com.example.wp.utils.removeFragment
-import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
 import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
@@ -77,7 +74,7 @@ class MenuDetailFragment : WarungPojokFragment() {
     private fun setMenuQuantity() {
         tvQuantity.text = selectedQuantity.toString()
         val totalPrice = menu?.price?.times(selectedQuantity)
-        tvPrice.text = "Rp $totalPrice"
+        tvPrice.text = toCurrencyFormat(totalPrice ?: 0.0)
     }
 
     override fun onObserver() {
@@ -90,7 +87,7 @@ class MenuDetailFragment : WarungPojokFragment() {
             }
             tvName.text = name
             tvDescription.text = description
-            tvPrice.text = "Rp $price"
+            tvPrice.text = toCurrencyFormat(price)
         }
     }
 
@@ -104,12 +101,13 @@ class MenuDetailFragment : WarungPojokFragment() {
 
                 menu?.apply {
                     tvNamaMenu.text = name
-                    tvPrice.text = "Rp $price"
+                    tvPrice.text = toCurrencyFormat(price)
 
                     btnCancel.setOnClickListener { dismiss() }
 
                     btnDone.setOnClickListener {
                         this.quantity = selectedQuantity
+                        totalPrice = price * selectedQuantity
                         additionalInformation = edtNote.text.toString()
                         onMenuSelectListener?.onSelectMenu(this)
                         dismiss()

@@ -1,19 +1,16 @@
 package com.example.wp.presentation.order
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.view.menu.MenuAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.base.WarungPojokPrinterFragment
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
+import com.example.wp.domain.menu.getTakeAwayTypes
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.domain.table.Table
@@ -34,14 +31,13 @@ import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
 import com.example.wp.utils.datePicker.DialogDatePicker
+import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
+import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import kotlinx.android.synthetic.main.layout_alert_option.tvTitle
 import kotlinx.android.synthetic.main.layout_print_dialog.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -109,7 +105,10 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
         showTotalPrice()
-        setupOrderView()
+        orderTypeContainer.visible()
+        btnAdd.visible()
+        btnPrint.text = "Submit"
+        showMenus(ORDER_EDIT_TYPE)
     }
 
     private fun setupOrderView() {
@@ -159,7 +158,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 OrderTypeEnum.TAKE_AWAY.type -> takeAwayContainer.invisible()
                 OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
             }
-            selectedOrderType = 0
+            selectedOrderType = ORDER_EDIT_TYPE
+            menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
         }
 
         btnTableNumber.setOnClickListener { tableViewModel.getTables() }
@@ -196,7 +196,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 is Load.Loading -> progressDialog.show()
                 is Load.Fail -> {
                     progressDialog.dismiss()
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     order = getOrderResult()
@@ -210,7 +210,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         tableViewModel.tablesLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
                 is Load.Fail -> {
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     showTableOptions(it.data)
@@ -228,8 +228,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
             isCancelable = false
         ).apply {
 
-            tvTitle.text = "Selesai Mencetak Struk"
-            tvMessage.text = "Apakah anda ingin mencetak struk ini lagi?"
+            tvTitle.text = getString(R.string.title_receipt_printed)
+            tvMessage.text = getString(R.string.message_receipt_printed)
 
             btnNegative.setOnClickListener {
                 dismiss()
@@ -241,7 +241,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 progressDialog.show()
 
                 val handler = Handler()
-                val delayTime = 10000L
+                val delayTime = 5000L
                 handler.postDelayed({
                     printBluetooth {
                         showPrintAlert()
@@ -261,16 +261,16 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         var valid = true
         if (selectedOrderType == 0) {
             valid = false
-            showToast("Pilih Tipe Pesanan Terlebih Dahulu")
+            showToast(getString(R.string.message_select_order_type_first))
         } else if (selectedOrderType == OrderTypeEnum.DINE_IN.type && selectedTable == null) {
             valid = false
-            showToast("Pilih Nomer Meja Terlebih Dahulu")
+            showToast(getString(R.string.message_select_table_first))
         } else if (selectedOrderType == OrderTypeEnum.TAKE_AWAY.type && selectedTakeAway == null) {
             valid = false
-            showToast("Pilih Jenis Take Away Terlebih Dahulu")
+            showToast(getString(R.string.message_select_take_away_type_first))
         } else if (selectedOrderType == OrderTypeEnum.PRE_ORDER.type && edtPickupOrder.text.isNullOrEmpty()) {
             valid = false
-            showToast("Pilih Tanggal Pengambilan Pesanan Terlebih Dahulu")
+            showToast(getString(R.string.message_select_delivery_time_first))
         }
         return valid
     }
@@ -284,12 +284,12 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                         btnTakeAwayType.text.toString()
                     }
                     OrderTypeEnum.DINE_IN.type -> {
-                        "dine in"
+                        OrderNameTypeEnum.DINE_IN.type
                     }
                     OrderTypeEnum.PRE_ORDER.type -> {
-                        "po"
+                        OrderNameTypeEnum.PRE_ORDER.type
                     }
-                    else -> "take away"
+                    else -> OrderNameTypeEnum.TAKE_AWAY.type
                 },
                 tableId = if (selectedOrderType == OrderTypeEnum.DINE_IN.type) btnTableNumber.text.toString() else null,
                 discount = discount,
@@ -300,18 +300,18 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         )
     }
 
-    private fun showTotalPrice(orderType: String = "dine in") {
+    private fun showTotalPrice(orderType: String = OrderNameTypeEnum.DINE_IN.type) {
         totalPaymentBeforeDiscount = menus.map {
             when (orderType) {
-                "dine in" -> it.price
-                "gofood" -> it.goFoodPrice
-                "grabfood" -> it.grabFoodPrice
-                else -> it.price
+                OrderNameTypeEnum.DINE_IN.type -> it.price * it.quantity
+                OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> it.goFoodPrice* it.quantity
+                OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> it.grabFoodPrice* it.quantity
+                else -> it.totalPrice
             }
         }.sum()
         val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
         totalPayment = totalPaymentBeforeDiscount - totalDiscount
-        tvTotalPrice.text = "Rp ${toCurrencyFormat(totalPayment)}"
+        tvTotalPrice.text = toCurrencyFormat(totalPayment)
     }
 
     private fun showMenus(orderType: Int) {
@@ -350,21 +350,6 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     }
 
     private fun showTakeAwayOptions() {
-        val takeAways = mutableListOf(
-            TakeAway(
-                "gofood",
-                "https://cdn2.tstatic.net/jakarta/foto/bank/images/logo-gojek-baru.jpg"
-            ),
-            TakeAway(
-                "grabfood ",
-                "https://media.suara.com/pictures/970x544/2016/08/22/o_1aqpc505a7vr17au5e0s3ifgka.jpg"
-            ),
-            TakeAway(
-                "Personal",
-                "https://icon-library.com/images/personal-icon/personal-icon-6.jpg"
-            )
-        )
-
         generateCustomBottomSheetDialog(
             context = requireContext(),
             layoutRes = R.layout.layout_alert_option,
@@ -374,7 +359,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
             val takeAwayAdapter = TakeAwayAdapter(
                 context = requireContext(),
-                datas = takeAways,
+                datas = getTakeAwayTypes(),
                 listener = object : TakeAwayListener {
                     override fun onTakeAwaySelected(data: TakeAway) {
                         selectedTakeAway = data
@@ -383,6 +368,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                     }
                 }
             )
+
+            tvTitle.text = getString(R.string.title_select_take_away_type)
 
             rvOption.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
@@ -398,11 +385,16 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
-        if (menu.quantity * menu.stockRequired == menu.stock) showToast("Tidak bisa melebih stok")
+        if (menu.quantity * menu.stockRequired == menu.stock) showToast(getString(R.string.message_error_over_stock))
         showTotalPrice()
     }
 
     override fun onMinuslicked(menu: Menu, position: Int) {
+//        val currentMenu = menus.find { it.id == menu.id }
+//        currentMenu?.let {
+//            menus.remove(currentMenu)
+//            menus.add(menu)
+//        }
         showTotalPrice()
     }
 
@@ -413,13 +405,13 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     fun getSelectedTakeAway() {
         btnTakeAwayType.text = selectedTakeAway?.name.orEmpty()
         when (selectedTakeAway?.name) {
-            "gofood" -> {
+            TakeAwayTypeEnum.GOFOOD.type -> {
                 menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
             }
-            "grabfood" -> {
+            TakeAwayTypeEnum.GRABFOOD.type -> {
                 menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
             }
-            else -> menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
+            else -> menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
         }
         showTotalPrice(selectedTakeAway?.name.orEmpty())
     }

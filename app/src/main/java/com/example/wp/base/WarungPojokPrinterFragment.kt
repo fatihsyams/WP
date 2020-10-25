@@ -88,9 +88,9 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                             "[L]\n" +
                             "[L]<font size='small'> " + printMenus(order.menu) + "</font>\n" +
                             "[C]--------------------------------\n" +
-                            "[L]ITEMS: ${order.menu.size}[R]Rp ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}\n" +
+                            "[L]ITEMS: ${order.menu.size}[R]${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}\n" +
                             "[L]Discount :[R]${order.order.discount} %\n" +
-                            "[L]Total :[R]Rp ${toCurrencyFormat(order.order.totalPayment)}\n" +
+                            "[L]Total :[R]${toCurrencyFormat(order.order.totalPayment)}\n" +
                             "[L]\n" +
                             "[C]================================\n" +
                             "[L]\n" +
@@ -137,7 +137,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     private fun printMenus(menus:List<Menu>):String{
         var menuPrint = emptyString()
         menus.forEach {menu->
-            menuPrint = menuPrint + "${menu.quantity} ${menu.name} [R]Rp ${toCurrencyFormat(menu.price)}\n" +
+            menuPrint = menuPrint + "${menu.quantity} ${menu.name} [R]${toCurrencyFormat(menu.price)}\n" +
                     "[L] ${menu.additionalInformation}\n"
         }
         return menuPrint
