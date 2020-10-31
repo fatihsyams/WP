@@ -1,5 +1,6 @@
 package com.example.wp.data.api.datasource
 
+import com.example.wp.data.api.model.request.RequestQuantityMaterialApi
 import com.example.wp.data.api.model.response.MaterialApi
 import com.example.wp.data.api.service.MaterialService
 import com.example.wp.data.mapper.MaterialMapper
@@ -57,6 +58,29 @@ class MaterialRepositoryImpl(private val service: MaterialService) : MaterialRep
     override suspend fun editMaterial(materialId: Int, material: Material): Load<Boolean> {
         return try {
             val response = service.editMaterial(materialId,MaterialMapper.mapToRequestMaterialApi(material))
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    Load.Success(response.status == "OK")
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun updateMaterial(
+        materialId: Int,
+        stock: Int,
+        type: String,
+        reason: String
+    ): Load<Boolean> {
+        return try {
+            val materialQuantity = RequestQuantityMaterialApi(
+                stock,type, reason
+            )
+            val response = service.updateMaterial(materialId,materialQuantity)
             if (response.isSuccessful) {
                 response.body()?.let { response ->
                     Load.Success(response.status == "OK")

@@ -11,6 +11,7 @@ interface MaterialRepository{
     suspend fun getMaterials(): Load<List<Material>>
     suspend fun getMaterial(materialId:Int): Load<Material>
     suspend fun editMaterial(materialId:Int, material:Material): Load<Boolean>
+    suspend fun updateMaterial(materialId:Int, stock: Int, type:String, reason:String): Load<Boolean>
     suspend fun postMaterialMenu(materialMenu:MaterialMenu): Load<Boolean>
     suspend fun getMaterialMenus(menuId:Int): Load<List<MaterialMenu>>
     suspend fun editMaterialMenu(menuId:Int, stock:Int, materialId: Int): Load<Boolean>

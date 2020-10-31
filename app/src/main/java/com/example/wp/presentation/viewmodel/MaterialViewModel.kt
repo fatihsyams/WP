@@ -20,6 +20,8 @@ class MaterialViewModel (private val repository: MaterialRepository): ViewModel(
     val viewMaterialLoad = _viewMaterialLoad as LiveData<Load<Material>>
     private val _editMaterialLoad = MutableLiveData<Load<Boolean>>()
     val editMaterialLoad = _editMaterialLoad as LiveData<Load<Boolean>>
+    private val _updateMaterialLoad = MutableLiveData<Load<Boolean>>()
+    val updateMaterialLoad = _updateMaterialLoad as LiveData<Load<Boolean>>
     private val _postMaterialMenuLoad = MutableLiveData<Load<Boolean>>()
     val materiaMenulLoad = _postMaterialMenuLoad as LiveData<Load<Boolean>>
     private val _getMaterialMenuLoad = MutableLiveData<Load<List<MaterialMenu>>>()
@@ -43,6 +45,12 @@ class MaterialViewModel (private val repository: MaterialRepository): ViewModel(
     fun editMaterial(materialId:Int, material:Material) = viewModelScope.launch {
         _editMaterialLoad.value = Load.Loading
         val material = repository.editMaterial(materialId, material)
+        _editMaterialLoad.value = material
+    }
+
+    fun updateMaterial(materialId:Int, stock:Int, type:String, reason:String) = viewModelScope.launch {
+        _editMaterialLoad.value = Load.Loading
+        val material = repository.updateMaterial(materialId, stock, type, reason)
         _editMaterialLoad.value = material
     }
 

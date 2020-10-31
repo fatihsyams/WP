@@ -4,3 +4,10 @@ data class RequestMaterialApi(
     val stock: Int,
     val material: String
 )
+
+data class RequestQuantityMaterialApi(
+    val stock: Int,
+    val type: String,
+    val reason:String
+)
+

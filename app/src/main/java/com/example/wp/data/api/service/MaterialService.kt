@@ -3,6 +3,7 @@ package com.example.wp.data.api.service
 import com.example.wp.data.api.model.request.RequestMaterialApi
 import com.example.wp.data.api.model.request.RequestMaterialMenuApi
 import com.example.wp.data.api.model.request.RequestOrderApi
+import com.example.wp.data.api.model.request.RequestQuantityMaterialApi
 import com.example.wp.data.api.model.response.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -20,6 +21,9 @@ interface MaterialService {
 
     @POST("bahan/{id}")
     suspend fun editMaterial(@Path("id") materialId:Int, @Body requestMaterialApi: RequestMaterialApi) : Response<ResponseMaterial>
+
+    @POST("bahan/{id}/stock")
+    suspend fun updateMaterial(@Path("id") materialId:Int, @Body requestMaterialApi: RequestQuantityMaterialApi) : Response<ResponseMaterial>
 
     @POST("bahan-menu")
     suspend fun postMaterialMenu(@Body requestMaterialMenuApi: RequestMaterialMenuApi) : Response<ResponseMaterialMenu>

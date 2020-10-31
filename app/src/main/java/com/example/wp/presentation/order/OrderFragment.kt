@@ -390,11 +390,6 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     }
 
     override fun onMinuslicked(menu: Menu, position: Int) {
-//        val currentMenu = menus.find { it.id == menu.id }
-//        currentMenu?.let {
-//            menus.remove(currentMenu)
-//            menus.add(menu)
-//        }
         showTotalPrice()
     }
 

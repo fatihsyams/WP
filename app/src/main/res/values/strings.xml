@@ -88,4 +88,5 @@
     <string name="title_select_category">Pilih Kategori</string>
     <string name="title_select_material">Pilih Bahan</string>
     <string name="message_complete_form_first">Mohon lengkapi data terlebih dahulu</string>
+    <string name="message_success_update_stock">Berhasil memperbarui stok</string>
 </resources>
