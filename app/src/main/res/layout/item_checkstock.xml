@@ -126,6 +126,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:text="Save"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"

@@ -49,9 +49,9 @@ class MaterialViewModel (private val repository: MaterialRepository): ViewModel(
     }
 
     fun updateMaterial(materialId:Int, stock:Int, type:String, reason:String) = viewModelScope.launch {
-        _editMaterialLoad.value = Load.Loading
+        _updateMaterialLoad.value = Load.Loading
         val material = repository.updateMaterial(materialId, stock, type, reason)
-        _editMaterialLoad.value = material
+        _updateMaterialLoad.value = material
     }
 
     fun viewMaterial(materialId:Int) = viewModelScope.launch {

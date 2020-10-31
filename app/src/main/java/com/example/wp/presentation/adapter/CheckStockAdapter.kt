@@ -14,7 +14,6 @@ class CheckStockAdapter(
     val context: Context,
     var data: List<Material>,
     val onSaveListener: StockListener? = null
-
 ) :
     RecyclerView.Adapter<CheckStockAdapter.ViewHolder>() {
 
@@ -42,18 +41,31 @@ class CheckStockAdapter(
         fun bindItem(item: Material) {
             with(itemView) {
 
+                item.isEdited = item.increasedQuantity != item.decreasedQuantity
+                btnSave.visibility = if(item.isEdited) View.VISIBLE else View.GONE
+
                 btnPlusStok.setOnClickListener {
                     item.stock++
+                    item.increasedQuantity++
+                    item.decreasedQuantity--
+                    item.isEdited = true
                     notifyItemChanged(adapterPosition)
+                    val isIncrease = item.increasedQuantity > item.decreasedQuantity
+                    onSaveListener?.onIncreaseStockClicked(isIncrease, item.increasedQuantity)
                 }
 
                 btnMinesAddStok.setOnClickListener {
                     if (item.stock > 0) item.stock--
+                    item.decreasedQuantity++
+                    item.increasedQuantity--
+                    item.isEdited = false
                     notifyItemChanged(adapterPosition)
+                    val isDecrease = item.decreasedQuantity > item.increasedQuantity
+                    onSaveListener?.onDecreaseStockClicked(isDecrease,item.decreasedQuantity)
                 }
 
                 btnSave.setOnClickListener {
-                    onSaveListener?.onSaveStockClicked(item)
+                    onSaveListener?.onSaveStockClicked(adapterPosition,item)
                 }
 
                 tvValueAddStok.text = item.stock.toString()
@@ -64,9 +76,11 @@ class CheckStockAdapter(
         }
     }
 
-    fun updateDataMenu(newData: List<Material>) {
-        data = newData
-        notifyDataSetChanged()
+    fun notifyMenuUpdated(position: Int,material: Material) {
+        material.isEdited = false
+        material.increasedQuantity = 0
+        material.decreasedQuantity = 0
+        notifyItemChanged(position,material)
     }
 
 

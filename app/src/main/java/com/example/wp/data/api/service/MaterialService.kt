@@ -22,7 +22,7 @@ interface MaterialService {
     @POST("bahan/{id}")
     suspend fun editMaterial(@Path("id") materialId:Int, @Body requestMaterialApi: RequestMaterialApi) : Response<ResponseMaterial>
 
-    @POST("bahan/{id}/stock")
+    @POST("bahan/{id}/stok")
     suspend fun updateMaterial(@Path("id") materialId:Int, @Body requestMaterialApi: RequestQuantityMaterialApi) : Response<ResponseMaterial>
 
     @POST("bahan-menu")
