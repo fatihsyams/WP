@@ -296,7 +296,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 totalPayment = totalPayment,
                 totalPaymentBeforeDiscount = totalPaymentBeforeDiscount
             ),
-            menu = menuAdapter.data
+            menu = menuAdapter.data,
+            type = selectedOrderType
         )
     }
 

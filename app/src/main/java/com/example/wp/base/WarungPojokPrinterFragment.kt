@@ -21,6 +21,7 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.utils.emptyString
+import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.toCurrencyFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -83,8 +84,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                             "[L]\n" +
                             "[C]================================\n" +
                             "[L]\n" +
-                            "[C]Terima Kasih\n" +
-                            "[C]Atas Kunjungan Anda\n"
+                            "[C]${printClosingMessage(order.type)}"
                 )
 
             val handler = Handler()
@@ -130,6 +130,15 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                     "[L] ${menu.additionalInformation}\n"
         }
         return menuPrint
+    }
+
+    private fun printClosingMessage(orderType:Int):String{
+        return when(orderType){
+            OrderTypeEnum.DINE_IN.type -> "po message"
+            OrderTypeEnum.TAKE_AWAY.type -> "take away message"
+            OrderTypeEnum.PRE_ORDER.type -> "po message"
+                    else -> "po message"
+        }
     }
 
 }
