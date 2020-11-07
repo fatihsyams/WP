@@ -68,18 +68,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
             val printer = EscPosPrinter(printerConnection, 203, 48f, 32)
             printer
                 .printFormattedText(
-                    "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(
-                        printer,
-                        context?.resources
-                            ?.getDrawableForDensity(
-                                R.drawable.logowp,
-                                DisplayMetrics.DENSITY_MEDIUM
-                            )
-                    ) + "</img>\n" +
-                            "[L]\n" +
-                            "[C]<font size='small'>Jl. Rambutan 1-7, Depok Jaya,</font>\n" +
-                            "[C]<font size='small'>Kec. Pancoran Mas, Kota Depok,</font>\n" +
-                            "[C]<font size='small'>Jawa Barat 16342</font>\n" +
+                            "[C]<font size='small'>Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok</font>\n" +
                             "[L]\n" +
                             "[C]<font size='small'> Tanggal: " + format.format(Date()) + "</font>\n" +
                             "[L]\n" +
@@ -137,7 +126,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     private fun printMenus(menus:List<Menu>):String{
         var menuPrint = emptyString()
         menus.forEach {menu->
-            menuPrint = menuPrint + "${menu.quantity} ${menu.name} [R]${toCurrencyFormat(menu.price)}\n" +
+            menuPrint = menuPrint + "${menu.quantity} ${menu.name} [R]${toCurrencyFormat(menu.totalPrice)}\n" +
                     "[L] ${menu.additionalInformation}\n"
         }
         return menuPrint

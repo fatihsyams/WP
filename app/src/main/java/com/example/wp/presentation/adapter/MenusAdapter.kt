@@ -107,27 +107,23 @@ class MenusAdapter(
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity > item.stockRequired) {
                         item.quantity--
-                        item.totalPrice =  when (type) {
-                            ORDER_EDIT_TYPE -> item.price*item.quantity
-                            ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
-                            ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
-                            else ->  item.price*item.quantity
-                        }
                     }
+
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
+                }
+
+                item.totalPrice =  when (type) {
+                    ORDER_EDIT_TYPE -> item.price*item.quantity
+                    ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
+                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
+                    else ->  item.price*item.quantity
                 }
 
                 btnPlus.setOnClickListener {
                     val realQuantity = item.quantity*item.stockRequired
                     if (realQuantity < item.stock) {
                         item.quantity++
-                        item.totalPrice =  when (type) {
-                            ORDER_EDIT_TYPE -> item.price*item.quantity
-                            ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
-                            ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
-                            else ->  item.price*item.quantity
-                        }
                     }
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
