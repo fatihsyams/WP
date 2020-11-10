@@ -65,7 +65,8 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     ==============================================================================================*/
     open fun  printIt(printerConnection: DeviceConnection?, onPrintFinished:(()->Unit)? = null) {
         try {
-            val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss")
+            Log.d("PRINT", "preparing on printing..")
+            val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss",Locale.US)
             val printer = EscPosPrinter(printerConnection, 203, 48f, 32)
             printer
                 .printFormattedText(
@@ -87,11 +88,8 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                             "[C]${printClosingMessage(order.type)}"
                 )
 
-            val handler = Handler()
-            val delayTime = order.menu.size * 3000L
-            handler.postDelayed({
-                onPrintFinished?.invoke()
-            }, delayTime)
+
+            Log.d("PRINT", "preparing print finish")
         } catch (e: EscPosConnectionException) {
             e.printStackTrace()
             Log.d("ERROR PRINT", e.message)
