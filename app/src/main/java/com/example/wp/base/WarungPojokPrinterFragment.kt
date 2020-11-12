@@ -4,9 +4,8 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Handler
-import android.util.DisplayMetrics
 import android.util.Log
-import androidx.core.app.ActivityCompat
+import androidx.core.app.   ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.dantsu.escposprinter.EscPosPrinter
@@ -16,8 +15,6 @@ import com.dantsu.escposprinter.exceptions.EscPosBarcodeException
 import com.dantsu.escposprinter.exceptions.EscPosConnectionException
 import com.dantsu.escposprinter.exceptions.EscPosEncodingException
 import com.dantsu.escposprinter.exceptions.EscPosParserException
-import com.dantsu.escposprinter.textparser.PrinterTextParserImg
-import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.utils.emptyString
@@ -134,10 +131,10 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     private fun printClosingMessage(orderType:Int):String{
         return when(orderType){
-            OrderTypeEnum.DINE_IN.type -> "po message"
-            OrderTypeEnum.TAKE_AWAY.type -> "take away message"
-            OrderTypeEnum.PRE_ORDER.type -> "po message"
-                    else -> "po message"
+            OrderTypeEnum.DINE_IN.type -> "Terima Kasih Atas Kunjungannya"
+            OrderTypeEnum.TAKE_AWAY.type -> "Terima Kasih Atas Orderannya"
+            OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
+                    else -> "Selamat Menikmati"
         }
     }
 
