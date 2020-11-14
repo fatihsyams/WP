@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvPairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#666"
+        android:paddingLeft="5dp"
+        android:text="@string/title_paired_devices"
+        android:textColor="#fff"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/lvPairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:stackFromBottom="false" />
+
+    <TextView
+        android:id="@+id/tvNewDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#666"
+        android:paddingLeft="5dp"
+        android:text="@string/title_other_devices"
+        android:textColor="#fff"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/lvDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="2"
+        android:stackFromBottom="true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/button_scan"
+        android:textColor="@color/colorWhite" />
+
+    <ProgressBar
+        android:id="@+id/pgBar"
+        style="?android:attr/progressBarStyleLargeInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+</LinearLayout>

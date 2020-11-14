@@ -1,4 +1,4 @@
-package com.example.wp.utils.datePicker.adapter
+package com.example.wp.utils.datepicker.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

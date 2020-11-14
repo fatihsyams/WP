@@ -31,7 +31,7 @@ import com.example.wp.presentation.viewmodel.OrderViewModel
 import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
-import com.example.wp.utils.datePicker.DialogDatePicker
+import com.example.wp.utils.datepicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.enum.TakeAwayTypeEnum

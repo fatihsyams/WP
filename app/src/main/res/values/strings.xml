@@ -18,6 +18,19 @@
 
     <string name="app_name">WP</string>
 
+    <string name="bixolon_brand">Bixolon</string>
+
+    <string name="bluetooth_not_available">Bluetooth not available</string>
+
+    <string name="button_scan">Scan devices</string>
+
+    <string name="choose_printer">Choose your printer brand</string>
+
+    <string name="connect_fail">Printer connection error</string>
+    <string name="connect_lost">Disconnected</string>
+
+    <string name="connected">Connect to</string>
+
     <string name="dayFriday">Jum</string>
 
     <string name="dayMonday">Sen</string>
@@ -31,6 +44,12 @@
     <string name="dayTuesday">Sel</string>
 
     <string name="dayWednesday">Rab</string>
+
+    <string name="description">By using this app you can print on any brand of Bluetooth printers, for example Bixolon, Woosim, Sewoo, Rongta, Baby, Delta, etc.
+        \n\nChoose your printer brand:
+    </string>
+
+    <string name="do_print">Print</string>
 
     <string name="format_table_number">No Meja : 10</string>
 
@@ -72,21 +91,47 @@
     <string name="label_total_stock">Jumlah Stok</string>
     <string name="label_warung_pojok">Warung Pojok</string>
 
+    <string name="message_complete_form_first">Mohon lengkapi data terlebih dahulu</string>
+    <string name="message_error_over_stock">Tidak bisa melebih stok</string>
+    <string name="message_receipt_printed">Apakah anda ingin mencetak struk ini lagi?</string>
+    <string name="message_select_delivery_time_first">Pilih Tanggal Pengambilan Pesanan Terlebih Dahulu</string>
+    <string name="message_select_order_type_first">Pilih Tipe Pesanan Terlebih Dahulu</string>
+    <string name="message_select_table_first">Pilih Nomer Meja Terlebih Dahulu</string>
+    <string name="message_select_take_away_type_first">Pilih Jenis Take Away Terlebih Dahulu</string>
+    <string name="message_success_update_stock">Berhasil memperbarui stok</string>
+
+    <string name="none_found">No device found</string>
+    <string name="none_paired">No device found</string>
+
+    <string name="not_connected">Connection is not established</string>
+
+    <string name="other_brands">Other printers</string>
+
+    <string name="pic_load_error">Error in loading picture</string>
+
+    <string name="print_error">Error in printing</string>
+    <string name="print_succ">Print done successfully</string>
+
+    <string name="rongta_brand">Rongta</string>
+
     <string name="sample_category">Ikan</string>
     <string name="sample_menu">Ikan Gurame</string>
     <string name="sample_month_year">September 2020</string>
     <string name="sample_price">19.000</string>
     <string name="sample_table_number">1</string>
+
+    <string name="scanning">Searching…</string>
+
+    <string name="select_device">Select device</string>
+
+    <string name="title_other_devices">Other devices</string>
+    <string name="title_paired_devices">Paired devices</string>
     <string name="title_receipt_printed">Selesai Mencetak Struk</string>
-    <string name="message_receipt_printed">Apakah anda ingin mencetak struk ini lagi?</string>
-    <string name="message_select_order_type_first">Pilih Tipe Pesanan Terlebih Dahulu</string>
-    <string name="message_select_table_first">Pilih Nomer Meja Terlebih Dahulu</string>
-    <string name="message_select_take_away_type_first">Pilih Jenis Take Away Terlebih Dahulu</string>
-    <string name="message_select_delivery_time_first">Pilih Tanggal Pengambilan Pesanan Terlebih Dahulu</string>
-    <string name="message_error_over_stock">Tidak bisa melebih stok</string>
-    <string name="title_select_take_away_type">Pilih Jenis Take Away</string>
     <string name="title_select_category">Pilih Kategori</string>
     <string name="title_select_material">Pilih Bahan</string>
-    <string name="message_complete_form_first">Mohon lengkapi data terlebih dahulu</string>
-    <string name="message_success_update_stock">Berhasil memperbarui stok</string>
+    <string name="title_select_take_away_type">Pilih Jenis Take Away</string>
+
+    <string name="turnon_bluetooth">Turn on Bluetooth</string>
+
+    <string name="woosim_brand">Woosim</string>
 </resources>

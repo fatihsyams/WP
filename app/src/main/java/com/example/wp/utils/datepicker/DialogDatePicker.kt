@@ -1,4 +1,4 @@
-package com.example.wp.utils.datePicker
+package com.example.wp.utils.datepicker
 
 import android.app.Dialog
 import android.content.Context
@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import com.example.wp.R
 import com.example.wp.utils.changeFormatLongDate
 import com.example.wp.utils.constants.DateFormat
-import com.example.wp.utils.datePicker.adapter.CalendarAdapter
+import com.example.wp.utils.datepicker.adapter.CalendarAdapter
 import com.example.wp.utils.emptyString
 import com.example.wp.utils.getCurrentDate
 import kotlinx.android.synthetic.main.dialog_date_picker.*
