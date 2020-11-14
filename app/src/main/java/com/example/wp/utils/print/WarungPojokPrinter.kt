@@ -17,7 +17,7 @@ class WarungPojokPrinter(val context: Context, val order:OrderResult, val onPrin
         Log.d("PRINT", "printing..")
         val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
         prnMng.apply {
-            printStr("Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok", 2, WoosimCmd.ALIGN_CENTER)
+            printStr("Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok", 1, WoosimCmd.ALIGN_CENTER)
             printStr("Tanggal: ${format.format(Date())}", 1, WoosimCmd.ALIGN_CENTER)
             printStr(
                 "Customer : ${order.order.customerName}",
