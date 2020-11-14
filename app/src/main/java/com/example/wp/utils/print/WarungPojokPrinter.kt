@@ -66,6 +66,7 @@ class WarungPojokPrinter(
                 OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
                 else -> "Selamat Menikmati"
             }, 1, WoosimCmd.ALIGN_CENTER)
+            printNewLine()
         }
         printEnded(prnMng)
     }
