@@ -51,7 +51,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 PERMISSION_BLUETOOTH
             )
         } else {
-            printRecipe()
+            printRecipe(onPrintFinished)
         }
     }
 
@@ -209,16 +209,15 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 val noDevices = resources.getText(R.string.none_paired).toString()
                 mPairedDevicesArrayAdapter!!.add(noDevices)
             }
+
         }
     }
 
     private fun doDiscovery(){
-        btnScan.gone()
-        pgBar.visible()
-
-        tvNewDevices.visible()
-
-
+        if(mBtAdapter?.isDiscovering == true){
+            mBtAdapter?.cancelDiscovery()
+        }
+        mBtAdapter?.startDiscovery()
     }
 
     override fun onDestroy() {

@@ -225,13 +225,9 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     }
 
     private fun printReceipe() {
-        scope.launch {
-            Log.d("PRINT", "start print...")
-            withContext(Dispatchers.Default) {
-                printBluetooth()
-            }
+        printBluetooth{
+            showPrintAlert()
         }
-        showPrintAlert()
     }
 
     private fun showPrintAlert() {
