@@ -24,7 +24,6 @@ import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.lib.WoosimPrnMng
 import com.example.wp.utils.print.WarungPojokPrinter
 import kotlinx.android.synthetic.main.layout_bluetooth_list_dialog.*
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,9 +33,9 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     abstract val order: OrderResult
 
-    private val mBtAdapter: BluetoothAdapter? = null
-    private val mPairedDevicesArrayAdapter: ArrayAdapter<String>? = null
-    private val mNewDevicesArrayAdapter: ArrayAdapter<String>? = null
+    private var mBtAdapter: BluetoothAdapter? = null
+    private var mPairedDevicesArrayAdapter: ArrayAdapter<String>? = null
+    private var mNewDevicesArrayAdapter: ArrayAdapter<String>? = null
 
     private var mPrnMng: WoosimPrnMng? = null
 
@@ -71,11 +70,22 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     private fun printRecipe(onPrintFinished: (() -> Unit)? = null){
         try {
             Log.d("PRINT", "preparing on printing.. $order")
-            val bluetoothAddress = BluetoothPrintersConnections.selectFirstPaired().device.address
-            val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
-            //Connect to the printer and after successful connection issue the print command.
-            mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
-        }catch (e:Exception){
+
+            // Get the local Bluetooth adapter
+            mBtAdapter = BluetoothAdapter.getDefaultAdapter()
+
+            // Get a set of currently paired devices
+            val pairedDevices = mBtAdapter?.bondedDevices
+            val activeBluetooth = pairedDevices?.firstOrNull()
+
+            activeBluetooth?.let {
+                Log.d("PRINT", "get bluetooth $activeBluetooth")
+                val bluetoothAddress = BluetoothPrintersConnections.selectFirstPaired().device.address
+                val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
+                //Connect to the printer and after successful connection issue the print command.
+                mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
+            }
+        }catch (e: Exception){
             Log.d("PRINT", "print error.. ${e.message}")
         }
     }
@@ -168,7 +178,37 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
         ).apply {
 
 
+            // Initialize array adapters. One for already paired devices and
+            // one for newly discovered devices
+            mPairedDevicesArrayAdapter = ArrayAdapter(
+                requireContext(),
+                R.layout.item_bluetooth_name
+            )
+            mNewDevicesArrayAdapter = ArrayAdapter(requireContext(), R.layout.item_bluetooth_name)
 
+            // Get the local Bluetooth adapter
+            mBtAdapter = BluetoothAdapter.getDefaultAdapter()
+
+            // Get a set of currently paired devices
+            val pairedDevices = mBtAdapter?.getBondedDevices()
+
+            // If there are paired devices, add each one to the ArrayAdapter
+
+            // If there are paired devices, add each one to the ArrayAdapter
+            if (!pairedDevices.isNullOrEmpty()) {
+               tvPairedDevices.visible()
+                for (device in pairedDevices) {
+                    mPairedDevicesArrayAdapter!!.add(
+                        """
+                ${device.name}
+                ${device.address}
+                """.trimIndent()
+                    )
+                }
+            } else {
+                val noDevices = resources.getText(R.string.none_paired).toString()
+                mPairedDevicesArrayAdapter!!.add(noDevices)
+            }
         }
     }
 
@@ -178,6 +218,17 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
         tvNewDevices.visible()
 
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Make sure we're not doing discovery anymore
+
+        // Make sure we're not doing discovery anymore
+        if (mBtAdapter != null) {
+            mBtAdapter!!.cancelDiscovery()
+        }
 
     }
 
