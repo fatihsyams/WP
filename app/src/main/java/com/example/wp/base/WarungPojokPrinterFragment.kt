@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.content.pm.PackageManager
 import android.util.Log
+
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -163,10 +164,10 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     private fun printClosingMessage(orderType: Int):String{
         return when(orderType){
-            OrderTypeEnum.DINE_IN.type -> "po message"
-            OrderTypeEnum.TAKE_AWAY.type -> "take away message"
-            OrderTypeEnum.PRE_ORDER.type -> "po message"
-                    else -> "po message"
+            OrderTypeEnum.DINE_IN.type -> "Terima Kasih Atas Kunjungannya"
+            OrderTypeEnum.TAKE_AWAY.type -> "Terima Kasih Atas Orderannya"
+            OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
+                    else -> "Selamat Menikmati"
         }
     }
 

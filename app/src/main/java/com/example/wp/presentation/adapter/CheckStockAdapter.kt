@@ -4,11 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wp.R
 import com.example.wp.domain.material.Material
 import com.example.wp.presentation.listener.StockListener
 import kotlinx.android.synthetic.main.item_checkstock.view.*
+import java.util.logging.Handler
 
 class CheckStockAdapter(
     val context: Context,
@@ -42,7 +45,7 @@ class CheckStockAdapter(
             with(itemView) {
 
                 item.isEdited = item.increasedQuantity != item.decreasedQuantity
-                btnSave.visibility = if(item.isEdited) View.VISIBLE else View.GONE
+                btnSave.visibility = if (item.isEdited) View.VISIBLE else View.GONE
 
                 btnPlusStok.setOnClickListener {
                     item.stock++
@@ -61,26 +64,44 @@ class CheckStockAdapter(
                     item.isEdited = false
                     notifyItemChanged(adapterPosition)
                     val isDecrease = item.decreasedQuantity > item.increasedQuantity
-                    onSaveListener?.onDecreaseStockClicked(isDecrease,item.decreasedQuantity)
+                    onSaveListener?.onDecreaseStockClicked(isDecrease, item.decreasedQuantity)
                 }
 
                 btnSave.setOnClickListener {
-                    onSaveListener?.onSaveStockClicked(adapterPosition,item)
+                    onSaveListener?.onSaveStockClicked(adapterPosition, item)
                 }
 
-                tvValueAddStok.text = item.stock.toString()
+                tvValueAddStok.setText(item.stock.toString())
 
                 tvName.text = item.material
                 tvTotalStok.text = item.stock.toString()
+
+                tvValueAddStok.setOnEditorActionListener { v, actionId, event ->
+                    if(actionId == EditorInfo.IME_ACTION_DONE){
+                        val quantity = v.text.toString().toInt()
+                        if (quantity > item.stock) {
+                            item.increasedQuantity = quantity - item.stock
+                            onSaveListener?.onIncreaseStockClicked(true, item.increasedQuantity)
+                        }else{
+                            item.decreasedQuantity = item.stock - quantity
+                            onSaveListener?.onDecreaseStockClicked(true, item.decreasedQuantity)
+                        }
+                        item.isEdited = true
+                        item.stock = quantity
+                        notifyItemChanged(adapterPosition)
+                        return@setOnEditorActionListener true
+                    }
+                    return@setOnEditorActionListener false
+                }
             }
         }
     }
 
-    fun notifyMenuUpdated(position: Int,material: Material) {
+    fun notifyMenuUpdated(position: Int, material: Material) {
         material.isEdited = false
         material.increasedQuantity = 0
         material.decreasedQuantity = 0
-        notifyItemChanged(position,material)
+        notifyItemChanged(position, material)
     }
 
 

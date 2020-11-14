@@ -82,13 +82,19 @@
             app:layout_constraintStart_toEndOf="@+id/imgStock"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tvValueAddStok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:text="0"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="@dimen/dimen_0dp"
+            android:inputType="number"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlusStok"
             app:layout_constraintEnd_toStartOf="@+id/btnPlusStok"
             app:layout_constraintTop_toTopOf="@+id/btnPlusStok" />
