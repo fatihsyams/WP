@@ -80,7 +80,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
             activeBluetooth?.let {
                 Log.d("PRINT", "get bluetooth $activeBluetooth")
-                val bluetoothAddress = BluetoothPrintersConnections.selectFirstPaired().device.address
+                val bluetoothAddress = activeBluetooth.address
                 val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
                 //Connect to the printer and after successful connection issue the print command.
                 mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
