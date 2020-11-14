@@ -1,6 +1,7 @@
 package com.example.wp.utils.print
 
 import android.content.Context
+import android.util.Log
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.lib.IPrintToPrinter
@@ -13,6 +14,7 @@ import java.util.*
 class WarungPojokPrinter(val context: Context, val order:OrderResult, val onPrintFinished: (() -> Unit)? = null) : IPrintToPrinter{
     
     override fun printContent(prnMng: WoosimPrnMng) {
+        Log.d("PRINT", "printing..")
         val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
         prnMng.apply {
             printStr("Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok", 2, WoosimCmd.ALIGN_CENTER)
@@ -42,6 +44,7 @@ class WarungPojokPrinter(val context: Context, val order:OrderResult, val onPrin
     }
 
     override fun printEnded(prnMng: WoosimPrnMng?) {
+        Log.d("PRINT", "finish print")
         onPrintFinished?.invoke()
     }
 

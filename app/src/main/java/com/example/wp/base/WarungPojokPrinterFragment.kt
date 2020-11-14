@@ -70,12 +70,13 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     private fun printRecipe(onPrintFinished: (() -> Unit)? = null){
         try {
+            Log.d("PRINT", "preparing on printing.. $order")
             val bluetoothAddress = BluetoothPrintersConnections.selectFirstPaired().device.address
             val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
             //Connect to the printer and after successful connection issue the print command.
             mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
         }catch (e:Exception){
-            showToast(e.message)
+            Log.d("PRINT", "print error.. ${e.message}")
         }
     }
 
