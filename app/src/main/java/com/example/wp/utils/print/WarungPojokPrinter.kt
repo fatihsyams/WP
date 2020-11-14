@@ -16,7 +16,7 @@ import java.util.*
 class WarungPojokPrinter(
     val context: Context,
     val order: OrderResult,
-    val onPrintFinished: (() -> Unit)? = null
+    private val onPrintFinished: (() -> Unit)? = null
 ) : IPrintToPrinter {
 
     override fun printContent(prnMng: WoosimPrnMng) {
@@ -43,7 +43,7 @@ class WarungPojokPrinter(
                                 menu.totalPrice
                             )
                         }"
-                    ), 1, WoosimCmd.ALIGN_CENTER
+                    ), 1, WoosimCmd.ALIGN_LEFT
                 )
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
             }
@@ -60,7 +60,12 @@ class WarungPojokPrinter(
                 WoosimCmd.ALIGN_LEFT
             )
             printStr("================================")
-            printStr(printClosingMessage(order.type), 1, WoosimCmd.ALIGN_CENTER)
+            printStr(when (order.type) {
+                OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
+                OrderTypeEnum.TAKE_AWAY.type -> "Terimakasih Atas Orderannya"
+                OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
+                else -> "Selamat Menikmati"
+            }, 1, WoosimCmd.ALIGN_CENTER)
         }
         printEnded(prnMng)
     }
