@@ -10,6 +10,7 @@ import com.example.wp.utils.lib.printerWordMng
 import com.example.wp.utils.printerFactory
 import com.example.wp.utils.toCurrencyFormat
 import com.woosim.printer.WoosimCmd
+import org.apache.http.util.ByteArrayBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,11 +26,6 @@ class WarungPojokPrinter(
         val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
         prnMng.apply {
             printStr("Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok", 1, WoosimCmd.ALIGN_CENTER)
-            printStr(
-                "Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok",
-                2,
-                WoosimCmd.ALIGN_CENTER
-            )
             printStr("Tanggal: ${format.format(Date())}", 1, WoosimCmd.ALIGN_CENTER)
             printStr(
                 "Customer : ${order.order.customerName}",
@@ -37,22 +33,21 @@ class WarungPojokPrinter(
             )
             printStr("================================")
             order.menu.forEach { menu->
-                printStr(wordMng.autoWordWrap("${menu.quantity} ${menu.name}"), 1, WoosimCmd.ALIGN_LEFT)
-                printStr(wordMng.horizontalUnderline)
-                printStr(toCurrencyFormat(menu.totalPrice), 1, WoosimCmd.ALIGN_RIGHT)
+                printStr(wordMng.autoWordWrap("${menu.quantity} ${menu.name} \t ${toCurrencyFormat(menu.totalPrice)}"), 1, WoosimCmd.ALIGN_LEFT)
+//                printStr(toCurrencyFormat(menu.totalPrice), 1, WoosimCmd.ALIGN_RIGHT)
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
             }
             printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
-            prnMng.printStr(" ITEMS: ${order.menu.size}", 1, WoosimCmd.ALIGN_LEFT)
-            prnMng.printStr(
+            printStr(" ITEMS: ${order.menu.size}", 1, WoosimCmd.ALIGN_LEFT)
+            printStr(
                 toCurrencyFormat(order.order.totalPaymentBeforeDiscount),
                 1,
                 WoosimCmd.ALIGN_RIGHT
             )
-            prnMng.printStr(" Discount: ", 1, WoosimCmd.ALIGN_LEFT)
-            prnMng.printStr("${order.order.discount} %", 1, WoosimCmd.ALIGN_RIGHT)
-            prnMng.printStr(" Total : ", 1, WoosimCmd.ALIGN_LEFT)
-            prnMng.printStr(toCurrencyFormat(order.order.totalPayment), 1, WoosimCmd.ALIGN_RIGHT)
+            printStr(" Discount: ", 1, WoosimCmd.ALIGN_LEFT)
+            printStr("${order.order.discount} %", 1, WoosimCmd.ALIGN_RIGHT)
+            printStr(" Total : ", 1, WoosimCmd.ALIGN_LEFT)
+            printStr(toCurrencyFormat(order.order.totalPayment), 1, WoosimCmd.ALIGN_RIGHT)
             printNewLine()
             printStr("================================")
             printStr(printClosingMessage(order.type), 1, WoosimCmd.ALIGN_CENTER)
@@ -67,10 +62,10 @@ class WarungPojokPrinter(
 
     private fun printClosingMessage(orderType: Int):String{
         return when(orderType){
-            OrderTypeEnum.DINE_IN.type -> "po message"
-            OrderTypeEnum.TAKE_AWAY.type -> "take away message"
-            OrderTypeEnum.PRE_ORDER.type -> "po message"
-            else -> "po message"
+            OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
+            OrderTypeEnum.TAKE_AWAY.type -> "Terimakasih Atas Orderannya"
+            OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
+            else -> "Selamat Menikmati"
         }
     }
 }
