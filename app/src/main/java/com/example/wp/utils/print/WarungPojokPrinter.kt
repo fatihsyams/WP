@@ -38,14 +38,17 @@ class WarungPojokPrinter(
             order.menu.forEach { menu ->
                 printStr(
                     wordMng.autoWordWrap(
-                        "${menu.quantity} ${menu.name} \t ${
-                            toCurrencyFormat(
-                                menu.totalPrice
-                            )
-                        }"
+                        "${menu.quantity} ${menu.name}"
                     ), 1, WoosimCmd.ALIGN_LEFT
                 )
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
+                printStr(
+                    "  x ${menu.additionalInformation} \t ${
+                        toCurrencyFormat(
+                            menu.totalPrice
+                        )
+                    }", 1, WoosimCmd.ALIGN_LEFT
+                )
             }
             printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
             printStr(
@@ -60,12 +63,14 @@ class WarungPojokPrinter(
                 WoosimCmd.ALIGN_LEFT
             )
             printStr("================================")
-            printStr(when (order.type) {
-                OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
-                OrderTypeEnum.TAKE_AWAY.type -> "Terimakasih Atas Orderannya"
-                OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
-                else -> "Selamat Menikmati"
-            }, 1, WoosimCmd.ALIGN_CENTER)
+            printStr(
+                when (order.type) {
+                    OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
+                    OrderTypeEnum.TAKE_AWAY.type -> "Terimakasih Atas Orderannya"
+                    OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
+                    else -> "Selamat Menikmati"
+                }, 1, WoosimCmd.ALIGN_CENTER
+            )
             printNewLine()
         }
         printEnded(prnMng)
