@@ -38,12 +38,12 @@ class WarungPojokPrinter(
             order.menu.forEach { menu ->
                 printStr(
                     wordMng.autoWordWrap(
-                        "${menu.quantity} ${menu.name}"
+                        menu.name
                     ), 1, WoosimCmd.ALIGN_LEFT
                 )
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
                 printStr(
-                    "  x ${menu.additionalInformation} \t ${
+                    "  x ${menu.quantity} \t ${
                         toCurrencyFormat(
                             menu.totalPrice
                         )
