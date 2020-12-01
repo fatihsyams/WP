@@ -55,7 +55,6 @@ data class MenuApi(
     @SerializedName("category")
     val category: String? = null,
 
-//    @SerializedName("category")
     var quantity: Int? = null,
 
     @SerializedName("price_gofood")
@@ -65,7 +64,13 @@ data class MenuApi(
     val grabFoodPrice: Double? = null,
 
     @SerializedName("material_menus")
-    val materialMenus: List<MaterialMenuApi>? = null
+    val materialMenus: List<MaterialMenuApi>? = null,
+
+    @SerializedName("discount")
+    val discount:Int? = null,
+
+    @SerializedName("discount_takeaway")
+    val discountTakeAway:Int? = null
 
 ) : Parcelable
 

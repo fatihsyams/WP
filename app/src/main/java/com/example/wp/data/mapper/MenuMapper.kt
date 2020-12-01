@@ -16,24 +16,36 @@ object MenuMapper {
         return handleApiSuccess(data = response.data?.map { mapToMenu(it) }.orEmpty())
     }
 
-    fun mapToMenu(response: MenuApi):Menu{
+    fun mapToMenu(response: MenuApi): Menu {
         return Menu(
             images = response.images.orEmpty(),
             additionalInformation = response.additionalInformation.orEmpty(),
             updatedAt = response.updatedAt.orEmpty(),
-            price = response.price ?: 0.0,
-            goFoodPrice = response.goFoodPrice ?: 0.0,
-            grabFoodPrice = response.grabFoodPrice ?: 0.0,
+            price = getPrice(
+                response.price ?: 0.0,
+                response.discount
+            ),
+            goFoodPrice = getPrice(response.goFoodPrice ?: 0.0, response.discountTakeAway),
+            grabFoodPrice = getPrice(response.grabFoodPrice ?: 0.0, response.discountTakeAway),
             name = response.name.orEmpty(),
             description = response.description.orEmpty(),
             createdAt = response.createdAt.orEmpty(),
             id = response.id ?: 0,
-            stock =  response.materialMenus?.map { materialMenu ->  materialMenu.material?.stock ?: 0 }?.sum() ?: 0,
+            stock = response.materialMenus?.map { materialMenu ->
+                materialMenu.material?.stock ?: 0
+            }?.sum() ?: 0,
             category = response.category.orEmpty(),
             quantity = response.quantity ?: 0,
-            materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }.orEmpty(),
-            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0
+            materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }
+                .orEmpty(),
+            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0,
+            discount = response.discount ?: 0,
+            discountTakeAway = response.discountTakeAway ?: 0
         )
+    }
+
+    private fun getPrice(price: Double, discount: Int?): Double {
+        return if (discount != null) price - price.times(discount) / 100 else price
     }
 
     private fun mapToMenuImage(data: MenuImageApi): MenuImage {

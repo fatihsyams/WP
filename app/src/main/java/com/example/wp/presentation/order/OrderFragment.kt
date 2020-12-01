@@ -263,7 +263,6 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     private fun onPrintFinish() {
         if (progressDialog.isShowing) progressDialog.dismiss()
         (activity as MainActivity).clearSelectedMenus()
-        removeFragment()
     }
 
     private fun isOrderValid(): Boolean {

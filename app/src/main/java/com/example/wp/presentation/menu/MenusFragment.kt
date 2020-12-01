@@ -47,8 +47,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
     private var listMenu = listOf<Menu>()
     private var listUpdatedMenu = mutableListOf<Menu>()
 
-    private var lastMenu:Menu? =null
-
     override val layoutView: Int = R.layout.fragment_menus
 
     override fun onPreparation() {
@@ -72,7 +70,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                 filter(newText.orEmpty())
                 return false
             }
-
         })
     }
 
@@ -82,7 +79,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
             when (it) {
                 is Load.Loading -> msvMenu.showLoadingView()
                 is Load.Fail -> {
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     msvMenu.showContentView()
@@ -98,7 +95,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
         menuViewModel.categoriesLoad.observe(this, Observer {
             when (it) {
                 is Load.Fail -> {
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     showCategories(it.data)
@@ -109,7 +106,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
         materialViewModel.getMaterialMenuLoad.observe(this, Observer { it ->
             when (it) {
                 is Load.Fail -> {
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     val materials = it.data

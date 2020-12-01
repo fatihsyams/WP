@@ -24,7 +24,9 @@ data class Menu(
     var materialMenus:List<MaterialMenu> = listOf(),
     var isAvailable:Boolean = stock != 0,
     var stockRequired:Int = materialMenus.map { it.stockRequired }.sum(),
-    var totalPrice:Double = price*quantity
+    var totalPrice:Double = price*quantity,
+    val discount:Int = 0,
+    val discountTakeAway:Int = 9
 ) : Parcelable
 
 @Parcelize

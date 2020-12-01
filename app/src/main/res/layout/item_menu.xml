@@ -88,11 +88,25 @@
         android:id="@+id/tvHargaMenus"
         style="@style/WarungPojokTextView.Title"
         android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="@dimen/dimen_8dp"
         android:hint="@string/sample_price"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
+        app:layout_constraintStart_toEndOf="@id/tvDiscount"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorRed"
+        android:text="50%"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHargaMenus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvHargaMenus" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvSoldOut"

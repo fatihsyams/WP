@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wp.R
@@ -73,10 +74,21 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-                tvHargaMenus.text =toCurrencyFormat(item.price)
-                tvNamaMenus.text = item.name
 
-                tvSoldOut.visibility = if(item.stock > item.stockRequired) View.GONE else View.VISIBLE
+                tvHargaMenus.text = toCurrencyFormat(item.price)
+                tvNamaMenus.text = item.name
+                tvDiscount.text = "${item.discount} %"
+
+                tvSoldOut.visibility =
+                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
+                tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
+
+                tvHargaMenus.setTextColor(
+                    if (item.discount == 0) ContextCompat.getColor(
+                        context,
+                        R.color.colorGrey
+                    ) else ContextCompat.getColor(context, R.color.colorRed)
+                )
 
                 setOnClickListener {
                     if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
@@ -93,10 +105,10 @@ class MenusAdapter(
                 }
 
                 tvHargaMenus.text = when (type) {
-                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price*item.quantity)
-                    ORDER_READ_GO_FOOD_TYPE ->  toCurrencyFormat(item.goFoodPrice*item.quantity)
-                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice*item.quantity)
-                    else ->  toCurrencyFormat(item.price*item.quantity)
+                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price * item.quantity)
+                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice * item.quantity)
+                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity)
+                    else -> toCurrencyFormat(item.price * item.quantity)
                 }
 
                 tvNamaMenus.text = item.name
@@ -104,24 +116,23 @@ class MenusAdapter(
                 tvQuantity.text = item.quantity.toString()
 
                 btnMinus.setOnClickListener {
-                    val realQuantity = item.quantity*item.stockRequired
+                    val realQuantity = item.quantity * item.stockRequired
                     if (realQuantity > item.stockRequired) {
                         item.quantity--
                     }
-
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
 
-                item.totalPrice =  when (type) {
-                    ORDER_EDIT_TYPE -> item.price*item.quantity
-                    ORDER_READ_GO_FOOD_TYPE ->  item.goFoodPrice*item.quantity
-                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice*item.quantity
-                    else ->  item.price*item.quantity
+                item.totalPrice = when (type) {
+                    ORDER_EDIT_TYPE -> item.price * item.quantity
+                    ORDER_READ_GO_FOOD_TYPE -> item.goFoodPrice * item.quantity
+                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice * item.quantity
+                    else -> item.price * item.quantity
                 }
 
                 btnPlus.setOnClickListener {
-                    val realQuantity = item.quantity*item.stockRequired
+                    val realQuantity = item.quantity * item.stockRequired
                     if (realQuantity < item.stock) {
                         item.quantity++
                     }
@@ -146,7 +157,7 @@ class MenusAdapter(
         data = newData
     }
 
-    fun updateOrderReadType(selectedOrderType:Int){
+    fun updateOrderReadType(selectedOrderType: Int) {
         type = selectedOrderType
         notifyDataSetChanged()
     }
