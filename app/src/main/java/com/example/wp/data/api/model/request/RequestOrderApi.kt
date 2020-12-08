@@ -16,5 +16,7 @@ data class RequestOrderApi (
     @SerializedName("amount")
     val amounts:String,
     @SerializedName("discount_order")
-    val discount:Int?
+    val discount:Int?,
+    @SerializedName("pembayaran")
+    val paymentMethod:String?
 )

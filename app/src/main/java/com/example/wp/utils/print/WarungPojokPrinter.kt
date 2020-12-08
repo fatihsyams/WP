@@ -37,6 +37,10 @@ class WarungPojokPrinter(
             if (order.type == OrderTypeEnum.DINE_IN.type){
                 printStr( "No Meja : ${order.order.tableId}", 1, WoosimCmd.ALIGN_LEFT)
             }
+            printStr(
+                "Metode Pembayaran : ${order.paymentMethod}",
+                1, WoosimCmd.ALIGN_LEFT
+            )
             printStr("================================")
             order.menu.forEach { menu ->
                 printStr(

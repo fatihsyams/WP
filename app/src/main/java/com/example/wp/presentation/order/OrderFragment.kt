@@ -303,7 +303,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 totalPaymentBeforeDiscount = totalPaymentBeforeDiscount
             ),
             menu = menuAdapter.data,
-            type = selectedOrderType
+            type = selectedOrderType,
+            paymentMethod = selectedPayment?.name.orEmpty()
         )
     }
 
