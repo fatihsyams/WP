@@ -195,6 +195,10 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 showTotalPrice(selectedOrderNameType)
             }, 1000)
         }
+
+        btnPayment.setOnClickListener {
+
+        }
     }
 
     override fun onObserver() {

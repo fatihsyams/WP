@@ -172,6 +172,25 @@
         app:layout_constraintTop_toTopOf="@+id/tvLabelDiscount" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLabelPaymentMethod"
+        style="@style/WarungPojokTextView.Caption"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/label_payment_method"
+        app:layout_constraintEnd_toEndOf="@+id/tvLabelDiscount"
+        app:layout_constraintStart_toStartOf="@+id/tvLabelDiscount"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelDiscount" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPayment"
+        style="@style/WarungPojokButton"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/action_pre_order"
+        app:layout_constraintStart_toEndOf="@id/tvLabelPaymentMethod"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelPaymentMethod"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLabelPaymentMethod" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTotalPrice"
         style="@style/WarungPojokTextView"
         android:layout_width="0dp"
@@ -202,7 +221,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnPrint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLabelDiscount"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelPaymentMethod"
         tools:itemCount="2"
         tools:listitem="@layout/item_order" />
 
