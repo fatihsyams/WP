@@ -1,6 +1,5 @@
 package com.example.wp.presentation.menu
 
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,9 +10,7 @@ import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenuEndlessAdapter
-import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
-import com.example.wp.presentation.viewmodel.MaterialViewModel
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
 import com.example.wp.utils.showContentView
@@ -26,7 +23,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     BaseEndlessRecyclerViewAdapter.OnLoadMoreListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
-    private val materialViewModel: MaterialViewModel by viewModel()
 
     var onMenuClickListener: OnMenuClickListener? = null
 
@@ -41,12 +37,12 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     private var listMenu = listOf<Menu>()
-    private var listUpdatedMenu = mutableListOf<Menu>()
 
     private var isLoadMore = false
 
     private var currentPage = 1
     private var totalPages = 0
+    private var firstPage = 1
 
     override val layoutView: Int = R.layout.fragment_menus
 
@@ -58,7 +54,9 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 datas = mutableListOf(),
                 onMenuClickListener = { menu ->
                     onMenuClicked(menu)
-                })
+                },
+                isCheckMenu = false
+            )
 
             menuAdapter?.apply {
                 page = currentPage
@@ -97,7 +95,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     override fun onObserver() {
-        observeMenus()
 
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
@@ -111,13 +108,12 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 is Load.Success -> {
                     msvMenu.showContentView()
                     listMenu = it.data.menus
-                    listUpdatedMenu.clear()
-                    showMenus(listMenu)
                     isLoadMore = false
                     menuAdapter?.setLoadMoreProgress(false)
                     totalPages = it.data.totalPage
                     menuAdapter?.totalPage = totalPages
                     menuAdapter?.notifyAddOrUpdateChanged(listMenu)
+
                     if (listMenu.isEmpty()) {
                         if (isLoadMore) {
                             isLoadMore = false
@@ -144,35 +140,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 }
             }
         })
-
-        materialViewModel.getMaterialMenuLoad.observe(this, Observer { it ->
-            when (it) {
-                is Load.Fail -> {
-                    showToast(it.error.localizedMessage)
-                }
-                is Load.Success -> {
-                    val materials = it.data
-
-                    if (materials.isNotEmpty()) {
-                        val menuId = materials.first().menuId
-                        val menu = listMenu.find { menu -> menu.id == menuId }
-                        menu?.let { newMenu ->
-                            newMenu.materialMenus = materials
-                            newMenu.stock =
-                                materials.map { materialMenu -> materialMenu.material.stock }.sum()
-                            menu.stockRequired = materials.map { it.stockRequired }.sum()
-                            listUpdatedMenu.remove(newMenu)
-                            listUpdatedMenu.add(newMenu)
-                            Log.d("UPDATEDMENU", "$listUpdatedMenu")
-                        }
-                    }
-
-                    if (listUpdatedMenu.size == listMenu.size) {
-                        showMenus(listUpdatedMenu)
-                    }
-                }
-            }
-        })
     }
 
     private fun showCategories(categories: List<Category>) {
@@ -182,16 +149,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = categoryAdapter
         }
-    }
-
-    private fun getMenuMaterials(data: List<Menu>) {
-        data.forEach { menu ->
-            materialViewModel.getMaterialMenus(menu.id)
-        }
-    }
-
-    private fun showMenus(data: List<Menu>) {
-        menuAdapter?.notifyAddOrUpdateChanged(data)
     }
 
     private fun onMenuClicked(menu: Menu) {
@@ -210,7 +167,8 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     override fun onCategoryClicked(data: Category) {
-        menuViewModel.getMenus(data.id, currentPage)
+        menuViewModel.getMenus(data.id, firstPage)
+        menuAdapter?.datas?.clear()
     }
 
     override fun onLoadMore() {
@@ -218,11 +176,16 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         menuAdapter?.setLoadMoreProgress(true)
         currentPage += 1
         menuAdapter?.page = currentPage
-        observeMenus()
+        observeMenus(currentPage)
     }
 
-    private fun observeMenus() {
-        menuViewModel.getMenus(page = currentPage)
+    private fun observeMenus(page: Int) {
+        menuViewModel.getMenus(page = page)
     }
 
+    override fun onResume() {
+        super.onResume()
+        menuAdapter?.datas?.clear()
+        observeMenus(firstPage)
+    }
 }

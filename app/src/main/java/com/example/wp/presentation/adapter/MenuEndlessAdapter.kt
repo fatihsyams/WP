@@ -20,7 +20,7 @@ class MenuEndlessAdapter(
     val onMenuClickListener: ((menu: Menu) -> Unit)? = null,
     val onDeleteMenusListener: DeleteMenuListener? = null,
     val onCheckMenuClickListener: ((menu: Menu) -> Unit)? = null,
-    val isCheckMenu:Boolean = false
+    var isCheckMenu: Boolean = false
 ) :
     BaseEndlessRecyclerViewAdapter<Menu>(context, datas) {
 
@@ -30,7 +30,13 @@ class MenuEndlessAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Menu> {
         return if (viewType == VIEW_TYPE_ITEM) {
-            if (isCheckMenu) CheckMenuViewHolder(getView(parent, viewType)) else MenuViewHolder(getView(parent, viewType))
+            if (isCheckMenu) {
+                CheckMenuViewHolder(getView(parent, viewType))
+            } else {
+                MenuViewHolder(
+                    getView(parent, viewType)
+                )
+            }
         } else {
             LoadMoreViewHolder(getView(parent, viewType))
         }
@@ -45,7 +51,11 @@ class MenuEndlessAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<Menu>, position: Int) {
-        holder.bind(data = datas[position])
+        if (isCheckMenu) {
+            (holder as CheckMenuViewHolder).bind(datas[position])
+        } else {
+            (holder as MenuViewHolder).bind(datas[position])
+        }
     }
 
     override fun getItemResourceLayout(viewType: Int): Int {

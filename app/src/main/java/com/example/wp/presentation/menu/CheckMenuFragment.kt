@@ -91,9 +91,11 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
     override fun onObserver() {
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
-                is Load.Loading -> msvCheckMenu.showLoadingView()
+                is Load.Loading -> {
+                    msvCheckMenu.showLoadingView()
+                }
                 is Load.Fail -> {
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     msvCheckMenu.showContentView()
