@@ -183,10 +183,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPayment"
-        style="@style/WarungPojokButton"
-        android:layout_marginTop="@dimen/dimen_16dp"
-        android:text="@string/action_pre_order"
-        app:layout_constraintStart_toEndOf="@id/tvLabelPaymentMethod"
+        style="@style/WarungPojokButtonOutlined"
+        android:text="@string/action_select_payment_method"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_14sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tvLabelPaymentMethod"
         app:layout_constraintBottom_toBottomOf="@+id/tvLabelPaymentMethod" />
 

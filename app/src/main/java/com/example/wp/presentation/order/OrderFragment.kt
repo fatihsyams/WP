@@ -14,20 +14,19 @@ import com.example.wp.domain.menu.TakeAway
 import com.example.wp.domain.menu.getTakeAwayTypes
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.table.Table
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GO_FOOD_TYPE
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GRAB_FOOD_TYPE
-import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_TYPE
+import com.example.wp.presentation.adapter.PaymentAdapter
 import com.example.wp.presentation.adapter.TableAdapter
 import com.example.wp.presentation.adapter.TakeAwayAdapter
-import com.example.wp.presentation.listener.CalculateMenuListener
-import com.example.wp.presentation.listener.OpenMenuPageListener
-import com.example.wp.presentation.listener.TableListener
-import com.example.wp.presentation.listener.TakeAwayListener
+import com.example.wp.presentation.listener.*
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.OrderViewModel
+import com.example.wp.presentation.viewmodel.PaymentViewModel
 import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
@@ -41,8 +40,6 @@ import kotlinx.android.synthetic.main.layout_alert_option.tvTitle
 import kotlinx.android.synthetic.main.layout_print_dialog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -64,6 +61,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     private val orderViewModel: OrderViewModel by viewModel()
     private val tableViewModel: TableViewModel by viewModel()
+    private val paymentViewModel: PaymentViewModel by viewModel()
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -80,6 +78,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     var onAddMenuListener: OpenMenuPageListener? = null
     private var selectedTable: Table? = null
+    private var selectedPayment: Payment? = null
     private var selectedTakeAway: TakeAway? = null
 
     private var orderMode = EDIT_MODE
@@ -113,25 +112,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         showTotalPrice(order.order.orderCategory)
         orderTypeContainer.visible()
         btnAdd.visible()
-        btnPrint.text = "Submit"
+        btnPrint.text = getString(R.string.action_print)
         showMenus(ORDER_EDIT_TYPE)
-    }
-
-    private fun setupOrderView() {
-        when (orderMode) {
-            EDIT_MODE -> {
-                orderTypeContainer.visible()
-                btnAdd.visible()
-                btnPrint.text = "Submit"
-                showMenus(ORDER_EDIT_TYPE)
-            }
-            READ_MODE -> {
-                orderTypeContainer.gone()
-                btnAdd.gone()
-                btnPrint.text = "Cetak"
-                showMenus(ORDER_READ_TYPE)
-            }
-        }
     }
 
     override fun onAction() {
@@ -197,7 +179,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         }
 
         btnPayment.setOnClickListener {
-
+            paymentViewModel.getPayments()
         }
     }
 
@@ -224,12 +206,24 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 is Load.Success -> {
                     showTableOptions(it.data)
                 }
-            }        })
+            }
+        })
+
+        paymentViewModel.paymentLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    showPaymentOptions(it.data)
+                }
+            }
+        })
 
     }
 
     private fun printReceipe() {
-        printBluetooth{
+        printBluetooth {
             showPrintAlert()
         }
     }
@@ -362,6 +356,33 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         }
     }
 
+    private fun showPaymentOptions(payments: List<Payment>) {
+        generateCustomBottomSheetDialog(
+            context = requireContext(),
+            layoutRes = R.layout.layout_alert_option,
+            isCancelable = true,
+            isExpandMode = true
+        ).apply {
+
+            val paymentAdapter = PaymentAdapter(
+                context = requireContext(),
+                datas = payments,
+                listener = object : PaymentListener {
+                    override fun onPaymentSelected(data: Payment) {
+                        selectedPayment = data
+                        getSelectedPayment()
+                        dismiss()
+                    }
+                }
+            )
+
+            rvOption.apply {
+                layoutManager = GridLayoutManager(requireContext(), 3)
+                adapter = paymentAdapter
+            }
+        }
+    }
+
     private fun showTakeAwayOptions() {
         generateCustomBottomSheetDialog(
             context = requireContext(),
@@ -410,16 +431,22 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         btnTableNumber.text = selectedTable?.number.toString()
     }
 
+    fun getSelectedPayment() {
+        btnPayment.text = selectedPayment?.name
+    }
+
     fun getSelectedTakeAway() {
         btnTakeAwayType.text = selectedTakeAway?.name.orEmpty()
         when (selectedTakeAway?.name) {
             TakeAwayTypeEnum.GOFOOD.type -> {
                 selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type
                 menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
+                edtCustomerName.setText(selectedOrderNameType.toUpperCase())
             }
             TakeAwayTypeEnum.GRABFOOD.type -> {
                 selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
                 menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
+                edtCustomerName.setText(selectedOrderNameType.toUpperCase())
             }
             else -> {
                 selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type

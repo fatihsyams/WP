@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class PaymentViewModel(val repository: PaymentRepository) : ViewModel() {
     private val _paymentLoad = MutableLiveData<Load<List<Payment>>>()
-    val tablesLoad = _paymentLoad as LiveData<Load<List<Payment>>>
+    val paymentLoad = _paymentLoad as LiveData<Load<List<Payment>>>
 
     init {
         _paymentLoad.value = Load.Loading
