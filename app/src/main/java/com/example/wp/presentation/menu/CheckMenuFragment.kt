@@ -4,40 +4,63 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.base.BaseEndlessRecyclerViewAdapter
 import com.example.wp.domain.menu.Menu
-import com.example.wp.presentation.adapter.CheckMenusAdapter
+import com.example.wp.presentation.adapter.MenuEndlessAdapter
 import com.example.wp.presentation.listener.CreateMenuListener
 import com.example.wp.presentation.listener.DeleteMenuListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
-import com.example.wp.utils.showContentView
-import com.example.wp.utils.showLoadingView
 import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_check_menu.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuListener {
+class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuListener,
+    BaseEndlessRecyclerViewAdapter.OnLoadMoreListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
-    private val checkMenuAdapter: CheckMenusAdapter by lazy {
-        CheckMenusAdapter(
-            context = requireContext(),
-            data = listOf(),
-            onDeleteMenusListener = this,
-            onCheckMenuClickListener = {
-                onCheckMenuClicked(it)
-            }
-        )
-    }
 
+    private var menuAdapter: MenuEndlessAdapter? = null
 
     var onCheckMenuClickListener: OnCheckMenuClickListener? = null
-    override val layoutView: Int = R.layout.fragment_check_menu
+
     private var listMenu = listOf<Menu>()
 
+    private var isLoadMore = false
+
+    private var currentPage = 1
+    private var totalPages = 0
+
+    override val layoutView: Int = R.layout.fragment_check_menu
 
     override fun onPreparation() {
         (parentFragment as MenusContainerFragment).onCreateMenuListener = this
+
+        if (menuAdapter == null) {
+            val gridLayoutManager = GridLayoutManager(requireContext(), 3)
+            menuAdapter = MenuEndlessAdapter(
+                context = requireContext(),
+                datas = mutableListOf(),
+                onDeleteMenusListener = this,
+                onCheckMenuClickListener = { menu ->
+                    onCheckMenuClicked(menu)
+                },
+                isCheckMenu = true
+            )
+
+            menuAdapter?.apply {
+                page = currentPage
+                totalPage = totalPages
+                layoutManager = gridLayoutManager
+                onLoadMoreListener = this@CheckMenuFragment
+                recyclerView = rvCheckMenus
+            }
+
+            rvCheckMenus.apply {
+                layoutManager = gridLayoutManager
+                adapter = menuAdapter
+            }
+        }
     }
 
     override fun onIntent() {
@@ -63,15 +86,6 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
         })
     }
 
-    private fun showMenus(data: List<Menu>) {
-        checkMenuAdapter.addDataMenus(data)
-        listMenu = data
-        rvCheckMenus.apply {
-            adapter = checkMenuAdapter
-            layoutManager = GridLayoutManager(context, 3)
-        }
-    }
-
     override fun onObserver() {
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
@@ -81,7 +95,23 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 }
                 is Load.Success -> {
                     msvCheckMenu.showContentView()
-                    showMenus(it.data)
+                    listMenu = it.data.menus
+                    isLoadMore = false
+                    menuAdapter?.setLoadMoreProgress(false)
+                    totalPages = it.data.totalPage
+                    menuAdapter?.totalPage = totalPages
+                    menuAdapter?.notifyAddOrUpdateChanged(listMenu)
+
+                    if (listMenu.isEmpty()) {
+                        if (isLoadMore) {
+                            isLoadMore = false
+                            menuAdapter?.setLoadMoreProgress(false)
+                            menuAdapter?.removeScrollListener()
+                        } else {
+                            menuAdapter?.datas?.clear()
+                            showToast("Tidak ada menu")
+                        }
+                    }
                 }
             }
         })
@@ -92,7 +122,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                     showToast(it.error.localizedMessage ?: "Error tidak diketahui")
                 }
                 is Load.Success -> {
-                    menuViewModel.getMenus()
+                    observeMenus()
                     showToast("Berhasil Hapus Data")
                 }
             }
@@ -101,14 +131,14 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
 
     override fun onResume() {
         super.onResume()
-        menuViewModel.getMenus()
+        observeMenus()
     }
 
     fun filter(query: String) {
         val result = listMenu.filter {
             it.name.contains(query, true).or(false)
         }
-        checkMenuAdapter.updateDataMenu(result)
+        menuAdapter?.notifyAddOrUpdateChanged(result)
     }
 
     override fun onDeleteClicked(menu: Menu, position: Int) {
@@ -124,7 +154,19 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
     }
 
     override fun onMenuCreated() {
-        menuViewModel.getMenus()
+        observeMenus()
+    }
+
+    override fun onLoadMore() {
+        isLoadMore = true
+        menuAdapter?.setLoadMoreProgress(true)
+        currentPage += 1
+        menuAdapter?.page = currentPage
+        observeMenus()
+    }
+
+    private fun observeMenus() {
+        menuViewModel.getMenus(page = currentPage)
     }
 
 }

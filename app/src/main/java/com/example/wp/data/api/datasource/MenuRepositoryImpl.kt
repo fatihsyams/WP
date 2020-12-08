@@ -5,6 +5,7 @@ import com.example.wp.data.api.service.MenuService
 import com.example.wp.data.mapper.CategoryMapper
 import com.example.wp.data.mapper.MenuMapper
 import com.example.wp.domain.menu.Category
+import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.repository.MenuRepository
 import com.example.wp.utils.Load
@@ -12,9 +13,9 @@ import com.example.wp.utils.handleApiError
 import java.lang.Exception
 
 class MenuRepositoryImpl(val service:MenuService):MenuRepository{
-    override suspend fun getMenus(categoryId:Int): Load<List<Menu>> {
+    override suspend fun getMenus(categoryId:Int, page:Int): Load<EndlessMenu> {
         return try {
-            val response = service.getMenu(categoryId)
+            val response = service.getMenu(categoryId,page)
             if (response.isSuccessful){
                 response.body()?.let {response->
                     MenuMapper.map(response)

@@ -35,9 +35,9 @@ class CheckStockPresenter(model: CheckStockInterface.View) : CheckStockInterface
                     response: Response<ResponseMenuWp>
                 ) {
                     if (response.isSuccessful) {
-                        var responBody = response.body()
+                        val responBody = response.body()
                         view?.showData(
-                            responBody?.data?.map {
+                            responBody?.data?.menu?.map {
                                 MenuMapper.mapToMenu(it)
                             }.orEmpty()
                         )

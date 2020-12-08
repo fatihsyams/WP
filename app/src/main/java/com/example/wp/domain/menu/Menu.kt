@@ -6,6 +6,11 @@ import com.example.wp.utils.emptyString
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+data class EndlessMenu(
+    val totalPage:Int,
+    val menus:List<Menu>
+)
+
 @Parcelize
 data class Menu(
     val images: String = emptyString(),

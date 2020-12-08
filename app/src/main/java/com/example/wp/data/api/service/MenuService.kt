@@ -18,8 +18,9 @@ interface MenuService {
     @GET("kategori-menu")
     suspend fun getMenuCategories():Response<ResponseCategory>
 
-    @GET("menu")
-    suspend fun getMenu(@Query("category_menu_id") categoryId:Int): Response<ResponseMenuWp>
+    @GET("menu-paginate")
+    suspend fun getMenu(@Query("category_menu_id") categoryId:Int,
+                        @Query("page") page:Int): Response<ResponseMenuWp>
 
     @POST("login")
     fun login(@Body requestLoginApi: RequestLoginApi): Call<ResponseLoginn>

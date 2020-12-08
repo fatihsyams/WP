@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wp.domain.menu.Category
+import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.repository.MenuRepository
 import com.example.wp.utils.Load
 import kotlinx.coroutines.launch
 
 class MenuViewModel(val repository: MenuRepository) : ViewModel() {
-    private val _menusLoad = MutableLiveData<Load<List<Menu>>>()
-    val menusLoad = _menusLoad as LiveData<Load<List<Menu>>>
+    private val _menusLoad = MutableLiveData<Load<EndlessMenu>>()
+    val menusLoad = _menusLoad as LiveData<Load<EndlessMenu>>
 
     private val _deleteMenu = MutableLiveData<Load<Boolean>>()
     val deleteMenu = _deleteMenu as LiveData<Load<Boolean>>
@@ -27,8 +28,8 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
         _categoriesLoad.value = Load.Loading
     }
 
-    fun getMenus(categoryId:Int = 0) = viewModelScope.launch {
-        val menus = repository.getMenus(categoryId)
+    fun getMenus(categoryId:Int = 0, page:Int) = viewModelScope.launch {
+        val menus = repository.getMenus(categoryId,page)
         _menusLoad.value = menus
     }
 

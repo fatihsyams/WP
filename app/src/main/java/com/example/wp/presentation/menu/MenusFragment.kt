@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.base.BaseEndlessRecyclerViewAdapter
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
+import com.example.wp.presentation.adapter.MenuEndlessAdapter
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.viewmodel.MaterialViewModel
@@ -20,21 +22,15 @@ import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menus.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
+class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
+    BaseEndlessRecyclerViewAdapter.OnLoadMoreListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
     private val materialViewModel: MaterialViewModel by viewModel()
 
     var onMenuClickListener: OnMenuClickListener? = null
 
-    private val menuAdapter: MenusAdapter by lazy {
-        MenusAdapter(
-            context = requireContext(),
-            data = listOf(),
-            onMenuClickListener = {
-                onMenuClicked(it)
-            })
-    }
+    private var menuAdapter: MenuEndlessAdapter? = null
 
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(
@@ -47,9 +43,36 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
     private var listMenu = listOf<Menu>()
     private var listUpdatedMenu = mutableListOf<Menu>()
 
+    private var isLoadMore = false
+
+    private var currentPage = 1
+    private var totalPages = 0
+
     override val layoutView: Int = R.layout.fragment_menus
 
     override fun onPreparation() {
+        if (menuAdapter == null) {
+            val gridLayoutManager = GridLayoutManager(requireContext(), 3)
+            menuAdapter = MenuEndlessAdapter(
+                context = requireContext(),
+                datas = mutableListOf(),
+                onMenuClickListener = { menu ->
+                    onMenuClicked(menu)
+                })
+
+            menuAdapter?.apply {
+                page = currentPage
+                totalPage = totalPages
+                layoutManager = gridLayoutManager
+                onLoadMoreListener = this@MenusFragment
+                recyclerView = rvMenus
+            }
+
+            rvMenus.apply {
+                layoutManager = gridLayoutManager
+                adapter = menuAdapter
+            }
+        }
     }
 
     override fun onIntent() {
@@ -74,19 +97,38 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
     }
 
     override fun onObserver() {
-        menuViewModel.getMenus()
+        observeMenus()
+
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
-                is Load.Loading -> msvMenu.showLoadingView()
+                is Load.Loading -> {
+                    msvMenu.showLoadingView()
+                    menuAdapter?.setLoadMoreProgress(true)
+                }
                 is Load.Fail -> {
                     showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     msvMenu.showContentView()
-                    listMenu = it.data
+                    listMenu = it.data.menus
                     listUpdatedMenu.clear()
                     showMenus(listMenu)
-                    if (it.data.isEmpty()) showToast("Tidak ada data")
+                    isLoadMore = false
+                    menuAdapter?.setLoadMoreProgress(false)
+                    totalPages = it.data.totalPage
+                    menuAdapter?.totalPage = totalPages
+                    menuAdapter?.notifyAddOrUpdateChanged(listMenu)
+                    if (listMenu.isEmpty()) {
+                        if (isLoadMore) {
+                            isLoadMore = false
+                            menuAdapter?.setLoadMoreProgress(false)
+                            menuAdapter?.removeScrollListener()
+                        } else {
+                            menuAdapter?.datas?.clear()
+                            showToast("Tidak ada menu")
+                        }
+                    }
+
                 }
             }
         })
@@ -111,12 +153,13 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                 is Load.Success -> {
                     val materials = it.data
 
-                    if(materials.isNotEmpty()){
+                    if (materials.isNotEmpty()) {
                         val menuId = materials.first().menuId
-                        val menu = listMenu.find { menu ->  menu.id ==   menuId}
-                        menu?.let { newMenu->
+                        val menu = listMenu.find { menu -> menu.id == menuId }
+                        menu?.let { newMenu ->
                             newMenu.materialMenus = materials
-                            newMenu.stock = materials.map { materialMenu ->  materialMenu.material.stock }.sum()
+                            newMenu.stock =
+                                materials.map { materialMenu -> materialMenu.material.stock }.sum()
                             menu.stockRequired = materials.map { it.stockRequired }.sum()
                             listUpdatedMenu.remove(newMenu)
                             listUpdatedMenu.add(newMenu)
@@ -124,7 +167,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
                         }
                     }
 
-                    if (listUpdatedMenu.size == listMenu.size){
+                    if (listUpdatedMenu.size == listMenu.size) {
                         showMenus(listUpdatedMenu)
                     }
                 }
@@ -141,18 +184,14 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
         }
     }
 
-    private fun getMenuMaterials(data: List<Menu>){
-        data.forEach {menu->
+    private fun getMenuMaterials(data: List<Menu>) {
+        data.forEach { menu ->
             materialViewModel.getMaterialMenus(menu.id)
         }
     }
 
     private fun showMenus(data: List<Menu>) {
-        menuAdapter.addDataMenus(data)
-        rvMenus.apply {
-            adapter = menuAdapter
-            layoutManager = GridLayoutManager(context, 3)
-        }
+        menuAdapter?.notifyAddOrUpdateChanged(data)
     }
 
     private fun onMenuClicked(menu: Menu) {
@@ -163,7 +202,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
         val result = listMenu.filter {
             it.name.contains(query, true).or(false)
         }
-        menuAdapter.updateDataMenu(result)
+        menuAdapter?.notifyAddOrUpdateChanged(result)
     }
 
     interface OnMenuClickListener {
@@ -171,7 +210,19 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener {
     }
 
     override fun onCategoryClicked(data: Category) {
-        menuViewModel.getMenus(data.id)
+        menuViewModel.getMenus(data.id, currentPage)
+    }
+
+    override fun onLoadMore() {
+        isLoadMore = true
+        menuAdapter?.setLoadMoreProgress(true)
+        currentPage += 1
+        menuAdapter?.page = currentPage
+        observeMenus()
+    }
+
+    private fun observeMenus() {
+        menuViewModel.getMenus(page = currentPage)
     }
 
 }
