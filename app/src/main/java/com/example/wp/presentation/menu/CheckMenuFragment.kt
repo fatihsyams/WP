@@ -11,6 +11,8 @@ import com.example.wp.presentation.listener.CreateMenuListener
 import com.example.wp.presentation.listener.DeleteMenuListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
+import com.example.wp.utils.showContentView
+import com.example.wp.utils.showLoadingView
 import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_check_menu.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

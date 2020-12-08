@@ -113,8 +113,21 @@ class MenuEndlessAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
+
                 tvHargaMenus.text = toCurrencyFormat(item.price)
                 tvNamaMenus.text = item.name
+                tvDiscount.text = "${item.discount} %"
+
+                tvSoldOut.visibility =
+                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
+                tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
+
+                tvHargaMenus.setTextColor(
+                    if (item.discount == 0) ContextCompat.getColor(
+                        context,
+                        R.color.colorGrey
+                    ) else ContextCompat.getColor(context, R.color.colorRed)
+                )
 
                 setOnClickListener {
                     onCheckMenuClickListener?.invoke(item)
