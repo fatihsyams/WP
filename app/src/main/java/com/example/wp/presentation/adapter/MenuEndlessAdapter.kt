@@ -19,7 +19,6 @@ class MenuEndlessAdapter(
     override var datas: MutableList<Menu>,
     val onMenuClickListener: ((menu: Menu) -> Unit)? = null,
     val onDeleteMenusListener: DeleteMenuListener? = null,
-    val onCheckMenuClickListener: ((menu: Menu) -> Unit)? = null,
     var isCheckMenu: Boolean = false
 ) :
     BaseEndlessRecyclerViewAdapter<Menu>(context, datas) {
@@ -30,13 +29,9 @@ class MenuEndlessAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Menu> {
         return if (viewType == VIEW_TYPE_ITEM) {
-            if (isCheckMenu) {
-                CheckMenuViewHolder(getView(parent, viewType))
-            } else {
-                MenuViewHolder(
-                    getView(parent, viewType)
-                )
-            }
+            MenuViewHolder(
+                getView(parent, viewType)
+            )
         } else {
             LoadMoreViewHolder(getView(parent, viewType))
         }
@@ -51,11 +46,7 @@ class MenuEndlessAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<Menu>, position: Int) {
-        if (isCheckMenu) {
-            (holder as CheckMenuViewHolder).bind(datas[position])
-        } else {
-            (holder as MenuViewHolder).bind(datas[position])
-        }
+        (holder).bind(datas[position])
     }
 
     override fun getItemResourceLayout(viewType: Int): Int {
@@ -79,11 +70,23 @@ class MenuEndlessAdapter(
     }
 
 
-    override fun getItemCount() = datas.size
+    override fun getItemCount():Int {
+        return datas.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
 
     inner class MenuViewHolder(itemView: View) : BaseViewHolder<Menu>(itemView) {
         override fun bind(item: Menu) {
             with(itemView) {
+
+                floatingActionButton.setOnClickListener {
+                    onDeleteMenusListener?.onDeleteClicked(item, adapterPosition)
+                }
+
+                floatingActionButton.setImageResource(if(isCheckMenu) R.drawable.ic_baseline_restore_from_trash_24 else R.drawable.ic_baseline_add_24)
 
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
@@ -108,42 +111,6 @@ class MenuEndlessAdapter(
                     if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
                 }
             }
-        }
-    }
-
-    inner class CheckMenuViewHolder(view: View) : BaseViewHolder<Menu>(view) {
-        override fun bind(item: Menu) {
-            with(itemView) {
-
-                floatingActionButton.setOnClickListener {
-                    onDeleteMenusListener?.onDeleteClicked(item, adapterPosition)
-                }
-                floatingActionButton.setImageResource(R.drawable.ic_baseline_restore_from_trash_24)
-
-                if (item.images.isNotEmpty()) {
-                    Glide.with(context).load(item.images).into(imgMenus)
-                }
-
-                tvHargaMenus.text = toCurrencyFormat(item.price)
-                tvNamaMenus.text = item.name
-                tvDiscount.text = "${item.discount} %"
-
-                tvSoldOut.visibility =
-                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
-                tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
-
-                tvHargaMenus.setTextColor(
-                    if (item.discount == 0) ContextCompat.getColor(
-                        context,
-                        R.color.colorGrey
-                    ) else ContextCompat.getColor(context, R.color.colorRed)
-                )
-
-                setOnClickListener {
-                    onCheckMenuClickListener?.invoke(item)
-                }
-            }
-
         }
     }
 

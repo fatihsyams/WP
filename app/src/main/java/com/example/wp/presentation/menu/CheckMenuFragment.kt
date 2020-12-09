@@ -44,7 +44,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 context = requireContext(),
                 datas = mutableListOf(),
                 onDeleteMenusListener = this,
-                onCheckMenuClickListener = { menu ->
+                onMenuClickListener = { menu ->
                     onCheckMenuClicked(menu)
                 },
                 isCheckMenu = true

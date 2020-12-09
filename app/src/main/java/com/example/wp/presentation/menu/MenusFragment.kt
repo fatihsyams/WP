@@ -13,6 +13,7 @@ import com.example.wp.presentation.adapter.MenuEndlessAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.Load
+import com.example.wp.utils.custom.CustomNpaGridLayoutManager
 import com.example.wp.utils.showContentView
 import com.example.wp.utils.showLoadingView
 import com.example.wp.utils.showToast
@@ -47,30 +48,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     override val layoutView: Int = R.layout.fragment_menus
 
     override fun onPreparation() {
-        if (menuAdapter == null) {
-            val gridLayoutManager = GridLayoutManager(requireContext(), 3)
-            menuAdapter = MenuEndlessAdapter(
-                context = requireContext(),
-                datas = mutableListOf(),
-                onMenuClickListener = { menu ->
-                    onMenuClicked(menu)
-                },
-                isCheckMenu = false
-            )
 
-            menuAdapter?.apply {
-                page = currentPage
-                totalPage = totalPages
-                layoutManager = gridLayoutManager
-                onLoadMoreListener = this@MenusFragment
-                recyclerView = rvMenus
-            }
-
-            rvMenus.apply {
-                layoutManager = gridLayoutManager
-                adapter = menuAdapter
-            }
-        }
     }
 
     override fun onIntent() {
@@ -95,7 +73,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     override fun onObserver() {
-
         menuViewModel.menusLoad.observe(this, Observer {
             when (it) {
                 is Load.Loading -> {
@@ -183,9 +160,38 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         menuViewModel.getMenus(page = page)
     }
 
+    private fun preparingAdapter(){
+        if (menuAdapter == null) {
+            val gridLayoutManager = CustomNpaGridLayoutManager(requireContext(), 3)
+            menuAdapter = MenuEndlessAdapter(
+                context = requireContext(),
+                datas = mutableListOf(),
+                onMenuClickListener = { menu ->
+                    onMenuClicked(menu)
+                },
+                isCheckMenu = false
+            )
+
+            menuAdapter?.apply {
+                page = currentPage
+                totalPage = totalPages
+                layoutManager = gridLayoutManager
+                onLoadMoreListener = this@MenusFragment
+                recyclerView = rvMenus
+            }
+
+            rvMenus.apply {
+                layoutManager = gridLayoutManager
+                adapter = menuAdapter
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        menuAdapter?.datas?.clear()
+        menuAdapter = null
+        preparingAdapter()
         observeMenus(firstPage)
     }
+
 }
