@@ -68,7 +68,7 @@ abstract class BaseEndlessRecyclerViewAdapter<T>(
             if (!datas.contains(data)) {
                 datas.add(data)
             }
-//            recyclerView?.recycledViewPool?.clear()
+            recyclerView?.recycledViewPool?.clear()
             notifyDataSetChanged()
         }
     }

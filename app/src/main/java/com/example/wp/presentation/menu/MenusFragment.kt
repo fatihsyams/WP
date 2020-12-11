@@ -37,7 +37,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         )
     }
 
-    private var listMenu = listOf<Menu>()
+    private var listMenu = mutableListOf<Menu>()
 
     private var isLoadMore = false
 
@@ -84,14 +84,14 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 }
                 is Load.Success -> {
                     msvMenu.showContentView()
-                    listMenu = it.data.menus
+                    listMenu.addAll(it.data.menus)
                     isLoadMore = false
                     menuAdapter?.setLoadMoreProgress(false)
                     totalPages = it.data.totalPage
                     menuAdapter?.totalPage = totalPages
-                    menuAdapter?.notifyAddOrUpdateChanged(listMenu)
+                    menuAdapter?.notifyAddOrUpdateChanged(it.data.menus)
 
-                    if (listMenu.isEmpty()) {
+                    if (it.data.menus.isEmpty()) {
                         if (isLoadMore) {
                             isLoadMore = false
                             menuAdapter?.setLoadMoreProgress(false)
@@ -136,6 +136,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         val result = listMenu.filter {
             it.name.contains(query, true).or(false)
         }
+        menuAdapter?.clear()
         menuAdapter?.notifyAddOrUpdateChanged(result)
     }
 
@@ -144,8 +145,9 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     override fun onCategoryClicked(data: Category) {
+        listMenu.clear()
         menuViewModel.getMenus(data.id, firstPage)
-        menuAdapter?.datas?.clear()
+        menuAdapter?.clear()
     }
 
     override fun onLoadMore() {
