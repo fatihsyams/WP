@@ -11,6 +11,7 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.CalculateMenuListener
 import com.example.wp.utils.toCurrencyFormat
+import com.example.wp.utils.toStrikethrough
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
@@ -76,12 +77,16 @@ class MenusAdapter(
                 }
 
                 tvHargaMenus.text = toCurrencyFormat(item.price)
+//                tvDiscountPrice.text = toCurrencyFormat(item.price,item.discount)
                 tvNamaMenus.text = item.name
                 tvDiscount.text = "${item.discount} %"
 
                 tvSoldOut.visibility =
                     if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
                 tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
+//                tvDiscountPrice.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
+
+//                if (item.discount != 0) tvHargaMenus.toStrikethrough()
 
                 tvHargaMenus.setTextColor(
                     if (item.discount == 0) ContextCompat.getColor(
@@ -110,6 +115,28 @@ class MenusAdapter(
                     ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity)
                     else -> toCurrencyFormat(item.price * item.quantity)
                 }
+//                tvDiscountPriceOrder.text = when (type) {
+//                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price * item.quantity,item.discount)
+//                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice * item.quantity,item.discountGofood)
+//                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity,item.discountGrabfood)
+//                    else -> toCurrencyFormat(item.price * item.quantity)
+//                }
+
+                tvDiscountOrder.text = when (type) {
+                    ORDER_EDIT_TYPE -> "${item.discount}%"
+                    ORDER_READ_GO_FOOD_TYPE -> "${item.discountGofood}%"
+                    ORDER_READ_GRAB_FOOD_TYPE -> "${item.discountGrabfood}%"
+                    else -> "${item.discount}%"
+                }
+                tvDiscountOrder.visibility = when (type) {
+                    ORDER_EDIT_TYPE -> if (item.discount == 0) View.GONE else View.VISIBLE
+                    ORDER_READ_GO_FOOD_TYPE -> if (item.discountGofood == 0) View.GONE else View.VISIBLE
+                    ORDER_READ_GRAB_FOOD_TYPE -> if (item.discountGrabfood == 0) View.GONE else View.VISIBLE
+                    else -> if (item.discount == 0) View.GONE else View.VISIBLE
+                }
+//                tvDiscountPriceOrder.visibility = if (item.discount != 0 || item.discountGofood != 0 || item.discountGrabfood != 0) View.VISIBLE else View.GONE
+
+//                if (item.discount != 0 || item.discountGofood != 0 || item.discountGrabfood != 0) tvHargaMenus.toStrikethrough()
 
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation

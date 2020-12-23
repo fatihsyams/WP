@@ -96,6 +96,16 @@
         app:layout_constraintStart_toEndOf="@id/tvDiscount"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
 
+    <TextView
+        android:id="@+id/tvDiscountPrice"
+        style="@style/WarungPojokTextView.Header.Bold"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
+        android:hint="@string/sample_price"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHargaMenus" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDiscount"
         android:layout_width="wrap_content"

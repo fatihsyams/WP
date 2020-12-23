@@ -1,6 +1,7 @@
 package com.example.wp.presentation.main
 
 import android.view.View
+import android.widget.Button
 import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
@@ -53,7 +54,6 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     override fun onAction() {
         menuFragment.onMenuClickListener = this
 
-
         tvOrder.setOnClickListener {
             loadFragment(R.id.fl_container, menuFragment)
         }
@@ -100,7 +100,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     }
 
     private fun setupOrderButton(){
-        btnOrder.visibility = if (selectedMenus.isNotEmpty()) View.VISIBLE else View.GONE
+        orderButton.visibility = if (selectedMenus.isNotEmpty()) View.VISIBLE else View.GONE
+        tvQuantityOrder.text = selectedMenus.size.toString()
     }
 
     override fun onOpenMenuPage() {
@@ -108,8 +109,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         setupOrderButton()
     }
 
-    fun getOrderButton(): FloatingActionButton {
-        return btnOrder
+    fun getOrderButton(): View {
+        return orderButton
     }
 
     fun clearSelectedMenus(){

@@ -37,8 +37,8 @@ object MenuMapper {
                 response.price ?: 0.0,
                 response.discount
             ),
-            goFoodPrice = getPrice(response.goFoodPrice ?: 0.0, response.discountTakeAway),
-            grabFoodPrice = getPrice(response.grabFoodPrice ?: 0.0, response.discountTakeAway),
+            goFoodPrice = getPrice(response.goFoodPrice ?: 0.0, response.discountGofood),
+            grabFoodPrice = getPrice(response.grabFoodPrice ?: 0.0, response.discountGrabfood),
             name = response.name.orEmpty(),
             description = response.description.orEmpty(),
             createdAt = response.createdAt.orEmpty(),
@@ -52,7 +52,9 @@ object MenuMapper {
                 .orEmpty(),
             stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0,
             discount = response.discount ?: 0,
-            discountTakeAway = response.discountTakeAway ?: 0
+            discountTakeAway = response.discountTakeAway ?: 0,
+            discountGofood = response.discountGofood ?: 0,
+            discountGrabfood = response.discountGrabfood ?: 0
         )
     }
 

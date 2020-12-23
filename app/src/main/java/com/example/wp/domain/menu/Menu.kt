@@ -31,7 +31,9 @@ data class Menu(
     var stockRequired:Int = materialMenus.map { it.stockRequired }.sum(),
     var totalPrice:Double = price*quantity,
     val discount:Int = 0,
-    val discountTakeAway:Int = 9
+    val discountTakeAway:Int = 9,
+    val discountGofood:Int = 9,
+    val discountGrabfood:Int = 9
 ) : Parcelable
 
 @Parcelize

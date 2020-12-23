@@ -63,8 +63,6 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
     private val tableViewModel: TableViewModel by viewModel()
     private val paymentViewModel: PaymentViewModel by viewModel()
 
-    private val scope = CoroutineScope(Dispatchers.IO)
-
     private val menuAdapter: MenusAdapter by lazy {
         MenusAdapter(
             context = requireContext(),

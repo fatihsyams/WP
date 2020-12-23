@@ -43,9 +43,10 @@ fun clearForm(views:List<View>){
     }
 }
 
-fun toCurrencyFormat(number:Double):String{
+fun toCurrencyFormat(number:Double,discount:Int=0):String{
+    val value = if (discount != 0) number - number.times(discount) / 100 else number
     val formatter: NumberFormat = DecimalFormat("#,###")
-    return "Rp ${formatter.format(number)}"
+    return "Rp ${formatter.format(value)}"
 }
 
 fun isFormComplete(views: List<TextInputLayout>): Boolean {
