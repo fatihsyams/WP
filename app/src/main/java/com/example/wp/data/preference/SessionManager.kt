@@ -8,6 +8,7 @@ class SessionManager(context: Context) {
     private val KEY_PASS = "PASS"
     private val KEY_BOOLEAN = "BOOLEAN"
     private val KEY_TOKEN = "TOKEN"
+    private val KEY_ORDER = "ORDER"
 
 
     var mSharedPrefence: SharedPreferences? = null

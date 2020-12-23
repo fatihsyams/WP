@@ -13,6 +13,7 @@ import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.menu.MenusContainerFragment
 import com.example.wp.presentation.order.OrderFragment
+import com.example.wp.presentation.order.OrderListFragment
 import com.example.wp.presentation.stock.StockContainerFragment
 import com.example.wp.utils.loadFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -52,8 +53,13 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     override fun onAction() {
         menuFragment.onMenuClickListener = this
 
+
         tvOrder.setOnClickListener {
             loadFragment(R.id.fl_container, menuFragment)
+        }
+
+        tvListOrder.setOnClickListener {
+            loadFragment(R.id.fl_container, OrderListFragment())
         }
 
         tvMenu.setOnClickListener {

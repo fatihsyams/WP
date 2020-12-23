@@ -1,156 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/dimen_16dp"
-    android:layout_marginTop="@dimen/dimen_8dp"
-    android:layout_marginRight="@dimen/dimen_16dp"
-    android:layout_marginBottom="@dimen/dimen_8dp"
-    android:elevation="@dimen/dimen_16dp"
-    app:cardCornerRadius="@dimen/dimen_8dp">
+    android:layout_margin="@dimen/dimen_8dp"
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/imageContainer"
+        <ImageView
+            android:id="@+id/imgStock"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/dimen_16dp"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:cardCornerRadius="@dimen/dimen_8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@+id/guideline12"
+            app:layout_constraintEnd_toStartOf="@id/guideline10"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
 
-            <ImageView
-                android:id="@+id/imgMenus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:src="@color/colorPrimary" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvNamaMenus"
-            style="@style/WarungPojokTextView.Title.Bold"
+        <TextView
+            android:id="@+id/tvOrderType"
+            style="@style/WarungPojokTextView.Caption.Bold"
             android:layout_width="0dp"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
+            android:background="@drawable/bg_rectangle_gradient_white_transparent"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/sample_menu"
-            app:layout_constraintEnd_toStartOf="@+id/btnDelete"
-            app:layout_constraintStart_toStartOf="@+id/guideline12"
-            app:layout_constraintTop_toTopOf="@+id/imageContainer" />
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/label_take_away_type"
+            app:layout_constraintBottom_toBottomOf="@id/imgStock"
+            app:layout_constraintEnd_toEndOf="@+id/imgStock"
+            app:layout_constraintStart_toStartOf="@+id/imgStock"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvHargaMenus"
-            style="@style/WarungPojokTextView.Caption"
-            android:layout_marginTop="16dp"
-            android:text="@string/sample_price"
-            app:layout_constraintStart_toStartOf="@+id/guideline12"
-            app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
+        <TextView
+            android:id="@+id/tvOrderName"
+            style="@style/WarungPojokTextView.Caption.Bold"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:text="@string/label_order"
+            app:layout_constraintStart_toEndOf="@+id/imgStock"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvLabelInformation"
-            style="@style/WarungPojokTextView.Title.Bold"
-            android:layout_marginStart="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/dimen_16dp"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:text="@string/label_information"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageContainer" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvInformation"
-            style="@style/WarungPojokTextView.Caption"
+        <View
+            android:id="@+id/line"
             android:layout_width="0dp"
-            android:layout_marginStart="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/dimen_16dp"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="@dimen/dimen_16dp"
-            android:ellipsize="end"
-            android:maxLines="5"
+            android:layout_height="1dp"
+            android:background="@color/colorBase"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelInformation"
-            tools:text="@tools:sample/lorem/random" />
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDelete"
-            style="@style/WarungPojokButton.Red"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
-            android:drawablePadding="@dimen/dimen_16dp"
+            android:id="@+id/btnBill"
+            style="@style/WarungPojokButton"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorRed"
             android:minWidth="0dp"
-            app:icon="@drawable/ic_baseline_restore_from_trash_24"
+            android:minHeight="0dp"
+            android:text="Bill"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnPay"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imgStock"
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPay"
+            style="@style/WarungPojokButton"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorRed"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="Pay"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnCancel"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnBill"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/WarungPojokButton"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorRed"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvNamaMenus" />
-
-        <ImageView
-            android:id="@+id/btnMinus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
-            android:elevation="@dimen/dimen_8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvQuantity"
-            app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
-            app:layout_constraintTop_toTopOf="@+id/tvQuantity"
-            app:srcCompat="@drawable/ic_minus_circle" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
-            android:text="0"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/btnPlus"
-            app:layout_constraintEnd_toStartOf="@+id/btnPlus"
-            app:layout_constraintTop_toTopOf="@+id/btnPlus" />
-
-        <ImageView
-            android:id="@+id/btnPlus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:layout_marginEnd="@dimen/dimen_16dp"
-            android:layout_marginRight="@dimen/dimen_16dp"
-            android:layout_marginBottom="8dp"
-            android:elevation="@dimen/dimen_8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline13"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-            app:srcCompat="@drawable/ic_plus_circle" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnPay"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline12"
+            android:id="@+id/guideline10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="142dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="158dp" />
+            app:layout_constraintGuide_begin="120dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
+
+

@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvNamaMenus
-import kotlinx.android.synthetic.main.item_order.view.*
+import kotlinx.android.synthetic.main.item_menu_order.view.*
 
 class MenusAdapter(
     val context: Context,
@@ -39,11 +39,11 @@ class MenusAdapter(
             R.layout.item_menu -> MenuViewHolder(
                 LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
             )
-            R.layout.item_order -> OrderViewHolder(
-                LayoutInflater.from(context).inflate(R.layout.item_order, parent, false)
+            R.layout.item_menu_order -> OrderViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.item_menu_order, parent, false)
             )
             else -> OrderViewHolder(
-                LayoutInflater.from(context).inflate(R.layout.item_order, parent, false)
+                LayoutInflater.from(context).inflate(R.layout.item_menu_order, parent, false)
             )
         }
     }
@@ -55,8 +55,8 @@ class MenusAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (type) {
             MENU_TYPE -> R.layout.item_menu
-            ORDER_EDIT_TYPE, ORDER_READ_TYPE -> R.layout.item_order
-            else -> R.layout.item_order
+            ORDER_EDIT_TYPE, ORDER_READ_TYPE -> R.layout.item_menu_order
+            else -> R.layout.item_menu_order
         }
     }
 
