@@ -22,6 +22,17 @@ data class ResponseDeleteMenu(
     val message: String?
 )
 
+data class ResponseSearchMenu(
+    @SerializedName("status")
+    val status: String?,
+    @SerializedName("status_code")
+    val statusCode: String?,
+    @SerializedName("message")
+    val message: String?,
+    @SerializedName("menu")
+    val menu:List<MenuApi>
+)
+
 data class EndlessMenuApi(
     @SerializedName("current_page")
     val currentPage: Int?,

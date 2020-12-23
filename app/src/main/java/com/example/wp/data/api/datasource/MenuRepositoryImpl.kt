@@ -55,4 +55,19 @@ class MenuRepositoryImpl(val service:MenuService):MenuRepository{
             Load.Fail(e)
         }
     }
+
+    override suspend fun getSearchMenuResult(query: String): Load<List<Menu>> {
+        return try {
+            val response = service.getSearchMenuResult(query)
+            if (response.isSuccessful){
+                response.body()?.let {response->
+                    MenuMapper.mapSearchMenu(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            }else{
+                Load.Fail(Throwable(response.message()))
+            }
+        }catch (e:Exception){
+            Load.Fail(e)
+        }
+    }
 }

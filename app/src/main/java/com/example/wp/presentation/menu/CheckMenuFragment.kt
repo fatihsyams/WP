@@ -26,7 +26,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
 
     var onCheckMenuClickListener: OnCheckMenuClickListener? = null
 
-    private var listMenu = listOf<Menu>()
+    private var listMenu = mutableListOf<Menu>()
 
     private var isLoadMore = false
 
@@ -76,16 +76,24 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
         searchViewCheckMenus.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                filter(query.orEmpty())
+                query?.let { menuViewModel.getMenus(it) }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText.orEmpty())
+                if (newText.isNullOrEmpty()){
+                    observeMenus()
+                }else{
+                    menuViewModel.getMenus(newText)
+                }
                 return false
             }
-
         })
+
+        searchViewCheckMenus.setOnCloseListener {
+            observeMenus()
+            return@setOnCloseListener true
+        }
     }
 
     override fun onObserver() {
@@ -99,7 +107,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 }
                 is Load.Success -> {
                     msvCheckMenu.showContentView()
-                    listMenu = it.data.menus
+                    listMenu.addAll(it.data.menus)
                     isLoadMore = false
                     menuAdapter?.setLoadMoreProgress(false)
                     totalPages = it.data.totalPage
@@ -128,6 +136,28 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 is Load.Success -> {
                     observeMenus()
                     showToast("Berhasil Hapus Data")
+                }
+            }
+        })
+
+        menuViewModel.searchMenuLoad.observe(this, Observer {
+            when (it) {
+                is Load.Loading -> {
+                    menuAdapter?.clear()
+                    msvCheckMenu.showLoadingView()
+                }
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    msvCheckMenu.showContentView()
+                    listMenu.addAll(it.data)
+                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
+
+                    if (it.data.isEmpty()) {
+                        menuAdapter?.datas?.clear()
+                        showToast("Tidak ada menu")
+                    }
                 }
             }
         })

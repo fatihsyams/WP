@@ -1,9 +1,6 @@
 package com.example.wp.data.mapper
 
-import com.example.wp.data.api.model.response.EndlessMenuApi
-import com.example.wp.data.api.model.response.MenuApi
-import com.example.wp.data.api.model.response.MenuImageApi
-import com.example.wp.data.api.model.response.ResponseMenuWp
+import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.MenuImage
@@ -11,6 +8,12 @@ import com.example.wp.utils.Load
 import com.example.wp.utils.handleApiSuccess
 
 object MenuMapper {
+
+    fun mapSearchMenu(
+        response: ResponseSearchMenu
+    ): Load<List<Menu>> {
+        return handleApiSuccess(data = response.menu.map { mapToMenu(it) })
+    }
 
     fun map(
         response: ResponseMenuWp

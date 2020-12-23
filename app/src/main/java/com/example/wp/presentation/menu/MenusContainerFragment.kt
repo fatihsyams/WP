@@ -53,7 +53,6 @@ class MenusContainerFragment : Fragment(), CheckMenuFragment.OnCheckMenuClickLis
     }
 
     override fun onCheckMenuClicked(menu: Menu) {
-        val updateMenuFragment = CreateMenuFragment.newInstance(menu)
         selectedMenu = menu
         viewpager_main.currentItem = 0
         onMenuSelectListener?.onSelectMenu(menu)

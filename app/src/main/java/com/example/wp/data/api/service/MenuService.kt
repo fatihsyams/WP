@@ -10,13 +10,13 @@ import retrofit2.http.*
 interface MenuService {
 
     @GET("menu?category_menu_id=0")
-    suspend fun getMenu(): Response<ResponseMenuWp>
-
-    @GET("menu?category_menu_id=0")
     fun getMenuMVP(): Call<ResponseMenuWp>
 
     @GET("kategori-menu")
     suspend fun getMenuCategories():Response<ResponseCategory>
+
+    @GET("menu-search")
+    suspend fun getSearchMenuResult(@Query("search") query:String):Response<ResponseSearchMenu>
 
     @GET("menu-paginate")
     suspend fun getMenu(@Query("category_menu_id") categoryId:Int,

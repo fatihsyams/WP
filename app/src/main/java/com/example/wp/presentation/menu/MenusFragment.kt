@@ -12,11 +12,8 @@ import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenuEndlessAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.viewmodel.MenuViewModel
-import com.example.wp.utils.Load
+import com.example.wp.utils.*
 import com.example.wp.utils.custom.CustomNpaGridLayoutManager
-import com.example.wp.utils.showContentView
-import com.example.wp.utils.showLoadingView
-import com.example.wp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_menus.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -61,15 +58,24 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                filter(query.orEmpty())
+                query?.let { menuViewModel.getMenus(it) }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText.orEmpty())
+                if (newText.isNullOrEmpty()){
+                    observeMenus(page = currentPage)
+                }else{
+                    menuViewModel.getMenus(newText)
+                }
                 return false
             }
         })
+
+        searchView.setOnCloseListener {
+            observeMenus(firstPage)
+            return@setOnCloseListener true
+        }
     }
 
     override fun onObserver() {
@@ -101,7 +107,6 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                             showToast("Tidak ada menu")
                         }
                     }
-
                 }
             }
         })
@@ -114,6 +119,28 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 }
                 is Load.Success -> {
                     showCategories(it.data)
+                }
+            }
+        })
+
+        menuViewModel.searchMenuLoad.observe(this, Observer {
+            when (it) {
+                is Load.Loading -> {
+                    menuAdapter?.clear()
+                    msvMenu.showLoadingView()
+                }
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    msvMenu.showContentView()
+                    listMenu.addAll(it.data)
+                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
+
+                    if (it.data.isEmpty()) {
+                        menuAdapter?.datas?.clear()
+                        showToast("Tidak ada menu")
+                    }
                 }
             }
         })
@@ -145,6 +172,8 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     }
 
     override fun onCategoryClicked(data: Category) {
+        searchView.setQuery(emptyString(),false)
+        searchView.clearFocus()
         listMenu.clear()
         menuViewModel.getMenus(data.id, firstPage)
         menuAdapter?.clear()

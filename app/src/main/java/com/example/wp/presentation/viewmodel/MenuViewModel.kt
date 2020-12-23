@@ -22,13 +22,19 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
     val categoriesLoad = _categoriesLoad as LiveData<Load<List<Category>>>
 
 
+    private val _searchMenuLoad = MutableLiveData<Load<List<Menu>>>()
+    val searchMenuLoad = _searchMenuLoad as LiveData<Load<List<Menu>>>
+
+
     init {
         _menusLoad.value = Load.Loading
         _deleteMenu.value = Load.Loading
         _categoriesLoad.value = Load.Loading
+        _searchMenuLoad.value = Load.Loading
     }
 
     fun getMenus(categoryId:Int = 0, page:Int) = viewModelScope.launch {
+        _menusLoad.value = Load.Loading
         val menus = repository.getMenus(categoryId,page)
         _menusLoad.value = menus
     }
@@ -41,6 +47,12 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
     fun getCategories() = viewModelScope.launch {
         val categories = repository.getCategories()
         _categoriesLoad.value = categories
+    }
+
+    fun getMenus(query:String) = viewModelScope.launch {
+        _searchMenuLoad.value = Load.Loading
+        val menus = repository.getSearchMenuResult(query)
+        _searchMenuLoad.value = menus
     }
 
 }
