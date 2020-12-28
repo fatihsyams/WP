@@ -137,4 +137,5 @@
     <string name="label_payment_method">Metode Pembayaran</string>
     <string name="action_select_payment_method">Pilih Metode Pembayaran</string>
     <string name="label_order_list">Daftar Pesanan</string>
+    <string name="action_submit">Kirim</string>
 </resources>

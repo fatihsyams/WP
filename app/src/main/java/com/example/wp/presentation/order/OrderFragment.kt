@@ -3,12 +3,11 @@ package com.example.wp.presentation.order
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
-import com.example.wp.base.WarungPojokPrinterFragment
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
 import com.example.wp.domain.menu.getTakeAwayTypes
@@ -36,18 +35,13 @@ import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
-import kotlinx.android.synthetic.main.layout_alert_option.tvTitle
-import kotlinx.android.synthetic.main.layout_print_dialog.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
+class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     companion object {
         const val EDIT_MODE = 304
-        const val READ_MODE = 302
 
         @JvmStatic
         fun newInstance(menus: List<Menu>, mode: Int = EDIT_MODE) =
@@ -88,8 +82,6 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     private var selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
 
-    override var order: OrderResult = OrderResult()
-
     private val progressDialog: ProgressDialog by lazy { ProgressDialog(requireContext()) }
 
     override val layoutView: Int = R.layout.fragment_order
@@ -107,11 +99,10 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
 
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
-        showTotalPrice(order.order.orderCategory)
+        showTotalPrice(selectedOrderNameType)
         orderTypeContainer.visible()
         btnAdd.visible()
-        btnPrint.text = getString(R.string.action_print)
-        showMenus(ORDER_EDIT_TYPE)
+        showMenus()
     }
 
     override fun onAction() {
@@ -169,7 +160,7 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
             if (isOrderValid()) orderViewModel.postOrder(getOrderResult())
         }
 
-        edtDiscount.doOnTextChanged { text, start, before, count ->
+        edtDiscount.doOnTextChanged { text, _, _, _ ->
             Handler().postDelayed({
                 if (!text.isNullOrEmpty()) discount = text.toString().toInt()
                 showTotalPrice(selectedOrderNameType)
@@ -190,8 +181,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                     showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
-                    order = getOrderResult()
-                    printReceipe()
+                    progressDialog.dismiss()
+                    (activity as MainActivity).toOrderListFragment()
                 }
             }
         })
@@ -204,6 +195,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 is Load.Success -> {
                     showTableOptions(it.data)
                 }
+                is Load.Loading -> {
+                }
             }
         })
 
@@ -215,51 +208,13 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
                 is Load.Success -> {
                     showPaymentOptions(it.data)
                 }
+                is Load.Loading -> {
+                }
             }
         })
 
     }
 
-    private fun printReceipe() {
-        printBluetooth {
-            showPrintAlert()
-        }
-    }
-
-    private fun showPrintAlert() {
-        progressDialog.dismiss()
-        generateCustomAlertDialog(
-            context = requireContext(),
-            layoutRes = R.layout.layout_print_dialog,
-            isCancelable = false
-        ).apply {
-
-            tvTitle.text = getString(R.string.title_receipt_printed)
-            tvMessage.text = getString(R.string.message_receipt_printed)
-
-            btnNegative.setOnClickListener {
-                dismiss()
-                onPrintFinish()
-            }
-
-            btnPositive.setOnClickListener {
-                dismiss()
-                progressDialog.show()
-
-                val handler = Handler()
-                val delayTime = 5000L
-                handler.postDelayed({
-                    Log.d("PRINT", "preparing print again...")
-                    printReceipe()
-                }, delayTime)
-            }
-        }
-    }
-
-    private fun onPrintFinish() {
-        if (progressDialog.isShowing) progressDialog.dismiss()
-        (activity as MainActivity).clearSelectedMenus()
-    }
 
     private fun isOrderValid(): Boolean {
         var valid = true
@@ -320,8 +275,8 @@ class OrderFragment : WarungPojokPrinterFragment(), CalculateMenuListener {
         tvTotalPrice.text = toCurrencyFormat(totalPayment)
     }
 
-    private fun showMenus(orderType: Int) {
-        menuAdapter.type = orderType
+    private fun showMenus() {
+        menuAdapter.type = ORDER_EDIT_TYPE
         rvOrders.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = menuAdapter

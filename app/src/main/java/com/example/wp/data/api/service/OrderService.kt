@@ -1,14 +1,25 @@
 package com.example.wp.data.api.service
 
 import com.example.wp.data.api.model.request.RequestOrderApi
-import com.example.wp.data.api.model.response.ResponseOrder
+import com.example.wp.data.api.model.request.RequestUpdateOrderApi
+import com.example.wp.data.api.model.response.ResponseOrders
+import com.example.wp.data.api.model.response.ResponsePostOrder
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OrderService {
 
     @POST("order")
-    suspend fun postOrder(@Body requestOrderApi: RequestOrderApi) : Response<ResponseOrder>
+    suspend fun postOrder(@Body requestOrderApi: RequestOrderApi) : Response<ResponsePostOrder>
+
+
+    @POST("order-update-status")
+    suspend fun postUpdateOrderStatus(@Body requestUpdateOrderApi: RequestUpdateOrderApi) : Response<ResponsePostOrder>
+
+
+    @GET("list-bill")
+    suspend fun getOrders() : Response<ResponseOrders>
 
 }

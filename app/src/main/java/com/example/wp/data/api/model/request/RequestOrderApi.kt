@@ -20,3 +20,10 @@ data class RequestOrderApi (
     @SerializedName("pembayaran")
     val paymentMethod:String?
 )
+
+data class RequestUpdateOrderApi(
+    @SerializedName("id")
+    val orderId:String,
+    @SerializedName("status")
+    val status:String
+)

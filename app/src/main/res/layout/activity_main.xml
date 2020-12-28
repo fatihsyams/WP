@@ -68,7 +68,6 @@
         android:layout_marginTop="@dimen/dimen_8dp"
         android:gravity="center"
         android:text="@string/label_order_list"
-        android:visibility="gone"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="parent"

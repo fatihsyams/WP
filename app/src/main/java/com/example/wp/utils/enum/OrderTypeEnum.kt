@@ -13,3 +13,8 @@ enum class OrderNameTypeEnum (val type:String){
     TAKE_AWAY_GRABFOOD("grabfood"),
     TAKE_AWAY_GOFOOD("gofood")
 }
+
+enum class OrderStatusTypeEnum(val status:String){
+    BILL("bill"),
+    PAY("pay")
+}

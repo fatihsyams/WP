@@ -59,7 +59,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         tvListOrder.setOnClickListener {
-            loadFragment(R.id.fl_container, OrderListFragment())
+            toOrderListFragment()
         }
 
         tvMenu.setOnClickListener {
@@ -69,9 +69,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         btnOrder.setOnClickListener {
-            val orderFragment = OrderFragment.newInstance(selectedMenus)
-            orderFragment.onAddMenuListener = this
-            loadFragment(R.id.fl_container, orderFragment)
+           toOrderFragment(selectedMenus)
         }
 
         tvCekStokMain.setOnClickListener {
@@ -80,12 +78,22 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     }
 
+    fun toOrderFragment(menus:List<Menu>) {
+        val orderFragment = OrderFragment.newInstance(menus)
+        orderFragment.onAddMenuListener = this
+        loadFragment(R.id.fl_container, orderFragment)
+    }
+
     override fun onObserver() {
     }
 
     override fun onResume() {
         super.onResume()
         setupOrderButton()
+    }
+
+    fun toOrderListFragment(){
+        loadFragment(R.id.fl_container, OrderListFragment())
     }
 
     override fun onMenuClicked(menu: Menu) {
