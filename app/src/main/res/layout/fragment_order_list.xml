@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.kennyc.view.MultiStateView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/msvOrders"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/msvOrders"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:msv_loadingView="@layout/layout_loading"
     tools:context=".presentation.order.OrderListFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rvOrders"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
 
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            app:title="@string/label_orders"-->
+<!--            app:titleTextColor="@color/colorWhite" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false" />
+
+<!--    </LinearLayout>-->
 
 </com.kennyc.view.MultiStateView>

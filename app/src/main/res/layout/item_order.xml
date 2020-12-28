@@ -12,11 +12,10 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imgStock"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:id="@+id/imgOrderType"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_margin="@dimen/dimen_8dp"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/guideline10"
@@ -32,8 +31,9 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
+            android:visibility="gone"
             android:text="@string/label_take_away_type"
-            app:layout_constraintBottom_toBottomOf="@id/imgStock"
+            app:layout_constraintBottom_toBottomOf="@id/imgOrderType"
             app:layout_constraintEnd_toEndOf="@+id/imgStock"
             app:layout_constraintStart_toStartOf="@+id/imgStock"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,10 +41,11 @@
         <TextView
             android:id="@+id/tvOrderName"
             style="@style/WarungPojokTextView.Caption.Bold"
-            android:layout_marginLeft="@dimen/dimen_20dp"
-            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginStart="@dimen/dimen_16dp"
+            android:layout_marginLeft="@dimen/dimen_16dp"
             android:text="@string/label_order"
-            app:layout_constraintStart_toEndOf="@+id/imgStock"
+            app:layout_constraintBottom_toTopOf="@id/line"
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View

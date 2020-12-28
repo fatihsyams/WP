@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.wp.R
+import com.example.wp.domain.menu.getTakeAwayImage
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.listener.OrderResultListener
 import kotlinx.android.synthetic.main.item_order.view.*
@@ -28,8 +30,10 @@ class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val
     inner class OrderResultViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: OrderResult) {
             with(itemView) {
-                tvOrderType.text = data.order.orderCategory
-                tvOrderName.text = data.order.customerName
+                tvOrderType.text = data.order.orderCategory.toUpperCase()
+                tvOrderName.text = data.order.customerName.toUpperCase()
+                val orderImage = getTakeAwayImage(data.order.orderCategory)
+                Glide.with(context).load(orderImage).into(imgOrderType)
 
                 btnBill.setOnClickListener {
                     listener?.onBillClicked(data)

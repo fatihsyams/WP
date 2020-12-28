@@ -1,5 +1,7 @@
 package com.example.wp.data.api.datasource
 
+import com.example.wp.data.api.model.request.RequestOrderApi
+import com.example.wp.data.api.model.request.RequestUpdateOrderApi
 import com.example.wp.data.api.service.OrderService
 import com.example.wp.data.mapper.OrderMapper
 import com.example.wp.domain.order.OrderResult
@@ -40,7 +42,7 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
 
     override suspend fun updateOrder(orderId: String, status: String): Load<Boolean> {
         return try {
-            val response = service.getOrders()
+            val response = service.postUpdateOrderStatus(RequestUpdateOrderApi(orderId,status))
             if (response.isSuccessful) {
                 handleApiSuccess(true)
             } else {
