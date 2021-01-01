@@ -3,8 +3,8 @@ package com.example.wp.presentation.listener
 import com.example.wp.domain.order.OrderResult
 
 interface OrderResultListener {
-    fun onBillClicked(order: OrderResult)
-    fun onPayClicked(order: OrderResult)
-    fun onCancelClicked(order: OrderResult)
-    fun onOrderClicked(order: OrderResult)
+    fun onBillClicked(orderResult: OrderResult)
+    fun onPayClicked(orderResult: OrderResult)
+    fun onCancelClicked(orderResult: OrderResult)
+    fun onOrderClicked(orderResult: OrderResult)
 }

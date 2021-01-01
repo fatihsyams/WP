@@ -28,7 +28,7 @@ object MenuMapper {
         )
     }
 
-    fun mapToMenu(response: MenuApi): Menu {
+    fun mapToMenu(response: MenuApi,quantity:Int? = 0): Menu {
         return Menu(
             images = response.images.orEmpty(),
             additionalInformation = response.additionalInformation.orEmpty(),
@@ -47,7 +47,7 @@ object MenuMapper {
                 materialMenu.material?.stock ?: 0
             }?.sum() ?: 0,
             category = response.category.orEmpty(),
-            quantity = response.quantity ?: 0,
+            quantity = quantity ?: 0,
             materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }
                 .orEmpty(),
             stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0,

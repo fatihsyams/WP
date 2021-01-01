@@ -16,5 +16,6 @@ enum class OrderNameTypeEnum (val type:String){
 
 enum class OrderStatusTypeEnum(val status:String){
     BILL("bill"),
-    PAY("pay")
+    PAY("pay"),
+    CANCEL("cancel")
 }

@@ -40,7 +40,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     private var mPrnMng: WoosimPrnMng? = null
 
-    fun printBluetooth(onPrintFinished: (() -> Unit)? = null) {
+    fun printBluetooth(onPrintFinished: (() -> Unit)? = null, onErrorOccured: ((message:String) -> Unit)? = null) {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.BLUETOOTH
@@ -52,7 +52,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 PERMISSION_BLUETOOTH
             )
         } else {
-            printRecipe(onPrintFinished)
+            printRecipe(onPrintFinished,onErrorOccured)
         }
     }
 
@@ -68,26 +68,31 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
         }
     }
 
-    private fun printRecipe(onPrintFinished: (() -> Unit)? = null){
+    private fun printRecipe(onPrintFinished: (() -> Unit)? = null,onErrorOccured: ((message:String) -> Unit)? = null){
         try {
             Log.d("PRINT", "preparing on printing.. $order")
 
             // Get the local Bluetooth adapter
             mBtAdapter = BluetoothAdapter.getDefaultAdapter()
 
-            // Get a set of currently paired devices
-            val pairedDevices = mBtAdapter?.bondedDevices
-            val activeBluetooth = pairedDevices?.firstOrNull()
+            if (mBtAdapter != null){
+                // Get a set of currently paired devices
+                val pairedDevices = mBtAdapter?.bondedDevices
+                val activeBluetooth = pairedDevices?.firstOrNull()
 
-            activeBluetooth?.let {
-                Log.d("PRINT", "get bluetooth $activeBluetooth")
-                val bluetoothAddress = activeBluetooth.address
-                val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
-                //Connect to the printer and after successful connection issue the print command.
-                mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
+                activeBluetooth?.let {
+                    Log.d("PRINT", "get bluetooth $activeBluetooth")
+                    val bluetoothAddress = activeBluetooth.address
+                    val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
+                    //Connect to the printer and after successful connection issue the print command.
+                    mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
+                }
+            }else{
+                onErrorOccured?.invoke("Printer not found")
             }
+
         }catch (e: Exception){
-            Log.d("PRINT", "print error.. ${e.message}")
+            onErrorOccured?.invoke("Printer error ${e.message}")
         }
     }
 

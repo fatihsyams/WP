@@ -25,6 +25,8 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
 
     override var order: OrderResult = OrderResult()
 
+    private var isCanceled = false
+
     private val progressDialog: ProgressDialog by lazy { ProgressDialog(requireContext()) }
 
     override val layoutView: Int = R.layout.fragment_order_list
@@ -73,7 +75,11 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
                 }
                 is Load.Success -> {
                     progressDialog.dismiss()
-                    printStruk()
+                    if (isCanceled){
+                        orderViewModel.getOrders()
+                    }else{
+                        printStruk()
+                    }
                 }
             }
         })
@@ -93,6 +99,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
     }
 
     override fun onPayClicked(orderResult: OrderResult) {
+        isCanceled = false
         order = orderResult
         orderViewModel.updateOrderStatus(
             orderId = orderResult.order.id.toString(),
@@ -100,7 +107,13 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
         )
     }
 
-    override fun onCancelClicked(order: OrderResult) {
+    override fun onCancelClicked(orderResult: OrderResult) {
+        isCanceled = true
+        order = orderResult
+        orderViewModel.updateOrderStatus(
+            orderId = orderResult.order.id.toString(),
+            status = OrderStatusTypeEnum.CANCEL.status
+        )
     }
 
     override fun onOrderClicked(order: OrderResult) {
@@ -109,9 +122,14 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
 
     private fun printStruk() {
         progressDialog.show()
-        printBluetooth {
+        println("ORDER STRUK $order")
+        printBluetooth(onPrintFinished =  {
             showPrintAlert()
-        }
+        },
+        onErrorOccured = {message->
+            showToast(message)
+            progressDialog.dismiss()
+        })
     }
 
     private fun showPrintAlert() {
@@ -144,7 +162,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
 
     private fun onPrintFinish() {
         if (progressDialog.isShowing) progressDialog.dismiss()
-        (activity as MainActivity).clearSelectedMenus()
+        orderViewModel.getOrders()
     }
 
 }

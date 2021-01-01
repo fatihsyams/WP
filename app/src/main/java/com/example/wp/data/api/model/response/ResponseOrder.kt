@@ -38,7 +38,7 @@ data class OrderApi(
     @SerializedName("order_date_id")
     val orderDateId: Int? = 0,
     @SerializedName("order_menus")
-    val orderMenus: List<OrderMenu>? = listOf(),
+    val orderMenuApis: List<OrderMenuApi>? = listOf(),
     @SerializedName("order_status")
     val orderStatus: String? = null,
     @SerializedName("pembayaran")
@@ -56,7 +56,7 @@ data class ResponseOrders(
     val statusCode: String? = null
 )
 
-data class OrderMenu(
+data class OrderMenuApi(
     @SerializedName("amount")
     val amount: Int? = 0,
     @SerializedName("created_at")
