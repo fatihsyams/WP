@@ -78,9 +78,7 @@ object OrderMapper {
             type = when(api.orderCategory){
                 OrderNameTypeEnum.DINE_IN.type -> OrderTypeEnum.DINE_IN.type
                 OrderNameTypeEnum.PRE_ORDER.type -> OrderTypeEnum.PRE_ORDER.type
-                OrderNameTypeEnum.TAKE_AWAY.type -> OrderTypeEnum.TAKE_AWAY.type
-                OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> OrderTypeEnum.TAKE_AWAY.type
-                OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> OrderTypeEnum.TAKE_AWAY.type
+                OrderNameTypeEnum.TAKE_AWAY.type,OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type,OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> OrderTypeEnum.TAKE_AWAY.type
                 else -> OrderTypeEnum.DINE_IN.type
             }
         )

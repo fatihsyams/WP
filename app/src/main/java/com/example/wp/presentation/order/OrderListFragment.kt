@@ -117,7 +117,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
     }
 
     override fun onOrderClicked(order: OrderResult) {
-        (activity as MainActivity).toOrderFragment(order.menu)
+        (activity as MainActivity).toOrderFragment(order,order.menu)
     }
 
     private fun printStruk() {

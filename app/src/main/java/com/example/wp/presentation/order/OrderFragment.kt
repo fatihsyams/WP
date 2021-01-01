@@ -19,6 +19,7 @@ import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GO_FOOD_TYPE
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GRAB_FOOD_TYPE
+import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_TYPE
 import com.example.wp.presentation.adapter.PaymentAdapter
 import com.example.wp.presentation.adapter.TableAdapter
 import com.example.wp.presentation.adapter.TakeAwayAdapter
@@ -29,6 +30,8 @@ import com.example.wp.presentation.viewmodel.PaymentViewModel
 import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
+import com.example.wp.utils.constants.AppConstants.KEY_MENU
+import com.example.wp.utils.constants.AppConstants.KEY_ORDER
 import com.example.wp.utils.datepicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
@@ -36,7 +39,6 @@ import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
@@ -44,10 +46,15 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         const val EDIT_MODE = 304
 
         @JvmStatic
-        fun newInstance(menus: List<Menu>, mode: Int = EDIT_MODE) =
+        fun newInstance(
+            orderResult: OrderResult? = null,
+            menus: List<Menu>,
+            mode: Int = EDIT_MODE
+        ) =
             OrderFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(AppConstants.KEY_MENU, menus as ArrayList<Menu>)
+                    putParcelable(KEY_ORDER, orderResult)
+                    putParcelableArrayList(KEY_MENU, menus as ArrayList<Menu>)
                     putInt(AppConstants.KEY_ORDER_MODE, mode)
                 }
             }
@@ -72,6 +79,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private var selectedTable: Table? = null
     private var selectedPayment: Payment? = null
     private var selectedTakeAway: TakeAway? = null
+    private var orderResult: OrderResult? = null
 
     private var orderMode = EDIT_MODE
 
@@ -91,9 +99,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onIntent() {
-        menus =
-            arguments?.getParcelableArrayList<Menu>(AppConstants.KEY_MENU) ?: mutableListOf()
-
+        orderResult = arguments?.getParcelable(KEY_ORDER)
+        menus = arguments?.getParcelableArrayList<Menu>(KEY_MENU) ?: mutableListOf()
         orderMode = arguments?.getInt(AppConstants.KEY_ORDER_MODE) ?: EDIT_MODE
     }
 
@@ -103,29 +110,24 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         orderTypeContainer.visible()
         btnAdd.visible()
         showMenus()
+        showOrderResult()
     }
 
     override fun onAction() {
         btnDineIn.setOnClickListener {
             selectedOrderType = OrderTypeEnum.DINE_IN.type
             selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
-            dineInContainer.visible()
-            orderTypeContainer.gone()
-            btnEditOrderType.visible()
+            onDineInSelected()
         }
 
         btnTakeAway.setOnClickListener {
             selectedOrderType = OrderTypeEnum.TAKE_AWAY.type
-            takeAwayContainer.visible()
-            orderTypeContainer.gone()
-            btnEditOrderType.visible()
+            onTakeAwaySelected()
         }
 
         btnPreOrder.setOnClickListener {
             selectedOrderType = OrderTypeEnum.PRE_ORDER.type
-            preOrderContainer.visible()
-            orderTypeContainer.gone()
-            btnEditOrderType.visible()
+            onPreOrderSelected()
         }
 
         btnEditOrderType.setOnClickListener {
@@ -172,6 +174,24 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
     }
 
+    private fun onDineInSelected() {
+        dineInContainer.visible()
+        orderTypeContainer.gone()
+        btnEditOrderType.visible()
+    }
+
+    private fun onPreOrderSelected() {
+        preOrderContainer.visible()
+        orderTypeContainer.gone()
+        btnEditOrderType.visible()
+    }
+
+    private fun onTakeAwaySelected() {
+        takeAwayContainer.visible()
+        orderTypeContainer.gone()
+        btnEditOrderType.visible()
+    }
+
     override fun onObserver() {
         orderViewModel.orderLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
@@ -182,6 +202,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 }
                 is Load.Success -> {
                     progressDialog.dismiss()
+                    (activity as MainActivity).clearSelectedMenus()
                     (activity as MainActivity).toOrderListFragment()
                 }
             }
@@ -214,7 +235,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         })
 
     }
-
 
     private fun isOrderValid(): Boolean {
         var valid = true
@@ -273,6 +293,49 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
         totalPayment = totalPaymentBeforeDiscount - totalDiscount
         tvTotalPrice.text = toCurrencyFormat(totalPayment)
+    }
+
+    private fun showOrderResult() {
+        orderResult?.let { order ->
+            selectedOrderType = order.type
+
+            when (selectedOrderType) {
+                OrderTypeEnum.TAKE_AWAY.type -> {
+                    onTakeAwaySelected()
+                    btnTakeAwayType.text = order.order.orderCategory
+
+                    when(order.order.orderCategory){
+                        TakeAwayTypeEnum.GRABFOOD.type ->{
+                            menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
+                        }
+
+                        TakeAwayTypeEnum.GOFOOD.type ->{
+                            menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
+                        }
+
+                        TakeAwayTypeEnum.PERSONAL.type ->{
+                            menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
+                        }
+                    }
+                }
+                OrderTypeEnum.DINE_IN.type -> {
+                    onDineInSelected()
+                    btnTableNumber.text = order.order.tableId
+                }
+                OrderTypeEnum.PRE_ORDER.type -> {
+                    onPreOrderSelected()
+                    btnPreOrder.text = order.order.orderCategory
+                }
+            }
+
+            tvTotalPrice.text = toCurrencyFormat(order.order.totalPayment)
+
+            edtCustomerName.setText(order.order.customerName)
+
+            btnPayment.text = order.paymentMethod
+
+            edtDiscount.setText(toCurrencyFormat(order.order.discount.toDouble()))
+        }
     }
 
     private fun showMenus() {

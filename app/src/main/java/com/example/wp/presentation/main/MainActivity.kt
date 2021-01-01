@@ -6,6 +6,7 @@ import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.domain.menu.Menu
+import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.stock.checkstock.CheckStockFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
@@ -69,7 +70,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         }
 
         btnOrder.setOnClickListener {
-           toOrderFragment(selectedMenus)
+           toOrderFragment(menus = selectedMenus)
         }
 
         tvCekStokMain.setOnClickListener {
@@ -78,8 +79,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     }
 
-    fun toOrderFragment(menus:List<Menu>) {
-        val orderFragment = OrderFragment.newInstance(menus)
+    fun toOrderFragment(order:OrderResult?=null,menus:List<Menu>) {
+        val orderFragment = OrderFragment.newInstance(order,menus)
         orderFragment.onAddMenuListener = this
         loadFragment(R.id.fl_container, orderFragment)
     }
