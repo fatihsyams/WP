@@ -169,7 +169,7 @@ class MenusAdapter(
 
                 btnDelete.setOnClickListener {
                     onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
-                    notifyItemRemoved(adapterPosition)
+//                    notifyItemRemoved(adapterPosition)
                 }
             }
         }

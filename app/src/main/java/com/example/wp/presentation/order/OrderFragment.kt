@@ -251,6 +251,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             valid = false
             showToast(getString(R.string.message_select_delivery_time_first))
         }
+        else if(selectedPayment == null){
+            valid = false
+            showToast(getString(R.string.message_select_payment_method_first))
+        }
         return valid
     }
 
@@ -433,6 +437,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onDeleteClicked(menu: Menu, position: Int) {
         menus.remove(menu)
         showTotalPrice(selectedOrderNameType)
+        menuAdapter.updateDataMenu(menus)
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {

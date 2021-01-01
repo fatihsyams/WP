@@ -139,4 +139,6 @@
     <string name="label_order_list">Daftar Pesanan</string>
     <string name="action_submit">Kirim</string>
     <string name="label_orders">Pesanan</string>
+    <string name="message_select_payment_method_first">Pilih Metode Pembayaran terlebih dahulu</string>
+    <string name="label_no_name">Tanpa Nama</string>
 </resources>

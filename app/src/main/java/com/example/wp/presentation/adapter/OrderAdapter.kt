@@ -31,7 +31,7 @@ class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val
         fun bind(data: OrderResult) {
             with(itemView) {
                 tvOrderType.text = data.order.orderCategory.toUpperCase()
-                tvOrderName.text = data.order.customerName.toUpperCase()
+                tvOrderName.text = if (data.order.customerName.isEmpty()) context.getString(R.string.label_no_name) else data.order.customerName.toUpperCase()
                 val orderImage = getTakeAwayImage(data.order.orderCategory)
                 Glide.with(context).load(orderImage).into(imgOrderType)
 
