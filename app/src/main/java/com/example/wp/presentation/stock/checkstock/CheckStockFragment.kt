@@ -26,7 +26,7 @@ class CheckStockFragment : WarungPojokFragment(), StockListener {
 
     private var isIncrease = false
 
-    private var updatedQuantity = 0
+    private var updatedQuantity = 0.0
     private var updatedPosition = 0
 
     private var updatedMaterial:Material = Material()
@@ -125,12 +125,12 @@ class CheckStockFragment : WarungPojokFragment(), StockListener {
         }
     }
 
-    override fun onIncreaseStockClicked(isIncreased:Boolean, increasedQuantity: Int) {
+    override fun onIncreaseStockClicked(isIncreased:Boolean, increasedQuantity: Double) {
         isIncrease = isIncreased
         updatedQuantity = increasedQuantity
     }
 
-    override fun onDecreaseStockClicked(isDecreased:Boolean, decreasedQuantity: Int) {
+    override fun onDecreaseStockClicked(isDecreased:Boolean, decreasedQuantity: Double) {
         isIncrease != isDecreased
         updatedQuantity = decreasedQuantity
     }

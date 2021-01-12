@@ -72,7 +72,7 @@ class MaterialRepositoryImpl(private val service: MaterialService) : MaterialRep
 
     override suspend fun updateMaterial(
         materialId: Int,
-        stock: Int,
+        stock: Double,
         type: String,
         reason: String
     ): Load<Boolean> {

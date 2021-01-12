@@ -37,7 +37,7 @@ class CreateStockFragment : WarungPojokFragment() {
                 is Load.Loading -> pbMaterial.visible()
                 is Load.Fail -> {
                     pbMaterial.gone()
-                    showToast(it.error.localizedMessage ?: "Error tidak diketahui")
+                    showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     pbMaterial.visible()
@@ -52,7 +52,7 @@ class CreateStockFragment : WarungPojokFragment() {
         materialViewModel.postMaterial(
             material = Material(
                 material = edtMaterial.text.toString(),
-                stock = edtStock.text.toString().toIntOrNull() ?: 0
+                stock = edtStock.text.toString().toDoubleOrNull() ?: 0.0
             )
         )
     }

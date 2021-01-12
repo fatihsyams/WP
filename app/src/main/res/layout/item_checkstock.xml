@@ -92,7 +92,7 @@
             android:textSize="14sp"
             android:gravity="center"
             android:padding="@dimen/dimen_0dp"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLines="1"
             android:imeOptions="actionDone"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlusStok"

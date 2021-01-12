@@ -78,18 +78,20 @@ class CheckStockAdapter(
 
                 tvValueAddStok.setOnEditorActionListener { v, actionId, event ->
                     if(actionId == EditorInfo.IME_ACTION_DONE){
-                        val quantity = v.text.toString().toInt()
-                        if (quantity > item.stock) {
-                            item.increasedQuantity = quantity - item.stock
-                            onSaveListener?.onIncreaseStockClicked(true, item.increasedQuantity)
-                        }else{
-                            item.decreasedQuantity = item.stock - quantity
-                            onSaveListener?.onDecreaseStockClicked(true, item.decreasedQuantity)
+                        if (v.text.isNotEmpty()){
+                            val quantity = v.text.toString().toDouble()
+                            if (quantity > item.stock) {
+                                item.increasedQuantity = quantity - item.stock
+                                onSaveListener?.onIncreaseStockClicked(true, item.increasedQuantity)
+                            }else{
+                                item.decreasedQuantity = item.stock - quantity
+                                onSaveListener?.onDecreaseStockClicked(true, item.decreasedQuantity)
+                            }
+                            item.isEdited = true
+                            item.stock = quantity
+                            notifyItemChanged(adapterPosition)
+                            return@setOnEditorActionListener true
                         }
-                        item.isEdited = true
-                        item.stock = quantity
-                        notifyItemChanged(adapterPosition)
-                        return@setOnEditorActionListener true
                     }
                     return@setOnEditorActionListener false
                 }
@@ -99,8 +101,8 @@ class CheckStockAdapter(
 
     fun notifyMenuUpdated(position: Int, material: Material) {
         material.isEdited = false
-        material.increasedQuantity = 0
-        material.decreasedQuantity = 0
+        material.increasedQuantity = 0.0
+        material.decreasedQuantity = 0.0
         notifyItemChanged(position, material)
     }
 

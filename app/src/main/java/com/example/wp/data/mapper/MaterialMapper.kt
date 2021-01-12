@@ -22,18 +22,18 @@ object MaterialMapper {
         return handleApiSuccess(data = mapToMaterial(response.material ?: MaterialApi()))
     }
 
-    fun mapToMaterial(response: MaterialApi): Material {
+    private fun mapToMaterial(response: MaterialApi): Material {
         return Material(
             id = response.id ?: 0,
             material = response.material.orEmpty(),
-            stock = response.stock ?: 0
+            stock = response.stock ?: 0.0
         )
     }
 
     fun mapToRequestMaterialApi(domain:Material): RequestMaterialApi {
         return RequestMaterialApi(
             material = domain.material,
-            stock = domain.stock
+            stock = domain.stock.toDouble()
         )
     }
 

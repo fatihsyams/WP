@@ -25,8 +25,8 @@ interface DeleteMenuListener{
 interface StockListener{
     fun onSaveStockClicked(position: Int,material: Material)
     fun onStockCreated()
-    fun onIncreaseStockClicked(isIncrease:Boolean,increasedQuantity:Int)
-    fun onDecreaseStockClicked(isDecrease:Boolean,decreasedQuantity:Int)
+    fun onIncreaseStockClicked(isIncrease:Boolean,increasedQuantity:Double)
+    fun onDecreaseStockClicked(isDecrease:Boolean,decreasedQuantity:Double)
 }
 
 interface MenuCategoryListener{

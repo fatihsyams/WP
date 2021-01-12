@@ -44,8 +44,8 @@ object MenuMapper {
             createdAt = response.createdAt.orEmpty(),
             id = response.id ?: 0,
             stock = response.materialMenus?.map { materialMenu ->
-                materialMenu.material?.stock ?: 0
-            }?.sum() ?: 0,
+                materialMenu.material?.stock ?: 0.0
+            }?.sum() ?: 0.0,
             category = response.category.orEmpty(),
             quantity = quantity ?: 0,
             materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }
@@ -60,16 +60,6 @@ object MenuMapper {
 
     private fun getPrice(price: Double, discount: Int?): Double {
         return if (discount != null) price - price.times(discount) / 100 else price
-    }
-
-    private fun mapToMenuImage(data: MenuImageApi): MenuImage {
-        return MenuImage(
-            updatedAt = data.updatedAt.orEmpty(),
-            imageUrl = data.imageUrl.orEmpty(),
-            id = data.id ?: 0,
-            menuId = data.menuId ?: 0,
-            createdAt = data.createdAt.orEmpty()
-        )
     }
 
 }

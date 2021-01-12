@@ -36,7 +36,7 @@ data class MaterialApi(
     @SerializedName("material")
     val material: String? = null,
     @SerializedName("stock")
-    val stock: Int? = null,
+    val stock: Double? = null,
     @SerializedName("updated_at")
     val updatedAt: String? = null
 ) : Parcelable

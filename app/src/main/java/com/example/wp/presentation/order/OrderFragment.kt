@@ -39,6 +39,8 @@ import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
@@ -251,10 +253,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             valid = false
             showToast(getString(R.string.message_select_delivery_time_first))
         }
-        else if(selectedPayment == null){
-            valid = false
-            showToast(getString(R.string.message_select_payment_method_first))
-        }
         return valid
     }
 
@@ -302,7 +300,9 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private fun showOrderResult() {
         orderResult?.let { order ->
             selectedOrderType = order.type
-
+            val table = order.order.tableId?.toInt() ?: 0
+            selectedTable = Table(id = table, number = table)
+            selectedPayment = Payment(order.paymentMethod)
             when (selectedOrderType) {
                 OrderTypeEnum.TAKE_AWAY.type -> {
                     onTakeAwaySelected()
@@ -312,11 +312,9 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                         TakeAwayTypeEnum.GRABFOOD.type ->{
                             menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
                         }
-
                         TakeAwayTypeEnum.GOFOOD.type ->{
                             menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
                         }
-
                         TakeAwayTypeEnum.PERSONAL.type ->{
                             menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
                         }
@@ -331,14 +329,12 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     btnPreOrder.text = order.order.orderCategory
                 }
             }
-
             tvTotalPrice.text = toCurrencyFormat(order.order.totalPayment)
-
             edtCustomerName.setText(order.order.customerName)
-
-            btnPayment.text = order.paymentMethod
-
-            edtDiscount.setText(toCurrencyFormat(order.order.discount.toDouble()))
+            btnPayment.text = if(order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod
+            if (order.order.discount != 0){
+                edtDiscount.setText(order.order.discount.toString())
+            }
         }
     }
 
@@ -441,7 +437,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
-        if (menu.quantity * menu.stockRequired == menu.stock) showToast(getString(R.string.message_error_over_stock))
+        if ((menu.quantity * menu.stockRequired).toDouble() == menu.stock) showToast(getString(R.string.message_error_over_stock))
         showTotalPrice(selectedOrderNameType)
     }
 
@@ -463,12 +459,12 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             TakeAwayTypeEnum.GOFOOD.type -> {
                 selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type
                 menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
-                edtCustomerName.setText(selectedOrderNameType.toUpperCase())
+                edtCustomerName.setText(selectedOrderNameType.toUpperCase(Locale.getDefault()))
             }
             TakeAwayTypeEnum.GRABFOOD.type -> {
                 selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
                 menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
-                edtCustomerName.setText(selectedOrderNameType.toUpperCase())
+                edtCustomerName.setText(selectedOrderNameType.toUpperCase(Locale.getDefault()))
             }
             else -> {
                 selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type

@@ -9,9 +9,9 @@ import kotlinx.android.parcel.Parcelize
 data class Material(
     val id:Int = 0,
     val material:String = emptyString(),
-    var stock:Int = 0,
-    var decreasedQuantity :Int= 0,
-    var increasedQuantity :Int= 0,
+    var stock:Double = 0.0,
+    var decreasedQuantity :Double= 0.0,
+    var increasedQuantity :Double= 0.0,
     var isEdited:Boolean = false
 ) : Parcelable {
 
