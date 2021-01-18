@@ -4,6 +4,7 @@ import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.MenuImage
+import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.utils.Load
 import com.example.wp.utils.handleApiSuccess
 

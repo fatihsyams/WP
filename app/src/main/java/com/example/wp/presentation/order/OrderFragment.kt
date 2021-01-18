@@ -300,8 +300,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private fun showOrderResult() {
         orderResult?.let { order ->
             selectedOrderType = order.type
-            val table = order.order.tableId?.toInt() ?: 0
-            selectedTable = Table(id = table, number = table)
             selectedPayment = Payment(order.paymentMethod)
             when (selectedOrderType) {
                 OrderTypeEnum.TAKE_AWAY.type -> {
@@ -322,6 +320,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 }
                 OrderTypeEnum.DINE_IN.type -> {
                     onDineInSelected()
+                    val table = order.order.tableId?.toInt() ?: 0
+                    selectedTable = Table(id = table, number = table)
                     btnTableNumber.text = order.order.tableId
                 }
                 OrderTypeEnum.PRE_ORDER.type -> {

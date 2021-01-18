@@ -3,6 +3,8 @@ package com.example.wp.utils.print
 import android.content.Context
 import android.util.Log
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.presentation.adapter.MenusAdapter
+import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.lib.IPrintToPrinter
 import com.example.wp.utils.lib.WoosimPrnMng
@@ -51,9 +53,12 @@ class WarungPojokPrinter(
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
                 printStr(
                     "  x ${menu.quantity} \t ${
-                        toCurrencyFormat(
-                            menu.totalPrice
-                        )
+                        when(order.order.orderCategory){
+                            OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price,menu.discount)
+                            OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice,menu.discountGrabfood)
+                            OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice,menu.discountGofood)
+                            else -> toCurrencyFormat(menu.price,menu.discount)
+                        }
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
             }
