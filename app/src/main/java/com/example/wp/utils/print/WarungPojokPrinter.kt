@@ -54,10 +54,10 @@ class WarungPojokPrinter(
                 printStr(
                     "  x ${menu.quantity} \t ${
                         when(order.order.orderCategory){
-                            OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price,menu.discount)
-                            OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice,menu.discountGrabfood)
-                            OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice,menu.discountGofood)
-                            else -> toCurrencyFormat(menu.price,menu.discount)
+                            OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price*menu.quantity)
+                            OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice*menu.quantity)
+                            OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice*menu.quantity)
+                            else -> toCurrencyFormat(menu.price*menu.quantity)
                         }
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
