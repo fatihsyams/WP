@@ -42,7 +42,9 @@ data class OrderApi(
     @SerializedName("order_status")
     val orderStatus: String? = null,
     @SerializedName("pembayaran")
-    val pembayaran: String? = null
+    val pembayaran: String? = null,
+    @SerializedName("total_payment_discount")
+    val totalPaymentBeforeDiscount:Double? = null
 )
 
 data class ResponseOrders(

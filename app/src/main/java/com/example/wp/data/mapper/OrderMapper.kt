@@ -55,7 +55,9 @@ object OrderMapper {
             menuIds = domain.menu.map { it.id }.joinToString(),
             amounts = domain.menu.map { it.quantity }.joinToString(),
             discount = domain.order.discount,
-            paymentMethod = domain.paymentMethod
+            paymentMethod = domain.paymentMethod,
+            totalPaymentBeforeDiscount = domain.order.totalPaymentBeforeDiscount,
+            totalPayment = domain.order.totalPayment
         )
     }
 
@@ -69,7 +71,7 @@ object OrderMapper {
                 orderCategory = api.orderCategory.orEmpty(),
                 tableId = api.tableId.orEmpty(),
                 totalPayment = api.totalPayment?.minus(api.discountOrder?.toInt() ?: 0) ?: 0.0,
-                totalPaymentBeforeDiscount = api.totalPayment ?: 0.0,
+                totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0
             ),
