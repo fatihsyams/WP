@@ -79,8 +79,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     }
 
-    fun toOrderFragment(order:OrderResult?=null,menus:List<Menu>) {
-        val orderFragment = OrderFragment.newInstance(order,menus)
+    fun toOrderFragment(order:OrderResult?=null,menus:List<Menu>,isEditMode:Boolean=false) {
+        val orderFragment = OrderFragment.newInstance(order,menus,isEditMode)
         orderFragment.onAddMenuListener = this
         loadFragment(R.id.fl_container, orderFragment)
     }

@@ -16,6 +16,15 @@ data class ResponsePostOrder(
     val statusCode: String?
 )
 
+data class ResponseEditOrder(
+    @SerializedName("message")
+    val message: String?,
+    @SerializedName("status")
+    val status: String?,
+    @SerializedName("status_code")
+    val statusCode: String?
+)
+
 data class OrderApi(
     @SerializedName("created_at")
     val createdAt: String? = null,

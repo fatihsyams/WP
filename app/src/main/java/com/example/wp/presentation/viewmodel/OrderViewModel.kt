@@ -20,10 +20,20 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
     private val _ordersLoad = MutableLiveData<Load<List<OrderResult>>>()
     val ordersLoad = _ordersLoad as LiveData<Load<List<OrderResult>>>
 
+    private val _editOrderLoad = MutableLiveData<Load<Boolean>>()
+    val editOrderLoad = _editOrderLoad as LiveData<Load<Boolean>>
+
     fun postOrder(orderResult: OrderResult) = viewModelScope.launch {
         _orderLoad.value = Load.Loading
         val order = repository.postOrder(orderResult)
         _orderLoad.value = order
+    }
+
+    fun editOrder(orderResult: OrderResult) = viewModelScope.launch {
+        _editOrderLoad.value = Load.Loading
+        val orderId = orderResult.order.id
+        val order = repository.editOrder(orderResult,orderId)
+        _editOrderLoad.value = order
     }
 
     fun updateOrderStatus(orderId: String, status: String) = viewModelScope.launch {

@@ -45,19 +45,17 @@ import kotlin.collections.ArrayList
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     companion object {
-        const val EDIT_MODE = 304
-
         @JvmStatic
         fun newInstance(
             orderResult: OrderResult? = null,
             menus: List<Menu>,
-            mode: Int = EDIT_MODE
+            isEditMode: Boolean = false
         ) =
             OrderFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ORDER, orderResult)
                     putParcelableArrayList(KEY_MENU, menus as ArrayList<Menu>)
-                    putInt(AppConstants.KEY_ORDER_MODE, mode)
+                    putBoolean(AppConstants.KEY_ORDER_MODE, isEditMode)
                 }
             }
     }
@@ -83,12 +81,13 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private var selectedTakeAway: TakeAway? = null
     private var orderResult: OrderResult? = null
 
-    private var orderMode = EDIT_MODE
+    private var isEditMode = false
 
     private var discount = 0
     private var selectedOrderType = 0
     private var totalPayment = 0.0
     private var totalPaymentBeforeDiscount = 0.0
+    private var orderId = 0
 
     private var selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
 
@@ -103,7 +102,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onIntent() {
         orderResult = arguments?.getParcelable(KEY_ORDER)
         menus = arguments?.getParcelableArrayList<Menu>(KEY_MENU) ?: mutableListOf()
-        orderMode = arguments?.getInt(AppConstants.KEY_ORDER_MODE) ?: EDIT_MODE
+        isEditMode = arguments?.getBoolean(AppConstants.KEY_ORDER_MODE, false) ?: false
     }
 
     override fun onView() {
@@ -161,7 +160,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
 
         btnPrint.setOnClickListener {
-            if (isOrderValid()) orderViewModel.postOrder(getOrderResult())
+            if (isOrderValid()) {
+                if (isEditMode) orderViewModel.editOrder(getOrderResult()) else orderViewModel.postOrder(
+                    getOrderResult()
+                )
+            }
         }
 
         edtDiscount.doOnTextChanged { text, _, _, _ ->
@@ -196,6 +199,21 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onObserver() {
         orderViewModel.orderLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Loading -> progressDialog.show()
+                is Load.Fail -> {
+                    progressDialog.dismiss()
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    progressDialog.dismiss()
+                    (activity as MainActivity).clearSelectedMenus()
+                    (activity as MainActivity).toOrderListFragment()
+                }
+            }
+        })
+
+        orderViewModel.editOrderLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
                 is Load.Loading -> progressDialog.show()
                 is Load.Fail -> {
@@ -259,6 +277,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private fun getOrderResult(): OrderResult {
         return OrderResult(
             order = Order(
+                id = orderId,
                 customerName = edtCustomerName.text.toString(),
                 orderCategory = when (selectedOrderType) {
                     OrderTypeEnum.TAKE_AWAY.type -> {
@@ -299,6 +318,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private fun showOrderResult() {
         orderResult?.let { order ->
+            orderId = order.order.id
             selectedOrderType = order.type
             selectedPayment = Payment(order.paymentMethod)
             when (selectedOrderType) {
@@ -306,14 +326,14 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     onTakeAwaySelected()
                     btnTakeAwayType.text = order.order.orderCategory
 
-                    when(order.order.orderCategory){
-                        TakeAwayTypeEnum.GRABFOOD.type ->{
+                    when (order.order.orderCategory) {
+                        TakeAwayTypeEnum.GRABFOOD.type -> {
                             menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
                         }
-                        TakeAwayTypeEnum.GOFOOD.type ->{
+                        TakeAwayTypeEnum.GOFOOD.type -> {
                             menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
                         }
-                        TakeAwayTypeEnum.PERSONAL.type ->{
+                        TakeAwayTypeEnum.PERSONAL.type -> {
                             menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
                         }
                     }
@@ -331,8 +351,9 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
             tvTotalPrice.text = toCurrencyFormat(order.order.totalPayment)
             edtCustomerName.setText(order.order.customerName)
-            btnPayment.text = if(order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod
-            if (order.order.discount != 0){
+            btnPayment.text =
+                if (order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod
+            if (order.order.discount != 0) {
                 edtDiscount.setText(order.order.discount.toString())
             }
         }
