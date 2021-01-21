@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class OrderResult(
     val order: Order = Order(),
-    val menu: List<Menu> = listOf(),
+    var menu: List<Menu> = listOf(),
     val type:Int = 0,
     val paymentMethod:String = emptyString()
 ):Parcelable

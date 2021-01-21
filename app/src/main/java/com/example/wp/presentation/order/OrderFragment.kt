@@ -148,7 +148,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         btnTakeAwayType.setOnClickListener { showTakeAwayOptions() }
 
         btnAdd.setOnClickListener {
-            onAddMenuListener?.onOpenMenuPage()
+            onAddMenuListener?.onOpenMenuPage(menus)
         }
 
         edtPickupOrder.setOnClickListener {
@@ -321,35 +321,39 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             orderId = order.order.id
             selectedOrderType = order.type
             selectedPayment = Payment(order.paymentMethod)
+//            menus = order.menu.toMutableList()
             when (selectedOrderType) {
                 OrderTypeEnum.TAKE_AWAY.type -> {
                     onTakeAwaySelected()
                     btnTakeAwayType.text = order.order.orderCategory
-
                     when (order.order.orderCategory) {
                         TakeAwayTypeEnum.GRABFOOD.type -> {
+                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
                             menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
                         }
                         TakeAwayTypeEnum.GOFOOD.type -> {
+                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type
                             menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
                         }
                         TakeAwayTypeEnum.PERSONAL.type -> {
+                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY.type
                             menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
                         }
                     }
                 }
                 OrderTypeEnum.DINE_IN.type -> {
+                    selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
                     onDineInSelected()
                     val table = order.order.tableId?.toInt() ?: 0
                     selectedTable = Table(id = table, number = table)
                     btnTableNumber.text = order.order.tableId
                 }
                 OrderTypeEnum.PRE_ORDER.type -> {
+                    selectedOrderNameType = OrderNameTypeEnum.PRE_ORDER.type
                     onPreOrderSelected()
                     btnPreOrder.text = order.order.orderCategory
                 }
             }
-            tvTotalPrice.text = toCurrencyFormat(order.order.totalPayment)
             edtCustomerName.setText(order.order.customerName)
             btnPayment.text =
                 if (order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod

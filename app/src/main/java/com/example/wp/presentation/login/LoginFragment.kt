@@ -53,6 +53,6 @@ class LoginFragment : Fragment(), LoginInterface.View {
     }
 
     override fun moveHome() {
-       onLoginSuccessListener?.onOpenMenuPage()
+       onLoginSuccessListener?.onOpenMenuPage(listOf())
     }
 }

@@ -32,7 +32,7 @@ data class OrderApi(
     val customerName: String? = null,
     @SerializedName("id")
     val id: Int? = null,
-    @SerializedName("information")
+    @SerializedName("additional_information")
     val information: String? = null,
     @SerializedName("order_category")
     val orderCategory: String? = null,

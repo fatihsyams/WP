@@ -9,7 +9,7 @@ interface MenuListener{
 }
 
 interface OpenMenuPageListener{
-    fun onOpenMenuPage()
+    fun onOpenMenuPage(menus:List<Menu>)
 }
 
 interface CalculateMenuListener{
