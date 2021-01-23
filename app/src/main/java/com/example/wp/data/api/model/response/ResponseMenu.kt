@@ -61,7 +61,7 @@ data class EndlessMenuApi(
 data class MenuApi(
     @SerializedName("image")
     val images: String? = null,
-    @SerializedName("additional_information")
+    @SerializedName("information")
     var additionalInformation: String? = null,
     @SerializedName("updated_at")
     val updatedAt: String? = null,

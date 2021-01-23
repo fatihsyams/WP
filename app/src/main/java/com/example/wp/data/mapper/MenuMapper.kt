@@ -6,6 +6,7 @@ import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.MenuImage
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.utils.Load
+import com.example.wp.utils.emptyString
 import com.example.wp.utils.handleApiSuccess
 
 object MenuMapper {
@@ -29,10 +30,10 @@ object MenuMapper {
         )
     }
 
-    fun mapToMenu(response: MenuApi,quantity:Int? = 0): Menu {
+    fun mapToMenu(response: MenuApi,quantity:Int? = 0,information:String= emptyString()): Menu {
         return Menu(
             images = response.images.orEmpty(),
-            additionalInformation = response.additionalInformation.orEmpty(),
+            additionalInformation = information,
             updatedAt = response.updatedAt.orEmpty(),
             price = getPrice(
                 response.price ?: 0.0,

@@ -321,7 +321,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             orderId = order.order.id
             selectedOrderType = order.type
             selectedPayment = Payment(order.paymentMethod)
-//            menus = order.menu.toMutableList()
             when (selectedOrderType) {
                 OrderTypeEnum.TAKE_AWAY.type -> {
                     onTakeAwaySelected()

@@ -49,7 +49,7 @@ object OrderMapper {
     fun mapToRequestOrderApi(domain:OrderResult):RequestOrderApi{
         return RequestOrderApi(
             customerName = domain.order.customerName,
-            information = domain.order.information,
+            information = domain.menu.joinToString { it.additionalInformation },
             orderCategory = domain.order.orderCategory,
             tableId = domain.order.tableId,
             menuIds = domain.menu.map { it.id }.joinToString(),
@@ -75,7 +75,7 @@ object OrderMapper {
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0
             ),
-            menu = api.orderMenuApis?.map { MenuMapper.mapToMenu(it.menu ?: MenuApi(),it.amount) }.orEmpty(),
+            menu = api.orderMenuApis?.map { MenuMapper.mapToMenu(it.menu ?: MenuApi(),it.amount,it.additionalInformation.orEmpty()) }.orEmpty(),
             paymentMethod = api.pembayaran.orEmpty(),
             type = when(api.orderCategory){
                 OrderNameTypeEnum.DINE_IN.type -> OrderTypeEnum.DINE_IN.type
