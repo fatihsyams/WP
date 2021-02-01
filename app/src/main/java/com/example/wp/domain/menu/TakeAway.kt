@@ -1,10 +1,11 @@
 package com.example.wp.domain.menu
 
+import com.example.wp.utils.emptyString
 import com.example.wp.utils.enum.TakeAwayTypeEnum
 
 data class TakeAway(
-    val name:String,
-    val logoUrl:String
+    val name:String = emptyString(),
+    val logoUrl:String = emptyString()
 )
 
 fun getTakeAwayTypes():MutableList<TakeAway>{

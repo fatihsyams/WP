@@ -40,7 +40,6 @@ import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
@@ -107,17 +106,18 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
-        showTotalPrice(selectedOrderNameType)
         orderTypeContainer.visible()
         btnAdd.visible()
         showMenus()
         showOrderResult()
+        showTotalPrice(selectedOrderNameType)
     }
 
     override fun onAction() {
         btnDineIn.setOnClickListener {
             selectedOrderType = OrderTypeEnum.DINE_IN.type
             selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
+            showTotalPrice(selectedOrderNameType)
             onDineInSelected()
         }
 
@@ -128,6 +128,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         btnPreOrder.setOnClickListener {
             selectedOrderType = OrderTypeEnum.PRE_ORDER.type
+            selectedOrderNameType = OrderNameTypeEnum.PRE_ORDER.type
             onPreOrderSelected()
         }
 
@@ -140,6 +141,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
             }
             selectedOrderType = ORDER_EDIT_TYPE
+            edtCustomerName.setText(emptyString())
             menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
         }
 
@@ -325,6 +327,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 OrderTypeEnum.TAKE_AWAY.type -> {
                     onTakeAwaySelected()
                     btnTakeAwayType.text = order.order.orderCategory
+                    selectedTakeAway = TakeAway(order.order.orderCategory)
                     when (order.order.orderCategory) {
                         TakeAwayTypeEnum.GRABFOOD.type -> {
                             selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
@@ -492,6 +495,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
             else -> {
                 selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
+                edtCustomerName.setText(emptyString())
                 menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
             }
         }
