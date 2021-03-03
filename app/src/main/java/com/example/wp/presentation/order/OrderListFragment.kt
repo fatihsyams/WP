@@ -75,9 +75,9 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
                 }
                 is Load.Success -> {
                     progressDialog.dismiss()
-                    if (isCanceled){
+                    if (isCanceled) {
                         orderViewModel.getOrders()
-                    }else{
+                    } else {
                         printStruk()
                     }
                 }
@@ -117,19 +117,18 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
     }
 
     override fun onOrderClicked(order: OrderResult) {
-        (activity as MainActivity).toOrderFragment(order,order.menu,true)
+        (activity as MainActivity).toOrderFragment(order, order.menu, true)
     }
 
     private fun printStruk() {
         progressDialog.show()
-        println("ORDER STRUK $order")
-        printBluetooth(onPrintFinished =  {
+        printBluetooth(onPrintFinished = {
             showPrintAlert()
         },
-        onErrorOccured = {message->
-            showToast(message)
-            progressDialog.dismiss()
-        })
+            onErrorOccured = { message ->
+                showToast(message)
+                progressDialog.dismiss()
+            })
     }
 
     private fun showPrintAlert() {
@@ -163,6 +162,6 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
     private fun onPrintFinish() {
         if (progressDialog.isShowing) progressDialog.dismiss()
         orderViewModel.getOrders()
+        (activity as MainActivity).disableEditMode()
     }
-
 }

@@ -11,6 +11,7 @@ import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.MenuEndlessAdapter
 import com.example.wp.presentation.listener.MenuCategoryListener
+import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.MenuViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.custom.CustomNpaGridLayoutManager
@@ -223,6 +224,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         menuAdapter = null
         preparingAdapter()
         observeMenus(firstPage)
+        (activity as MainActivity).setupOrderButton()
     }
 
 }

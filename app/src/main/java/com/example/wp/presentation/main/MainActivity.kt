@@ -61,10 +61,12 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
         tvOrder.setOnClickListener {
             loadFragment(R.id.fl_container, menuFragment)
+            disableEditMode()
         }
 
         tvListOrder.setOnClickListener {
             toOrderListFragment()
+            disableEditMode()
         }
 
         tvMenu.setOnClickListener {
@@ -72,6 +74,7 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
                 R.id.fl_container,
                 MenusContainerFragment()
             )
+            disableEditMode()
         }
 
         btnOrder.setOnClickListener {
@@ -82,12 +85,14 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
                     isEditMode = true
                 )
             } else {
-                toOrderFragment(menus = selectedMenus)
+                toOrderFragment(menus = selectedMenus, isEditMode = false)
             }
+            disableEditMode()
         }
 
         tvCekStokMain.setOnClickListener {
             loadFragment(R.id.fl_container, StockContainerFragment())
+            disableEditMode()
         }
 
     }
@@ -107,11 +112,6 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     override fun onObserver() {
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupOrderButton()
-    }
-
     fun toOrderListFragment() {
         loadFragment(R.id.fl_container, OrderListFragment())
     }
@@ -127,12 +127,12 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         setupOrderButton()
     }
 
-    private fun setupOrderButton() {
+    fun setupOrderButton() {
         orderButton.visibility = if (selectedMenus.isNotEmpty()) View.VISIBLE else View.GONE
         tvQuantityOrder.text = selectedMenus.size.toString()
     }
 
-    override fun onOpenMenuPage(menus:List<Menu>) {
+    override fun onOpenMenuPage(menus: List<Menu>) {
         selectedMenus = menus.toMutableList()
         loadFragment(R.id.fl_container, menuFragment)
         setupOrderButton()
@@ -144,5 +144,10 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     fun clearSelectedMenus() {
         selectedMenus.clear()
+        disableEditMode()
+    }
+
+    fun disableEditMode() {
+        isEditeMenu = false
     }
 }
