@@ -43,6 +43,10 @@ class WarungPojokPrinter(
                 "Metode Pembayaran : ${order.paymentMethod}",
                 1, WoosimCmd.ALIGN_LEFT
             )
+            printStr(
+                "Status : ${order.status}",
+                1, WoosimCmd.ALIGN_LEFT
+            )
             printStr("================================")
             order.menu.forEach { menu ->
                 printStr(

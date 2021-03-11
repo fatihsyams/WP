@@ -115,12 +115,6 @@ class MenusAdapter(
                     ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity)
                     else -> toCurrencyFormat(item.price * item.quantity)
                 }
-//                tvDiscountPriceOrder.text = when (type) {
-//                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price * item.quantity,item.discount)
-//                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice * item.quantity,item.discountGofood)
-//                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity,item.discountGrabfood)
-//                    else -> toCurrencyFormat(item.price * item.quantity)
-//                }
 
                 tvDiscountOrder.text = when (type) {
                     ORDER_EDIT_TYPE -> "${item.discount}%"
@@ -134,9 +128,6 @@ class MenusAdapter(
                     ORDER_READ_GRAB_FOOD_TYPE -> if (item.discountGrabfood == 0) View.GONE else View.VISIBLE
                     else -> if (item.discount == 0) View.GONE else View.VISIBLE
                 }
-//                tvDiscountPriceOrder.visibility = if (item.discount != 0 || item.discountGofood != 0 || item.discountGrabfood != 0) View.VISIBLE else View.GONE
-
-//                if (item.discount != 0 || item.discountGofood != 0 || item.discountGrabfood != 0) tvHargaMenus.toStrikethrough()
 
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation
