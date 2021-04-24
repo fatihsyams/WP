@@ -122,6 +122,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
 
     private fun printStruk() {
         progressDialog.show()
+        Log.d("ORDER PRINT", "$order")
         printBluetooth(onPrintFinished = {
             showPrintAlert()
         },

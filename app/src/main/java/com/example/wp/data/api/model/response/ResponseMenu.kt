@@ -95,17 +95,3 @@ data class MenuApi(
     val discountGrabfood:Int? = null,
     var quantity: Int? = null
 ) : Parcelable
-
-@Parcelize
-data class MenuImageApi(
-    @SerializedName("updated_at")
-    val updatedAt: String? = null,
-    @SerializedName("image")
-    val imageUrl: String? = null,
-    @SerializedName("id")
-    val id: Int? = null,
-    @SerializedName("menu_id")
-    val menuId: Int? = null,
-    @SerializedName("created_at")
-    val createdAt: String? = null
-) : Parcelable

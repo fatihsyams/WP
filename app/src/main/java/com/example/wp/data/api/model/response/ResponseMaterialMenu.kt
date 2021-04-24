@@ -38,7 +38,7 @@ data class MaterialMenuApi(
     @SerializedName("menu_id")
     val menuId: Int?,
     @SerializedName("stock_required")
-    val stockRequired: Int?,
+    val stockRequired: Double?,
     @SerializedName("updated_at")
     val updatedAt: String?,
     @SerializedName("menu")

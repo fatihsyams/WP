@@ -11,7 +11,6 @@ import com.example.wp.R
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.CalculateMenuListener
 import com.example.wp.utils.toCurrencyFormat
-import com.example.wp.utils.toStrikethrough
 import kotlinx.android.synthetic.main.item_menu.view.*
 import kotlinx.android.synthetic.main.item_menu.view.imgMenus
 import kotlinx.android.synthetic.main.item_menu.view.tvHargaMenus
@@ -75,26 +74,18 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
-
                 tvHargaMenus.text = toCurrencyFormat(item.price)
-//                tvDiscountPrice.text = toCurrencyFormat(item.price,item.discount)
                 tvNamaMenus.text = item.name
                 tvDiscount.text = "${item.discount} %"
-
                 tvSoldOut.visibility =
                     if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
                 tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
-//                tvDiscountPrice.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
-
-//                if (item.discount != 0) tvHargaMenus.toStrikethrough()
-
                 tvHargaMenus.setTextColor(
                     if (item.discount == 0) ContextCompat.getColor(
                         context,
                         R.color.colorGrey
                     ) else ContextCompat.getColor(context, R.color.colorRed)
                 )
-
                 setOnClickListener {
                     if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
                 }
@@ -160,7 +151,6 @@ class MenusAdapter(
 
                 btnDelete.setOnClickListener {
                     onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
-//                    notifyItemRemoved(adapterPosition)
                 }
             }
         }

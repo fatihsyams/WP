@@ -3,8 +3,6 @@ package com.example.wp.data.mapper
 import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
-import com.example.wp.domain.menu.MenuImage
-import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.utils.Load
 import com.example.wp.utils.emptyString
 import com.example.wp.utils.handleApiSuccess
@@ -52,7 +50,7 @@ object MenuMapper {
             quantity = quantity ?: 0,
             materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }
                 .orEmpty(),
-            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0,
+            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0.0 }?.sum() ?: 0.0,
             discount = response.discount ?: 0,
             discountTakeAway = response.discountTakeAway ?: 0,
             discountGofood = response.discountGofood ?: 0,

@@ -1,12 +1,8 @@
 package com.example.wp.data.mapper
 
 import com.example.wp.data.api.model.response.CategoryMenuApi
-import com.example.wp.data.api.model.response.MenuImageApi
 import com.example.wp.data.api.model.response.ResponseCategory
-import com.example.wp.data.api.model.response.ResponseMenuWp
 import com.example.wp.domain.menu.Category
-import com.example.wp.domain.menu.Menu
-import com.example.wp.domain.menu.MenuImage
 import com.example.wp.utils.Load
 import com.example.wp.utils.handleApiSuccess
 

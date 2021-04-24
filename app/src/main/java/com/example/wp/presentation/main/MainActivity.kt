@@ -123,7 +123,15 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     }
 
     override fun onSelectMenu(menu: Menu) {
-        selectedMenus.add(menu)
+        val existMenu = selectedMenus.find { it.id == menu.id }
+        if (existMenu != null){
+            val newQty = existMenu.quantity + menu.quantity
+            menu.quantity = newQty
+            selectedMenus.remove(existMenu)
+            selectedMenus.add(menu)
+        }else{
+            selectedMenus.add(menu)
+        }
         setupOrderButton()
     }
 

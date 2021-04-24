@@ -46,7 +46,7 @@ object MaterialMapper {
     fun mapToMaterialMenu(response: MaterialMenuApi): MaterialMenu {
         return MaterialMenu(
             materialId = response.materialId ?: 0,
-            stockRequired = response.stockRequired ?: 0,
+            stockRequired = response.stockRequired ?: 0.0,
             menuId = response.menuId ?: 0,
             material = mapToMaterial(response.material ?: MaterialApi())
         )

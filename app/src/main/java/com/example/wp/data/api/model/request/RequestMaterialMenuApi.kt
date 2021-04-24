@@ -8,5 +8,5 @@ data class RequestMaterialMenuApi(
     @SerializedName("menu_id")
     val menuId: Int,
     @SerializedName("stock_required")
-    val stockRequired: Int
+    val stockRequired: Double
 )

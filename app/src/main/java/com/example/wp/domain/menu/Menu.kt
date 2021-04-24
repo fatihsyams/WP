@@ -28,19 +28,10 @@ data class Menu(
     var grabFoodPrice:Double = 0.0,
     var materialMenus:List<MaterialMenu> = listOf(),
     var isAvailable:Boolean = stock != 0.0,
-    var stockRequired:Int = materialMenus.map { it.stockRequired }.sum(),
+    var stockRequired:Double = materialMenus.map { it.stockRequired }.sum(),
     var totalPrice:Double = price*quantity,
     val discount:Int = 0,
     val discountTakeAway:Int = 9,
     val discountGofood:Int = 9,
     val discountGrabfood:Int = 9
-) : Parcelable
-
-@Parcelize
-data class MenuImage(
-    val updatedAt: String = emptyString(),
-    val imageUrl: String = emptyString(),
-    val id: Int = 0,
-    val menuId: Int = 0,
-    val createdAt: String = emptyString()
 ) : Parcelable

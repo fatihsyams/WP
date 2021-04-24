@@ -363,7 +363,7 @@ class CreateMenuFragment : Fragment(), CreateMenuInterface.View, MenuListener {
             MaterialMenu(
                 materialId = selectedMaterial?.id ?: 0,
                 menuId = menu?.id ?: 0,
-                stockRequired = edtStockCreateMenu.text.toString().trim().toInt()
+                stockRequired = edtStockCreateMenu.text.toString().trim().toDouble()
             )
         )
     }
