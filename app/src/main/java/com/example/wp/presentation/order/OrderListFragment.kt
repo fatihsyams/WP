@@ -95,7 +95,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
 
     override fun onBillClicked(orderResult: OrderResult) {
         order = orderResult
-        printStruk()
+        printStruk(true)
     }
 
     override fun onPayClicked(orderResult: OrderResult) {
@@ -120,7 +120,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
         (activity as MainActivity).toOrderFragment(order, order.menu, true)
     }
 
-    private fun printStruk() {
+    private fun printStruk(isBill:Boolean = false) {
         progressDialog.show()
         Log.d("ORDER PRINT", "$order")
         printBluetooth(onPrintFinished = {
@@ -129,7 +129,8 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
             onErrorOccured = { message ->
                 showToast(message)
                 progressDialog.dismiss()
-            })
+            },
+        isBill = isBill)
     }
 
     private fun showPrintAlert() {

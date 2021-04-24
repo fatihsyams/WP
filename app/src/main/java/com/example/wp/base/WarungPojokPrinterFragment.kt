@@ -40,7 +40,11 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
     private var mPrnMng: WoosimPrnMng? = null
 
-    fun printBluetooth(onPrintFinished: (() -> Unit)? = null, onErrorOccured: ((message:String) -> Unit)? = null) {
+    fun printBluetooth(
+        onPrintFinished: (() -> Unit)? = null,
+        onErrorOccured: ((message: String) -> Unit)? = null,
+        isBill: Boolean = false
+    ) {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.BLUETOOTH
@@ -52,7 +56,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 PERMISSION_BLUETOOTH
             )
         } else {
-            printRecipe(onPrintFinished,onErrorOccured)
+            printRecipe(onPrintFinished, onErrorOccured,isBill)
         }
     }
 
@@ -68,14 +72,18 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
         }
     }
 
-    private fun printRecipe(onPrintFinished: (() -> Unit)? = null,onErrorOccured: ((message:String) -> Unit)? = null){
+    private fun printRecipe(
+        onPrintFinished: (() -> Unit)? = null,
+        onErrorOccured: ((message: String) -> Unit)? = null,
+        isBill: Boolean
+    ) {
         try {
             Log.d("PRINT", "preparing on printing.. $order")
 
             // Get the local Bluetooth adapter
             mBtAdapter = BluetoothAdapter.getDefaultAdapter()
 
-            if (mBtAdapter != null){
+            if (mBtAdapter != null) {
                 // Get a set of currently paired devices
                 val pairedDevices = mBtAdapter?.bondedDevices
                 val activeBluetooth = pairedDevices?.firstOrNull()
@@ -83,15 +91,17 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                 activeBluetooth?.let {
                     Log.d("PRINT", "get bluetooth $activeBluetooth")
                     val bluetoothAddress = activeBluetooth.address
-                    val recipe = WarungPojokPrinter(requireContext(), order, onPrintFinished)
+                    val recipe =
+                        WarungPojokPrinter(requireContext(), order, isBill, onPrintFinished)
                     //Connect to the printer and after successful connection issue the print command.
-                    mPrnMng = printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
+                    mPrnMng =
+                        printerFactory.createPrnMng(requireContext(), bluetoothAddress, recipe)
                 }
-            }else{
+            } else {
                 onErrorOccured?.invoke("Printer not found")
             }
 
-        }catch (e: Exception){
+        } catch (e: Exception) {
             onErrorOccured?.invoke("Printer error ${e.message}")
         }
     }
@@ -100,7 +110,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
     /*==============================================================================================
     ===================================ESC/POS PRINTER PART=========================================
     ==============================================================================================*/
-    open fun  printIt(printerConnection: DeviceConnection?, onPrintFinished: (() -> Unit)? = null) {
+    open fun printIt(printerConnection: DeviceConnection?, onPrintFinished: (() -> Unit)? = null) {
         try {
             Log.d("PRINT", "preparing on printing.. $order")
             val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
@@ -158,25 +168,26 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
         }
     }
 
-    private fun printMenus(menus: List<Menu>):String{
+    private fun printMenus(menus: List<Menu>): String {
         var menuPrint = emptyString()
-        menus.forEach { menu->
-            menuPrint = menuPrint + "${menu.quantity} ${menu.name} [R]${toCurrencyFormat(menu.totalPrice)}\n" +
-                    "[L] ${menu.additionalInformation}\n"
+        menus.forEach { menu ->
+            menuPrint =
+                menuPrint + "${menu.quantity} ${menu.name} [R]${toCurrencyFormat(menu.totalPrice)}\n" +
+                        "[L] ${menu.additionalInformation}\n"
         }
         return menuPrint
     }
 
-    private fun printClosingMessage(orderType: Int):String{
-        return when(orderType){
+    private fun printClosingMessage(orderType: Int): String {
+        return when (orderType) {
             OrderTypeEnum.DINE_IN.type -> "Terima Kasih Atas Kunjungannya"
             OrderTypeEnum.TAKE_AWAY.type -> "Terima Kasih Atas Orderannya"
             OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
-                    else -> "Selamat Menikmati"
+            else -> "Selamat Menikmati"
         }
     }
 
-    fun showBluetoothListDialog(){
+    fun showBluetoothListDialog() {
         generateCustomAlertDialog(
             context = requireContext(),
             layoutRes = R.layout.layout_bluetooth_list_dialog,
@@ -202,7 +213,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
 
             // If there are paired devices, add each one to the ArrayAdapter
             if (!pairedDevices.isNullOrEmpty()) {
-               tvPairedDevices.visible()
+                tvPairedDevices.visible()
                 for (device in pairedDevices) {
                     mPairedDevicesArrayAdapter!!.add(
                         """
@@ -219,8 +230,8 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
         }
     }
 
-    private fun doDiscovery(){
-        if(mBtAdapter?.isDiscovering == true){
+    private fun doDiscovery() {
+        if (mBtAdapter?.isDiscovering == true) {
             mBtAdapter?.cancelDiscovery()
         }
         mBtAdapter?.startDiscovery()

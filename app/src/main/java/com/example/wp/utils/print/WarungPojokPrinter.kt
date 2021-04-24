@@ -18,6 +18,7 @@ import java.util.*
 class WarungPojokPrinter(
     val context: Context,
     val order: OrderResult,
+    val isBill:Boolean,
     private val onPrintFinished: (() -> Unit)? = null
 ) : IPrintToPrinter {
 
@@ -66,18 +67,20 @@ class WarungPojokPrinter(
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
             }
-            printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
-            printStr(
-                " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
-                1,
-                WoosimCmd.ALIGN_LEFT
-            )
-            printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
-            printStr(
-                " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
-                1,
-                WoosimCmd.ALIGN_LEFT
-            )
+            if (!isBill){
+                printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+                printStr(
+                    " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+                printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
+                printStr(
+                    " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+            }
             printStr("================================")
             printStr(
                 when (order.type) {
