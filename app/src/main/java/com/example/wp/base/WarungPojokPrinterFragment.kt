@@ -117,7 +117,9 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
             val printer = EscPosPrinter(printerConnection, 203, 48f, 32)
             printer
                 .printFormattedText(
+                    "[C]<font size='large'>Bale Jentera Food Corner\n" +
                     "[C]<font size='small'>Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok</font>\n" +
+                            "[C]<font size='small'>+62 819-0609-4972</font>\n" +
                             "[L]\n" +
                             "[C]<font size='small'> Tanggal: " + format.format(Date()) + "</font>\n" +
                             "[L]\n" +

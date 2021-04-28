@@ -18,7 +18,7 @@ import java.util.*
 class WarungPojokPrinter(
     val context: Context,
     val order: OrderResult,
-    val isBill:Boolean,
+    val isBill: Boolean,
     private val onPrintFinished: (() -> Unit)? = null
 ) : IPrintToPrinter {
 
@@ -37,8 +37,8 @@ class WarungPojokPrinter(
                 "Customer : ${order.order.customerName}",
                 1, WoosimCmd.ALIGN_LEFT
             )
-            if (order.type == OrderTypeEnum.DINE_IN.type){
-                printStr( "No Meja : ${order.order.tableId}", 1, WoosimCmd.ALIGN_LEFT)
+            if (order.type == OrderTypeEnum.DINE_IN.type) {
+                printStr("No Meja : ${order.order.tableId}", 1, WoosimCmd.ALIGN_LEFT)
             }
             printStr(
                 "Metode Pembayaran : ${order.paymentMethod}",
@@ -49,26 +49,25 @@ class WarungPojokPrinter(
                 1, WoosimCmd.ALIGN_LEFT
             )
             printStr("================================")
-            order.menu.forEach { menu ->
-                printStr(
-                    wordMng.autoWordWrap(
-                        menu.name
-                    ), 1, WoosimCmd.ALIGN_LEFT
-                )
-                printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
-                printStr(
-                    "  x ${menu.quantity} \t ${
-                        when(order.order.orderCategory){
-                            OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price*menu.quantity)
-                            OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice*menu.quantity)
-                            OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice*menu.quantity)
-                            else -> toCurrencyFormat(menu.price*menu.quantity)
-                        }
-                    }", 1, WoosimCmd.ALIGN_LEFT
-                )
-            }
-            if (!isBill){
-                printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+
+            if (isBill) {
+
+
+                order.menu.forEach { menu ->
+                    printStr(
+                        wordMng.autoWordWrap(
+                            menu.name
+                        ), 1, WoosimCmd.ALIGN_LEFT
+                    )
+                    printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
+                    printStr(
+                        "  x ${menu.quantity} ", 1, WoosimCmd.ALIGN_LEFT
+                    )
+
+                    printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+
+                }
+
                 printStr(
                     " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
                     1,
@@ -80,6 +79,60 @@ class WarungPojokPrinter(
                     1,
                     WoosimCmd.ALIGN_LEFT
                 )
+
+                printStr(
+                    " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+                printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
+                printStr(
+                    " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+
+            } else {
+
+
+                order.menu.forEach { menu ->
+                    printStr(
+                        wordMng.autoWordWrap(
+                            menu.name
+                        ), 1, WoosimCmd.ALIGN_LEFT
+                    )
+                    printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
+                    printStr(
+                        "  x ${menu.quantity} \t ${
+                            when (order.order.orderCategory) {
+                                OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price * menu.quantity)
+                                OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice * menu.quantity)
+                                OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice * menu.quantity)
+                                else -> toCurrencyFormat(menu.price * menu.quantity)
+                            }
+                        }", 1, WoosimCmd.ALIGN_LEFT
+                    )
+
+                    printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+
+
+                    order.menu.forEach { menu ->
+                        printStr(
+                            wordMng.autoWordWrap(
+                                menu.name
+                            ), 1, WoosimCmd.ALIGN_LEFT
+                        )
+                        printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
+                        printStr(
+                            "  x ${menu.quantity} ", 1, WoosimCmd.ALIGN_LEFT
+                        )
+
+                        printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+
+                    }
+
+                }
+
             }
             printStr("================================")
             printStr(
