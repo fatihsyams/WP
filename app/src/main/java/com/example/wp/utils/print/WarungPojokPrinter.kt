@@ -27,6 +27,9 @@ class WarungPojokPrinter(
         val wordMng: printerWordMng = printerFactory.createPaperMng(context)
         val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
         prnMng.apply {
+
+            printStr("Bale Jentera Food Corner", 2, WoosimCmd.ALIGN_CENTER)
+
             printStr(
                 "Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok",
                 1,
@@ -44,15 +47,13 @@ class WarungPojokPrinter(
                 "Metode Pembayaran : ${order.paymentMethod}",
                 1, WoosimCmd.ALIGN_LEFT
             )
-            printStr(
-                "Status : ${order.status}",
-                1, WoosimCmd.ALIGN_LEFT
-            )
+//            printStr(
+//                "Status : ${order.status}",
+//                1, WoosimCmd.ALIGN_LEFT
+//            )
             printStr("================================")
 
             if (isBill) {
-
-
                 order.menu.forEach { menu ->
                     printStr(
                         wordMng.autoWordWrap(
@@ -68,29 +69,6 @@ class WarungPojokPrinter(
 
                 }
 
-                printStr(
-                    " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
-                    1,
-                    WoosimCmd.ALIGN_LEFT
-                )
-                printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
-                printStr(
-                    " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
-                    1,
-                    WoosimCmd.ALIGN_LEFT
-                )
-
-                printStr(
-                    " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
-                    1,
-                    WoosimCmd.ALIGN_LEFT
-                )
-                printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
-                printStr(
-                    " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
-                    1,
-                    WoosimCmd.ALIGN_LEFT
-                )
 
             } else {
 
@@ -114,27 +92,28 @@ class WarungPojokPrinter(
                     )
 
                     printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
-
-
-                    order.menu.forEach { menu ->
-                        printStr(
-                            wordMng.autoWordWrap(
-                                menu.name
-                            ), 1, WoosimCmd.ALIGN_LEFT
-                        )
-                        printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
-                        printStr(
-                            "  x ${menu.quantity} ", 1, WoosimCmd.ALIGN_LEFT
-                        )
-
-                        printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
-
-                    }
+                    printStr(
+                        " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
+                        1,
+                        WoosimCmd.ALIGN_LEFT
+                    )
+                    printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
+                    printStr(
+                        " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
+                        1,
+                        WoosimCmd.ALIGN_LEFT
+                    )
 
                 }
 
             }
             printStr("================================")
+
+            printStr("IG : Bale Jentera", 1, WoosimCmd.ALIGN_LEFT)
+            printStr("FB : Bale Jentera Food Corner", 1, WoosimCmd.ALIGN_LEFT)
+            printStr("WA : +62 819-0609-4972", 1 , WoosimCmd.ALIGN_LEFT)
+
+
             printStr(
                 when (order.type) {
                     OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
