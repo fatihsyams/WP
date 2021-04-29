@@ -43,10 +43,10 @@ class WarungPojokPrinter(
                 "Metode Pembayaran : ${order.paymentMethod}",
                 1, WoosimCmd.ALIGN_LEFT
             )
-            printStr(
-                "Status : ${order.status}",
-                1, WoosimCmd.ALIGN_LEFT
-            )
+//            printStr(
+//                "Status : ${order.status}",
+//                1, WoosimCmd.ALIGN_LEFT
+//            )
             printStr("================================")
             order.menu.forEach { menu ->
                 printStr(
@@ -65,8 +65,9 @@ class WarungPojokPrinter(
                         }
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
+                printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
+
             }
-            printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
             printStr(
                 " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
                 1,
