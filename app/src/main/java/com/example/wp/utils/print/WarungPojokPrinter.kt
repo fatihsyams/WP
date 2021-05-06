@@ -28,7 +28,10 @@ class WarungPojokPrinter(
         val format = SimpleDateFormat("dd-MM-yyyy 'at' HH:mm:ss", Locale.US)
         prnMng.apply {
 
-            printStr("Bale Jentera Food Corner", 2, WoosimCmd.ALIGN_CENTER)
+            printStr("Bale Jentera", 2, WoosimCmd.ALIGN_CENTER)
+            printStr("Food Corner", 2, WoosimCmd.ALIGN_CENTER)
+            printStr("", 1, WoosimCmd.ALIGN_CENTER)
+
 
             printStr(
                 "Jl. Rambutan raya No. 1D RT 003/001, Kec. Pancoran Mas, Kota Depok",
@@ -92,26 +95,36 @@ class WarungPojokPrinter(
                     )
 
                     printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
-                    printStr(
-                        " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
-                        1,
-                        WoosimCmd.ALIGN_LEFT
-                    )
-                    printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
-                    printStr(
-                        " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
-                        1,
-                        WoosimCmd.ALIGN_LEFT
-                    )
+
 
                 }
 
+                printStr(
+                    " ITEMS: ${order.menu.size} \t ${toCurrencyFormat(order.order.totalPaymentBeforeDiscount)}",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+                printStr(" Discount: \t ${order.order.discount} % ", 1, WoosimCmd.ALIGN_LEFT)
+                printStr(
+                    " Total : \t ${toCurrencyFormat(order.order.totalPayment)} ",
+                    1,
+                    WoosimCmd.ALIGN_LEFT
+                )
+
+                printStr("================================")
+
+
             }
-            printStr("================================")
+
+            printStr("", 1, WoosimCmd.ALIGN_CENTER)
+
 
             printStr("IG : Bale Jentera", 1, WoosimCmd.ALIGN_LEFT)
             printStr("FB : Bale Jentera Food Corner", 1, WoosimCmd.ALIGN_LEFT)
             printStr("WA : +62 819-0609-4972", 1 , WoosimCmd.ALIGN_LEFT)
+
+            printStr("", 1, WoosimCmd.ALIGN_CENTER)
+
 
 
             printStr(
