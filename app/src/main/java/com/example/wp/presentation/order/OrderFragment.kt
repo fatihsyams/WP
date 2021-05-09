@@ -346,8 +346,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 OrderTypeEnum.DINE_IN.type -> {
                     selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
                     onDineInSelected()
-                    val table = order.order.tableId?.toInt() ?: 0
-                    if (order.order.tableId!!.isNotEmpty()) order.order.tableId.toInt() else 0
+                    val table = if (order.order.tableId!!.isNotEmpty()) order.order.tableId.toInt() else 0
+
 
                     selectedTable = Table(id = table, number = table)
                     btnTableNumber.text = order.order.tableId
