@@ -28,7 +28,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField("String", "BASE_URL", "\"http://newarung-pojok.com/api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://bale-jentera.com/api/\"")
         }
 
         release {

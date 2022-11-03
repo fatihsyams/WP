@@ -1,10 +1,8 @@
 package com.example.wp.data.mapper
 
 import com.example.wp.data.api.model.request.RequestOrderApi
-import com.example.wp.data.api.model.response.MenuApi
-import com.example.wp.data.api.model.response.OrderApi
-import com.example.wp.data.api.model.response.ResponseOrders
-import com.example.wp.data.api.model.response.ResponsePostOrder
+import com.example.wp.data.api.model.response.*
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.utils.Load
@@ -86,5 +84,18 @@ object OrderMapper {
             status = api.orderStatus.orEmpty()
         )
     }
+
+    fun mapGetOrderKategori(
+        response: ResponseKategoriOrder
+    ): Load<List<KategoriOrder>> {
+        return handleApiSuccess(data = response.categoryOrder?.map { mapToKategoriOrder(it) }.orEmpty())
+    }
+
+    private fun mapToKategoriOrder(api: CategoryOrderApi?) : KategoriOrder{
+        return KategoriOrder(
+            name = api?.categoryOrder.orEmpty(),
+            id = api?.id ?: 0
+        )
+}
 
 }

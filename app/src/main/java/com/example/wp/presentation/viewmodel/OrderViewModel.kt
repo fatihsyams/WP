@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.domain.repository.OrderRepository
 import com.example.wp.utils.Load
@@ -22,6 +23,9 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
 
     private val _editOrderLoad = MutableLiveData<Load<Boolean>>()
     val editOrderLoad = _editOrderLoad as LiveData<Load<Boolean>>
+
+    private val _kategoriOrderLoad = MutableLiveData<Load<List<KategoriOrder>>>()
+    val kategoriOrder = _kategoriOrderLoad as LiveData<Load<List<KategoriOrder>>>
 
     fun postOrder(orderResult: OrderResult) = viewModelScope.launch {
         _orderLoad.value = Load.Loading
@@ -46,5 +50,11 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
         _ordersLoad.value = Load.Loading
         val order = repository.getOrders()
         _ordersLoad.value = order
+    }
+
+    fun getKategoriOrder() = viewModelScope.launch {
+        _kategoriOrderLoad.value = Load.Loading
+        val kategoriOrder = repository.getKategoriOrder()
+        _kategoriOrderLoad.value = kategoriOrder
     }
 }

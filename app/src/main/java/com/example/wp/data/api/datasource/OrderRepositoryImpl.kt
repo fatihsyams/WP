@@ -3,6 +3,7 @@ package com.example.wp.data.api.datasource
 import com.example.wp.data.api.model.request.RequestUpdateOrderApi
 import com.example.wp.data.api.service.OrderService
 import com.example.wp.data.mapper.OrderMapper
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.domain.repository.OrderRepository
 import com.example.wp.utils.Load
@@ -48,6 +49,21 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
             if (response.isSuccessful) {
                 response.body()?.let { response ->
                     OrderMapper.mapGetOrders(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun getKategoriOrder(): Load<List<KategoriOrder>> {
+        return try {
+            val response = service.getKategoriOrder()
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    OrderMapper.mapGetOrderKategori(response)
                 } ?: Load.Fail(Throwable(response.message()))
             } else {
                 Load.Fail(Throwable(response.message()))

@@ -1,28 +1,34 @@
 package com.example.wp.presentation.menu
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
 import com.example.wp.base.BaseEndlessRecyclerViewAdapter
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
+import com.example.wp.presentation.adapter.KategoriOrderAdapter
 import com.example.wp.presentation.adapter.MenuEndlessAdapter
+import com.example.wp.presentation.listener.KategoriOrderListener
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.MenuViewModel
+import com.example.wp.presentation.viewmodel.OrderViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.custom.CustomNpaGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_menus.*
+import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     BaseEndlessRecyclerViewAdapter.OnLoadMoreListener {
 
     private val menuViewModel: MenuViewModel by viewModel()
-
+    private val orderViewModel: OrderViewModel by viewModel()
     var onMenuClickListener: OnMenuClickListener? = null
 
     private var menuAdapter: MenuEndlessAdapter? = null
@@ -77,6 +83,9 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
             observeMenus(firstPage)
             return@setOnCloseListener true
         }
+        btnPilihKategoriOrder.setOnClickListener {
+           orderViewModel.getKategoriOrder()
+        }
     }
 
     override fun onObserver() {
@@ -120,6 +129,17 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 }
                 is Load.Success -> {
                     showCategories(it.data)
+                }
+            }
+        })
+
+        orderViewModel.kategoriOrder.observe(this, Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    showKategoriOrder(it.data)
                 }
             }
         })
@@ -215,6 +235,35 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
             rvMenus.apply {
                 layoutManager = gridLayoutManager
                 adapter = menuAdapter
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun showKategoriOrder(kategoriOrder: List<KategoriOrder>) {
+        generateCustomBottomSheetDialog(
+            context = requireContext(),
+            layoutRes = R.layout.layout_alert_option,
+            isCancelable = true,
+            isExpandMode = true
+        ).apply {
+
+            val categoryAdapter = KategoriOrderAdapter(
+                context = requireContext(),
+                datas = kategoriOrder,
+                listener = object : KategoriOrderListener {
+                    override fun onKategoriOrderSelected(data: KategoriOrder) {
+                        dismiss()
+                    }
+                }
+            )
+
+
+            tvTitle.text = getString(R.string.pilih_kategori_order)
+
+            rvOption.apply {
+                layoutManager = GridLayoutManager(requireContext(), 3)
+                adapter = categoryAdapter
             }
         }
     }
