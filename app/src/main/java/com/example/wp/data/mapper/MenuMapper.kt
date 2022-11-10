@@ -4,6 +4,7 @@ import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.menu.EndlessMenu
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.MenuImage
+import com.example.wp.domain.menu.MenuPrice
 import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.utils.Load
 import com.example.wp.utils.emptyString
@@ -56,9 +57,22 @@ object MenuMapper {
             discount = response.discount ?: 0,
             discountTakeAway = response.discountTakeAway ?: 0,
             discountGofood = response.discountGofood ?: 0,
-            discountGrabfood = response.discountGrabfood ?: 0
+            discountGrabfood = response.discountGrabfood ?: 0,
+            menuPrice = response.menuPrice?.map { mapToMenuPrice(it) }.orEmpty()
         )
     }
+
+    fun mapToMenuPrice(response: MenuPriceApi): MenuPrice {
+        return MenuPrice(
+            discountMenu = response.discountMenu.orEmpty(),
+            menuId = response.menuId ?: 0,
+            id = response.id ?: 0,
+            categoryOrderId = response.categoryOrderId ?: 0,
+            price = response.price ?: 0
+        )
+    }
+
+
 
     private fun getPrice(price: Double, discount: Int?): Double {
         return if (discount != null) price - price.times(discount) / 100 else price

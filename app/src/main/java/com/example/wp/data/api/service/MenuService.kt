@@ -19,7 +19,8 @@ interface MenuService {
     suspend fun getSearchMenuResult(@Query("search") query:String):Response<ResponseSearchMenu>
 
     @GET("menu-paginate")
-    suspend fun getMenu(@Query("category_menu_id") categoryId:Int,
+    suspend fun getMenu(@Query("category_order_id") categoryId:Int,
+                        @Query("category_menu_id") menuId:Int,
                         @Query("page") page:Int): Response<ResponseMenuWp>
 
     @POST("login")

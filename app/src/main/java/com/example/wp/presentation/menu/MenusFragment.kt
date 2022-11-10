@@ -196,7 +196,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         searchView.setQuery(emptyString(),false)
         searchView.clearFocus()
         listMenu.clear()
-        menuViewModel.getMenus(data.id, firstPage)
+        menuViewModel.getMenus(data.id,  6, firstPage)
         menuAdapter?.clear()
     }
 
@@ -253,6 +253,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 datas = kategoriOrder,
                 listener = object : KategoriOrderListener {
                     override fun onKategoriOrderSelected(data: KategoriOrder) {
+                        menuViewModel.getMenus(categoryId = data.id, page = currentPage)
                         dismiss()
                     }
                 }

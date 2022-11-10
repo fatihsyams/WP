@@ -76,7 +76,7 @@ class MenusAdapter(
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
 
-                tvHargaMenus.text = toCurrencyFormat(item.price)
+                tvHargaMenus.text = toCurrencyFormat(item.menuPrice[0].price.toDouble())
 //                tvDiscountPrice.text = toCurrencyFormat(item.price,item.discount)
                 tvNamaMenus.text = item.name
                 tvDiscount.text = "${item.discount} %"

@@ -93,8 +93,27 @@ data class MenuApi(
     val discountGofood:Int? = null,
     @SerializedName("discount_grabfood")
     val discountGrabfood:Int? = null,
-    var quantity: Int? = null
+    var quantity: Int? = null,
+    @SerializedName("menu_price")
+    val menuPrice: List<MenuPriceApi>? = listOf()
 ) : Parcelable
+
+@Parcelize
+data class MenuPriceApi(
+    @SerializedName("discount_menu")
+    val discountMenu: String?,
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("category_order_id")
+    val categoryOrderId: Int?,
+    @SerializedName("price")
+    val price: Int?,
+    @SerializedName("menu_id")
+    val menuId: Int?
+): Parcelable
+
+
+
 
 @Parcelize
 data class MenuImageApi(

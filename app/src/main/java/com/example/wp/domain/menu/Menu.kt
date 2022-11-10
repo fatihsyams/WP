@@ -33,8 +33,17 @@ data class Menu(
     val discount:Int = 0,
     val discountTakeAway:Int = 9,
     val discountGofood:Int = 9,
-    val discountGrabfood:Int = 9
+    val discountGrabfood:Int = 9,
+    val menuPrice: List<MenuPrice> = listOf()
 ) : Parcelable
+@Parcelize
+data class MenuPrice(
+    val menuId: Int,
+    val categoryOrderId: Int,
+    val discountMenu: String,
+    val price: Int,
+    val id: Int
+): Parcelable
 
 @Parcelize
 data class MenuImage(
