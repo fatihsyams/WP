@@ -20,8 +20,10 @@ object MenuMapper {
 
     fun map(
         response: ResponseMenuWp
-    ): Load<EndlessMenu> {
-        return handleApiSuccess(data = mapToEndlessMenu(response.data))
+    ): Load<List<Menu>> {
+        return handleApiSuccess(data = response.data?.map {
+            mapToMenu(it)
+        }.orEmpty())
     }
 
     private fun mapToEndlessMenu(response: EndlessMenuApi?):EndlessMenu{
@@ -46,14 +48,11 @@ object MenuMapper {
             description = response.description.orEmpty(),
             createdAt = response.createdAt.orEmpty(),
             id = response.id ?: 0,
-            stock = response.materialMenus?.map { materialMenu ->
-                materialMenu.material?.stock ?: 0.0
-            }?.sum() ?: 0.0,
+            stock = 0.0,
             category = response.category.orEmpty(),
             quantity = quantity ?: 0,
-            materialMenus = response.materialMenus?.map { MaterialMapper.mapToMaterialMenu(it) }
-                .orEmpty(),
-            stockRequired = response.materialMenus?.map { it.stockRequired ?: 0 }?.sum() ?: 0,
+            materialMenus = emptyList(),
+            stockRequired =0,
             discount = response.discount ?: 0,
             discountTakeAway = response.discountTakeAway ?: 0,
             discountGofood = response.discountGofood ?: 0,

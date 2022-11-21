@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Studio Project/Project/wp/app/src/main/res/layout/fragment_menu_detail.xml" value="0.22" />
+        <entry key="..\:/Android Studio Project/Project/wp/app/src/main/res/layout/fragment_order.xml" value="0.21" />
+        <entry key="..\:/Android Studio Project/Project/wp/app/src/main/res/layout/fragment_order_list.xml" value="0.11432291666666666" />
         <entry key="..\:/Android Studio Project/Project/wp/app/src/main/res/layout/item_kategori_order.xml" value="0.15806159420289856" />
+        <entry key="..\:/Android Studio Project/Project/wp/app/src/main/res/layout/layout_order_additional_note_dialog.xml" value="0.18125" />
       </map>
     </option>
   </component>

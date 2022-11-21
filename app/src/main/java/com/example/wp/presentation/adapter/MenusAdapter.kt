@@ -1,6 +1,7 @@
 package com.example.wp.presentation.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,16 +74,18 @@ class MenusAdapter(
         fun bindItem(item: Menu) {
             with(itemView) {
                 if (item.images.isNotEmpty()) {
+                    val url = "https://bale-jentera.com/storage/image/01IO2fWmaxC4TI5lo5ObS6PjZM2xN7Qy687PKbn9.jpg"
                     Glide.with(context).load(item.images).into(imgMenus)
+
                 }
 
-                tvHargaMenus.text = toCurrencyFormat(item.menuPrice[0].price.toDouble())
+                tvHargaMenus.text = toCurrencyFormat(item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)
 //                tvDiscountPrice.text = toCurrencyFormat(item.price,item.discount)
                 tvNamaMenus.text = item.name
                 tvDiscount.text = "${item.discount} %"
 
-                tvSoldOut.visibility =
-                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
+//                tvSoldOut.visibility =
+//                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
                 tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
 //                tvDiscountPrice.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
 
@@ -96,7 +99,7 @@ class MenusAdapter(
                 )
 
                 setOnClickListener {
-                    if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
+                    onMenuClickListener?.invoke(item)
                 }
             }
         }

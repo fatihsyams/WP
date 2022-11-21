@@ -12,8 +12,8 @@ import com.example.wp.utils.Load
 import kotlinx.coroutines.launch
 
 class MenuViewModel(val repository: MenuRepository) : ViewModel() {
-    private val _menusLoad = MutableLiveData<Load<EndlessMenu>>()
-    val menusLoad = _menusLoad as LiveData<Load<EndlessMenu>>
+    private val _menusLoad = MutableLiveData<Load<List<Menu>>>()
+    val menusLoad = _menusLoad as LiveData<Load<List<Menu>>>
 
     private val _deleteMenu = MutableLiveData<Load<Boolean>>()
     val deleteMenu = _deleteMenu as LiveData<Load<Boolean>>
@@ -33,7 +33,7 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
         _searchMenuLoad.value = Load.Loading
     }
 
-    fun getMenus(categoryId:Int= 0, menuId:Int=0, page:Int) = viewModelScope.launch {
+    fun getMenus(categoryId:Int= 1, menuId:Int=0, page:Int) = viewModelScope.launch {
         _menusLoad.value = Load.Loading
         val menus = repository.getMenus(categoryId, menuId, page)
         _menusLoad.value = menus

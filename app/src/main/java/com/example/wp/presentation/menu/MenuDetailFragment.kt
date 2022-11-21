@@ -11,7 +11,6 @@ import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
-import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
 
 class MenuDetailFragment : WarungPojokFragment() {
 
@@ -47,33 +46,33 @@ class MenuDetailFragment : WarungPojokFragment() {
     override fun onAction() {
         btnMinus.setOnClickListener {
             menu?.let { menu ->
-                val realQuantity = selectedQuantity*menu.stockRequired
-                if (realQuantity > menu.stockRequired) {
                     selectedQuantity--
-                }
                 setMenuQuantity()
             }
         }
 
         btnPlus.setOnClickListener {
             menu?.let { menu ->
-                val realQuantity = selectedQuantity * menu.stockRequired
-                if (realQuantity < menu.stock) {
                     selectedQuantity++
                     setMenuQuantity()
-                } else {
-                    showToast("Tidak bisa melebihi stok")
-                }
             }
         }
 
-        btnOk.setOnClickListener { showAdditionalNoteDialog() }
+        btnOk.setOnClickListener {
+            menu?.apply {
+                    this.quantity = selectedQuantity
+                    totalPrice = price * selectedQuantity
+                    additionalInformation = edtKeteranganOrder.text.toString()
+                    onMenuSelectListener?.onSelectMenu(this)
+            }
+        }
     }
 
 
     private fun setMenuQuantity() {
         tvQuantity.text = selectedQuantity.toString()
-        val totalPrice = menu?.price?.times(selectedQuantity)
+        val price = menu?.menuPrice?.firstOrNull()?.price?.toDouble() ?: 0.0
+        val totalPrice = price.times(selectedQuantity)
         tvPrice.text = toCurrencyFormat(totalPrice ?: 0.0)
     }
 
@@ -87,36 +86,36 @@ class MenuDetailFragment : WarungPojokFragment() {
             }
             tvName.text = name
             tvDescription.text = description
-            tvPrice.text = toCurrencyFormat(price)
+            tvPrice.text = toCurrencyFormat(menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)
         }
     }
 
-    private fun showAdditionalNoteDialog() {
-        context?.let {
-            generateCustomAlertDialog(
-                it,
-                R.layout.layout_order_additional_note_dialog,
-                false
-            ).apply {
-
-                menu?.apply {
-                    tvNamaMenu.text = name
-                    tvPrice.text = toCurrencyFormat(price)
-
-                    btnCancel.setOnClickListener { dismiss() }
-
-                    btnDone.setOnClickListener {
-                        this.quantity = selectedQuantity
-                        totalPrice = price * selectedQuantity
-                        additionalInformation = edtNote.text.toString()
-                        onMenuSelectListener?.onSelectMenu(this)
-                        dismiss()
-                        removeFragment()
-                    }
-                }
-
-            }
-        }
-    }
+//    private fun showAdditionalNoteDialog() {
+//        context?.let {
+//            generateCustomAlertDialog(
+//                it,
+//                R.layout.layout_order_additional_note_dialog,
+//                false
+//            ).apply {
+//
+//                menu?.apply {
+//                    tvNamaMenu.text = name
+//                    tvPrice.text = toCurrencyFormat(price)
+//
+//                    btnCancel.setOnClickListener { dismiss() }
+//
+//                    btnDone.setOnClickListener {
+//                        this.quantity = selectedQuantity
+//                        totalPrice = price * selectedQuantity
+//                        additionalInformation = edtNote.text.toString()
+//                        onMenuSelectListener?.onSelectMenu(this)
+//                        dismiss()
+//                        removeFragment()
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 
 }

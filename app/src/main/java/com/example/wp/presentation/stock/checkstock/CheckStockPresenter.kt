@@ -34,17 +34,17 @@ class CheckStockPresenter(model: CheckStockInterface.View) : CheckStockInterface
                     call: Call<ResponseMenuWp>,
                     response: Response<ResponseMenuWp>
                 ) {
-                    if (response.isSuccessful) {
-                        val responBody = response.body()
-                        view?.showData(
-                            responBody?.data?.menu?.map {
-                                MenuMapper.mapToMenu(it)
-                            }.orEmpty()
-                        )
-                        Log.d("stok", response.message())
-                    } else {
-                        Log.d("stok", "${response.errorBody()}")
-                    }
+//                    if (response.isSuccessful) {
+//                        val responBody = response.body()
+//                        view?.showData(
+//                            responBody?.data?.menu?.map {
+//                                MenuMapper.mapToMenu(it)
+//                            }.orEmpty()
+//                        )
+//                        Log.d("stok", response.message())
+//                    } else {
+//                        Log.d("stok", "${response.errorBody()}")
+//                    }
                 }
 
             })

@@ -107,10 +107,10 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 }
                 is Load.Success -> {
                     msvCheckMenu.showContentView()
-                    listMenu.addAll(it.data.menus)
+                    listMenu.addAll(it.data)
                     isLoadMore = false
                     menuAdapter?.setLoadMoreProgress(false)
-                    totalPages = it.data.totalPage
+                    totalPages = 0
                     menuAdapter?.totalPage = totalPages
                     menuAdapter?.notifyAddOrUpdateChanged(listMenu)
 

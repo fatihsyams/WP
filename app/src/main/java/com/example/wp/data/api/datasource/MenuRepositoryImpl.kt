@@ -13,7 +13,7 @@ import com.example.wp.utils.handleApiError
 import java.lang.Exception
 
 class MenuRepositoryImpl(val service:MenuService):MenuRepository{
-    override suspend fun getMenus(categoryId:Int, menuId:Int, page:Int): Load<EndlessMenu> {
+    override suspend fun getMenus(categoryId:Int, menuId:Int, page:Int): Load<List<Menu>> {
         return try {
             val response = service.getMenu(categoryId, menuId,page)
             if (response.isSuccessful){

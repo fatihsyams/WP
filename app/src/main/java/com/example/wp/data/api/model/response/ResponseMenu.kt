@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 data class ResponseMenuWp(
     @SerializedName("menu")
-    val data: EndlessMenuApi? = null,
+    val data: List<MenuApi> ? = null,
     @SerializedName("success")
     val success: Boolean? = null,
     @SerializedName("message")
@@ -83,8 +83,8 @@ data class MenuApi(
     val goFoodPrice: Double? = null,
     @SerializedName("price_grabfood")
     val grabFoodPrice: Double? = null,
-    @SerializedName("material_menus")
-    val materialMenus: List<MaterialMenuApi>? = null,
+//    @SerializedName("material_menus")
+//    val materialMenus: List<MaterialMenuApi>? = null,
     @SerializedName("discount")
     val discount:Int? = null,
     @SerializedName("discount_takeaway")
@@ -95,7 +95,7 @@ data class MenuApi(
     val discountGrabfood:Int? = null,
     var quantity: Int? = null,
     @SerializedName("menu_price")
-    val menuPrice: List<MenuPriceApi>? = listOf()
+    val menuPrice: List<MenuPriceApi>? = null
 ) : Parcelable
 
 @Parcelize

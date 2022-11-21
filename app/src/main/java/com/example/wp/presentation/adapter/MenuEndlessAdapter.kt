@@ -92,13 +92,13 @@ class MenuEndlessAdapter(
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
 
-                tvHargaMenus.text = toCurrencyFormat(item.price)
+                tvHargaMenus.text = toCurrencyFormat(item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)
                 tvNamaMenus.text = item.name
                 tvDiscount.text = "${item.discount} %"
 
-                tvSoldOut.visibility =
-                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
-                tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
+//                tvSoldOut.visibility =
+//                    if (item.stock > item.stockRequired) View.GONE else View.VISIBLE
+//                tvDiscount.visibility = if (item.discount == 0) View.GONE else View.VISIBLE
 
                 tvHargaMenus.setTextColor(
                     if (item.discount == 0) ContextCompat.getColor(
@@ -108,7 +108,7 @@ class MenuEndlessAdapter(
                 )
 
                 setOnClickListener {
-                    if (item.stock > item.stockRequired) onMenuClickListener?.invoke(item)
+                   onMenuClickListener?.invoke(item)
                 }
             }
         }

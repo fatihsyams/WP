@@ -1,6 +1,7 @@
 package com.example.wp.presentation.menu
 
 import android.annotation.SuppressLint
+import androidx.appcompat.view.menu.MenuAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.adapter.CategoryAdapter
 import com.example.wp.presentation.adapter.KategoriOrderAdapter
 import com.example.wp.presentation.adapter.MenuEndlessAdapter
+import com.example.wp.presentation.adapter.MenusAdapter
 import com.example.wp.presentation.listener.KategoriOrderListener
 import com.example.wp.presentation.listener.MenuCategoryListener
 import com.example.wp.presentation.main.MainActivity
@@ -31,7 +33,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     private val orderViewModel: OrderViewModel by viewModel()
     var onMenuClickListener: OnMenuClickListener? = null
 
-    private var menuAdapter: MenuEndlessAdapter? = null
+    private var menuAdapter: MenusAdapter? = null
 
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(
@@ -93,27 +95,28 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
             when (it) {
                 is Load.Loading -> {
                     msvMenu.showLoadingView()
-                    menuAdapter?.setLoadMoreProgress(true)
+//                    menuAdapter?.setLoadMoreProgress(true)
                 }
                 is Load.Fail -> {
                     showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
                     msvMenu.showContentView()
-                    listMenu.addAll(it.data.menus)
+                    preparingAdapter(it.data)
+                    listMenu.addAll(it.data)
                     isLoadMore = false
-                    menuAdapter?.setLoadMoreProgress(false)
-                    totalPages = it.data.totalPage
-                    menuAdapter?.totalPage = totalPages
-                    menuAdapter?.notifyAddOrUpdateChanged(it.data.menus)
+//                    menuAdapter?.setLoadMoreProgress(false)
+                    totalPages = 0
+//                    menuAdapter?.totalPage = totalPages
+//                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
 
-                    if (it.data.menus.isEmpty()) {
+                    if (it.data.isEmpty()) {
                         if (isLoadMore) {
                             isLoadMore = false
-                            menuAdapter?.setLoadMoreProgress(false)
-                            menuAdapter?.removeScrollListener()
+//                            menuAdapter?.setLoadMoreProgress(false)
+//                            menuAdapter?.removeScrollListener()
                         } else {
-                            menuAdapter?.datas?.clear()
+//                            menuAdapter?.datas?.clear()
                             showToast("Tidak ada menu")
                         }
                     }
@@ -147,7 +150,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         menuViewModel.searchMenuLoad.observe(this, Observer {
             when (it) {
                 is Load.Loading -> {
-                    menuAdapter?.clear()
+//                    menuAdapter?.clear()
                     msvMenu.showLoadingView()
                 }
                 is Load.Fail -> {
@@ -156,10 +159,10 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 is Load.Success -> {
                     msvMenu.showContentView()
                     listMenu.addAll(it.data)
-                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
+//                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
 
                     if (it.data.isEmpty()) {
-                        menuAdapter?.datas?.clear()
+//                        menuAdapter?.datas?.clear()
                         showToast("Tidak ada menu")
                     }
                 }
@@ -184,8 +187,8 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         val result = listMenu.filter {
             it.name.contains(query, true).or(false)
         }
-        menuAdapter?.clear()
-        menuAdapter?.notifyAddOrUpdateChanged(result)
+//        menuAdapter?.clear()
+//        menuAdapter?.notifyAddOrUpdateChanged(result)
     }
 
     interface OnMenuClickListener {
@@ -197,14 +200,14 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         searchView.clearFocus()
         listMenu.clear()
         menuViewModel.getMenus(data.id,  6, firstPage)
-        menuAdapter?.clear()
+//        menuAdapter?.clear()
     }
 
     override fun onLoadMore() {
         isLoadMore = true
-        menuAdapter?.setLoadMoreProgress(true)
+//        menuAdapter?.setLoadMoreProgress(true)
         currentPage += 1
-        menuAdapter?.page = currentPage
+//        menuAdapter?.page = currentPage
         observeMenus(currentPage)
     }
 
@@ -212,31 +215,21 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         menuViewModel.getMenus(page = page)
     }
 
-    private fun preparingAdapter(){
-        if (menuAdapter == null) {
+    private fun preparingAdapter(menus : List<Menu>){
             val gridLayoutManager = CustomNpaGridLayoutManager(requireContext(), 3)
-            menuAdapter = MenuEndlessAdapter(
+            menuAdapter = MenusAdapter(
                 context = requireContext(),
-                datas = mutableListOf(),
+                data = menus,
                 onMenuClickListener = { menu ->
                     onMenuClicked(menu)
-                },
-                isCheckMenu = false
+                }
             )
-
-            menuAdapter?.apply {
-                page = currentPage
-                totalPage = totalPages
-                layoutManager = gridLayoutManager
-                onLoadMoreListener = this@MenusFragment
-                recyclerView = rvMenus
-            }
 
             rvMenus.apply {
                 layoutManager = gridLayoutManager
                 adapter = menuAdapter
             }
-        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -271,8 +264,8 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
 
     override fun onResume() {
         super.onResume()
-        menuAdapter = null
-        preparingAdapter()
+//        menuAdapter
+//        preparingAdapter()
         observeMenus(firstPage)
         (activity as MainActivity).setupOrderButton()
     }

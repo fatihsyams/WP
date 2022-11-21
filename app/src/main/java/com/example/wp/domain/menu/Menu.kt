@@ -3,7 +3,6 @@ package com.example.wp.domain.menu
 import android.os.Parcelable
 import com.example.wp.domain.material.MaterialMenu
 import com.example.wp.utils.emptyString
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class EndlessMenu(
