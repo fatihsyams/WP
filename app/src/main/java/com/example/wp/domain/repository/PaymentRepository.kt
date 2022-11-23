@@ -5,5 +5,5 @@ import com.example.wp.domain.table.Table
 import com.example.wp.utils.Load
 
 interface PaymentRepository{
-    fun getPayments(): Load<List<Payment>>
+    suspend fun getPayments(): Load<List<Payment>>
 }

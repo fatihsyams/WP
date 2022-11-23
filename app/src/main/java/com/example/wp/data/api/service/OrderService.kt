@@ -2,10 +2,7 @@ package com.example.wp.data.api.service
 
 import com.example.wp.data.api.model.request.RequestOrderApi
 import com.example.wp.data.api.model.request.RequestUpdateOrderApi
-import com.example.wp.data.api.model.response.ResponseEditOrder
-import com.example.wp.data.api.model.response.ResponseKategoriOrder
-import com.example.wp.data.api.model.response.ResponseOrders
-import com.example.wp.data.api.model.response.ResponsePostOrder
+import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import retrofit2.Response
 import retrofit2.http.*
@@ -31,5 +28,8 @@ interface OrderService {
 
     @GET("kategori-order")
     suspend fun getKategoriOrder() : Response<ResponseKategoriOrder>
+
+    @GET("pembayaran")
+    suspend fun getListPembayaran() : Response<ResponseListPembayaran>
 
 }

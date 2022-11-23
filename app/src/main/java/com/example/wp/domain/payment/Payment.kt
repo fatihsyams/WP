@@ -1,5 +1,8 @@
 package com.example.wp.domain.payment
 
+import com.google.gson.annotations.SerializedName
+
 data class Payment(
-    val name:String
+    val id: Int,
+    val name: String
 )

@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wp.data.api.model.response.ResponseListPembayaran
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.repository.OrderRepository
 import com.example.wp.utils.Load
 import kotlinx.coroutines.launch
@@ -26,6 +28,9 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
 
     private val _kategoriOrderLoad = MutableLiveData<Load<List<KategoriOrder>>>()
     val kategoriOrder = _kategoriOrderLoad as LiveData<Load<List<KategoriOrder>>>
+
+    private val _listPembayaranLoad = MutableLiveData<Load<List<Payment>>> ()
+    val listPembayaran = _listPembayaranLoad as LiveData<Load<List<Payment>>>
 
     fun postOrder(orderResult: OrderResult) = viewModelScope.launch {
         _orderLoad.value = Load.Loading
@@ -57,4 +62,11 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
         val kategoriOrder = repository.getKategoriOrder()
         _kategoriOrderLoad.value = kategoriOrder
     }
+
+    fun getListPembayaran() = viewModelScope.launch {
+        _listPembayaranLoad.value = Load.Loading
+        val listPembayaran = repository.getListPembayaran()
+        _listPembayaranLoad.value = listPembayaran
+    }
+
 }

@@ -215,6 +215,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
         })
 
+
         orderViewModel.editOrderLoad.observe(this, androidx.lifecycle.Observer {
             when (it) {
                 is Load.Loading -> progressDialog.show()
@@ -322,7 +323,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         orderResult?.let { order ->
             orderId = order.order.id
             selectedOrderType = order.type
-            selectedPayment = Payment(order.paymentMethod)
+            selectedPayment = Payment(id = 0, name = order.paymentMethod)
             when (selectedOrderType) {
                 OrderTypeEnum.TAKE_AWAY.type -> {
                     onTakeAwaySelected()

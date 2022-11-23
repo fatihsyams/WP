@@ -5,6 +5,7 @@ import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.payment.Payment
 import com.example.wp.utils.Load
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
@@ -97,5 +98,19 @@ object OrderMapper {
             id = api?.id ?: 0
         )
 }
+
+    fun mapGetListPembayaran(response: ResponseListPembayaran): Load<List<Payment>> {
+        return handleApiSuccess(data = response.payment?.map {
+            mapToListPembayaran(it)
+        }.orEmpty())
+    }
+
+    private fun mapToListPembayaran(api: PaymentApi?): Payment {
+        return Payment(
+            id = api?.id ?: 0,
+            name = api?.payment.orEmpty()
+        )
+
+    }
 
 }

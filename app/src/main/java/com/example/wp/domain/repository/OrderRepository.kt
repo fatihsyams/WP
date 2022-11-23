@@ -2,6 +2,7 @@ package com.example.wp.domain.repository
 
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.payment.Payment
 import com.example.wp.utils.Load
 
 interface OrderRepository{
@@ -10,4 +11,5 @@ interface OrderRepository{
     suspend fun updateOrder(orderId:String, status:String): Load<Boolean>
     suspend fun getOrders(): Load<List<OrderResult>>
     suspend fun getKategoriOrder(): Load<List<KategoriOrder>>
+    suspend fun getListPembayaran(): Load<List<Payment>>
 }
