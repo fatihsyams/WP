@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wp.data.api.model.response.ResponseListPembayaran
 import com.example.wp.domain.kategoriorder.KategoriOrder
+import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.order.Wallet
 import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.repository.OrderRepository
 import com.example.wp.utils.Load
@@ -31,6 +33,12 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
 
     private val _listPembayaranLoad = MutableLiveData<Load<List<Payment>>> ()
     val listPembayaran = _listPembayaranLoad as LiveData<Load<List<Payment>>>
+
+    private val _listKas = MutableLiveData<Load<List<Wallet>>>()
+    val listKas = _listKas as LiveData<Load<List<Wallet>>>
+
+    private val _listPelangganLoad = MutableLiveData<Load<List<Customer>>>()
+    val listPelangganLoad = _listPelangganLoad as LiveData<Load<List<Customer>>>
 
     fun postOrder(orderResult: OrderResult) = viewModelScope.launch {
         _orderLoad.value = Load.Loading
@@ -63,10 +71,19 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
         _kategoriOrderLoad.value = kategoriOrder
     }
 
-    fun getListPembayaran() = viewModelScope.launch {
-        _listPembayaranLoad.value = Load.Loading
-        val listPembayaran = repository.getListPembayaran()
-        _listPembayaranLoad.value = listPembayaran
+
+    fun getListKas() = viewModelScope.launch {
+        _listKas.value = Load.Loading
+        val listKas = repository.getListKas()
+        _listKas.value = listKas
     }
+
+    fun getListPelanggan() = viewModelScope.launch {
+        _listPelangganLoad.value = Load.Loading
+        val listPelanggan = repository.getListCustomer()
+        _listPelangganLoad.value = listPelanggan
+    }
+
+
 
 }

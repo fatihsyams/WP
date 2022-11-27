@@ -4,7 +4,9 @@ import com.example.wp.data.api.model.request.RequestUpdateOrderApi
 import com.example.wp.data.api.service.OrderService
 import com.example.wp.data.mapper.OrderMapper
 import com.example.wp.domain.kategoriorder.KategoriOrder
+import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.order.Wallet
 import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.repository.OrderRepository
 import com.example.wp.utils.Load
@@ -80,6 +82,36 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
             if (response.isSuccessful) {
                 response.body()?.let { response ->
                     OrderMapper.mapGetListPembayaran(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun getListKas(): Load<List<Wallet>> {
+        return try {
+            val response = service.getListKas()
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    OrderMapper.mapGetListKas(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun getListCustomer(): Load<List<Customer>> {
+        return try {
+            val response = service.getPelanggan()
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    OrderMapper.mapGetListCustomer(response)
                 } ?: Load.Fail(Throwable(response.message()))
             } else {
                 Load.Fail(Throwable(response.message()))

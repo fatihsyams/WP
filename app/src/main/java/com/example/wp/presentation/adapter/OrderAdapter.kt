@@ -10,6 +10,7 @@ import com.example.wp.R
 import com.example.wp.domain.menu.getTakeAwayImage
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.listener.OrderResultListener
+import com.example.wp.utils.emptyString
 import kotlinx.android.synthetic.main.item_order.view.*
 
 class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val listener: OrderResultListener? = null) :
@@ -30,9 +31,9 @@ class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val
     inner class OrderResultViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: OrderResult) {
             with(itemView) {
-                tvOrderType.text = data.order.orderCategory.toUpperCase()
+                tvOrderType.text = data.order.orderCategory.name
                 tvOrderName.text = if (data.order.customerName.isEmpty()) context.getString(R.string.label_no_name) else data.order.customerName.toUpperCase()
-                val orderImage = getTakeAwayImage(data.order.orderCategory)
+                val orderImage = emptyString()
                 Glide.with(context).load(orderImage).into(imgOrderType)
 
                 btnBill.setOnClickListener {

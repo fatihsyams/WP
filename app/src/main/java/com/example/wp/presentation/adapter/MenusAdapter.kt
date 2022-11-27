@@ -32,8 +32,6 @@ class MenusAdapter(
         const val MENU_TYPE = 0
         const val ORDER_EDIT_TYPE = 1
         const val ORDER_READ_TYPE = 2
-        const val ORDER_READ_GRAB_FOOD_TYPE = 3
-        const val ORDER_READ_GO_FOOD_TYPE = 4
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -74,7 +72,6 @@ class MenusAdapter(
         fun bindItem(item: Menu) {
             with(itemView) {
                 if (item.images.isNotEmpty()) {
-                    val url = "https://bale-jentera.com/storage/image/01IO2fWmaxC4TI5lo5ObS6PjZM2xN7Qy687PKbn9.jpg"
                     Glide.with(context).load(item.images).into(imgMenus)
 
                 }
@@ -111,54 +108,34 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
+                item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                tvHargaMenus.text = toCurrencyFormat(item.totalPrice)
 
-                tvHargaMenus.text = when (type) {
-                    ORDER_EDIT_TYPE -> toCurrencyFormat(item.price * item.quantity)
-                    ORDER_READ_GO_FOOD_TYPE -> toCurrencyFormat(item.goFoodPrice * item.quantity)
-                    ORDER_READ_GRAB_FOOD_TYPE -> toCurrencyFormat(item.grabFoodPrice * item.quantity)
-                    else -> toCurrencyFormat(item.price * item.quantity)
-                }
 
-                tvDiscountOrder.text = when (type) {
-                    ORDER_EDIT_TYPE -> "${item.discount}%"
-                    ORDER_READ_GO_FOOD_TYPE -> "${item.discountGofood}%"
-                    ORDER_READ_GRAB_FOOD_TYPE -> "${item.discountGrabfood}%"
-                    else -> "${item.discount}%"
-                }
-                tvDiscountOrder.visibility = when (type) {
-                    ORDER_EDIT_TYPE -> if (item.discount == 0) View.GONE else View.VISIBLE
-                    ORDER_READ_GO_FOOD_TYPE -> if (item.discountGofood == 0) View.GONE else View.VISIBLE
-                    ORDER_READ_GRAB_FOOD_TYPE -> if (item.discountGrabfood == 0) View.GONE else View.VISIBLE
-                    else -> if (item.discount == 0) View.GONE else View.VISIBLE
-                }
+                tvDiscountOrder.text = "${item.discount}%"
+
+//                tvDiscountOrder.visibility = item.discount == 0 View.GONE else View.VISIBLE
+
 
                 tvNamaMenus.text = item.name
                 tvInformation.text = item.additionalInformation
                 tvQuantity.text = item.quantity.toString()
 
                 btnMinus.setOnClickListener {
-                    val realQuantity = item.quantity * item.stockRequired
-                    if (realQuantity > item.stockRequired) {
                         item.quantity--
-                    }
-                    onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
+
+                    onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                 }
 
-                item.totalPrice = when (type) {
-                    ORDER_EDIT_TYPE -> item.price * item.quantity
-                    ORDER_READ_GO_FOOD_TYPE -> item.goFoodPrice * item.quantity
-                    ORDER_READ_GRAB_FOOD_TYPE -> item.grabFoodPrice * item.quantity
-                    else -> item.price * item.quantity
-                }
+
+
 
                 btnPlus.setOnClickListener {
-                    val realQuantity = item.quantity * item.stockRequired
-                    if (realQuantity < item.stock) {
                         item.quantity++
-                    }
-                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
+
+                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
                 }
 
                 btnDelete.setOnClickListener {

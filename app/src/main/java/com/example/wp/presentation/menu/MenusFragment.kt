@@ -33,6 +33,8 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     private val orderViewModel: OrderViewModel by viewModel()
     var onMenuClickListener: OnMenuClickListener? = null
 
+    var selectedCategoryOrder : KategoriOrder? = null
+
     private var menuAdapter: MenusAdapter? = null
 
     private val categoryAdapter: CategoryAdapter by lazy {
@@ -193,6 +195,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
 
     interface OnMenuClickListener {
         fun onMenuClicked(menu: Menu)
+        fun onCategoryOrderClicked(kategoriOrder: KategoriOrder?)
     }
 
     override fun onCategoryClicked(data: Category) {
@@ -246,6 +249,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 datas = kategoriOrder,
                 listener = object : KategoriOrderListener {
                     override fun onKategoriOrderSelected(data: KategoriOrder) {
+                        onMenuClickListener?.onCategoryOrderClicked(data)
                         menuViewModel.getMenus(categoryId = data.id, page = currentPage)
                         dismiss()
                     }

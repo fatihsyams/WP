@@ -24,16 +24,17 @@ data class Menu(
     val category: String = emptyString(),
     var quantity: Int = 0,
     var goFoodPrice:Double = 0.0,
+    val menuPrice: List<MenuPrice> = listOf(),
     var grabFoodPrice:Double = 0.0,
     var materialMenus:List<MaterialMenu> = listOf(),
     var isAvailable:Boolean = stock != 0.0,
     var stockRequired:Int = materialMenus.map { it.stockRequired }.sum(),
-    var totalPrice:Double = price*quantity,
+    var totalPrice:Double = (menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) *quantity,
     val discount:Int = 0,
     val discountTakeAway:Int = 9,
     val discountGofood:Int = 9,
-    val discountGrabfood:Int = 9,
-    val menuPrice: List<MenuPrice> = listOf()
+    val discountGrabfood:Int = 9
+
 ) : Parcelable
 @Parcelize
 data class MenuPrice(

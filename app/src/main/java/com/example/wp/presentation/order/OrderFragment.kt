@@ -3,26 +3,26 @@ package com.example.wp.presentation.order
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.example.wp.R
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
 import com.example.wp.domain.menu.getTakeAwayTypes
+import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.order.Wallet
 import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.table.Table
-import com.example.wp.presentation.adapter.MenusAdapter
+import com.example.wp.presentation.adapter.*
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
-import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GO_FOOD_TYPE
-import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_GRAB_FOOD_TYPE
-import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_READ_TYPE
-import com.example.wp.presentation.adapter.PaymentAdapter
-import com.example.wp.presentation.adapter.TableAdapter
-import com.example.wp.presentation.adapter.TakeAwayAdapter
+
 import com.example.wp.presentation.listener.*
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.OrderViewModel
@@ -30,6 +30,7 @@ import com.example.wp.presentation.viewmodel.PaymentViewModel
 import com.example.wp.presentation.viewmodel.TableViewModel
 import com.example.wp.utils.*
 import com.example.wp.utils.constants.AppConstants
+import com.example.wp.utils.constants.AppConstants.KEY_KATEGORI
 import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import com.example.wp.utils.constants.AppConstants.KEY_ORDER
 import com.example.wp.utils.datepicker.DialogDatePicker
@@ -37,6 +38,7 @@ import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
+import kotlinx.android.synthetic.main.item_pelanggan.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
@@ -48,13 +50,15 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         fun newInstance(
             orderResult: OrderResult? = null,
             menus: List<Menu>,
-            isEditMode: Boolean = false
+            isEditMode: Boolean = false,
+            kategoriOrder: KategoriOrder
         ) =
             OrderFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_ORDER, orderResult)
                     putParcelableArrayList(KEY_MENU, menus as ArrayList<Menu>)
                     putBoolean(AppConstants.KEY_ORDER_MODE, isEditMode)
+                    putParcelable(AppConstants.KEY_KATEGORI, kategoriOrder)
                 }
             }
     }
@@ -62,6 +66,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private val orderViewModel: OrderViewModel by viewModel()
     private val tableViewModel: TableViewModel by viewModel()
     private val paymentViewModel: PaymentViewModel by viewModel()
+
 
     private val menuAdapter: MenusAdapter by lazy {
         MenusAdapter(
@@ -77,9 +82,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     var onAddMenuListener: OpenMenuPageListener? = null
     private var selectedTable: Table? = null
     private var selectedPayment: Payment? = null
+    private var selectedKas: Wallet? = null
+    private var selectedPelanggan: Customer? = null
     private var selectedTakeAway: TakeAway? = null
     private var orderResult: OrderResult? = null
-
+    private var selectedCategoryOrder: KategoriOrder? = null
     private var isEditMode = false
 
     private var discount = 0
@@ -102,6 +109,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         orderResult = arguments?.getParcelable(KEY_ORDER)
         menus = arguments?.getParcelableArrayList<Menu>(KEY_MENU) ?: mutableListOf()
         isEditMode = arguments?.getBoolean(AppConstants.KEY_ORDER_MODE, false) ?: false
+        selectedCategoryOrder = arguments?.getParcelable(KEY_KATEGORI)
+        selectedOrderNameType = selectedCategoryOrder?.name.orEmpty()
     }
 
     override fun onView() {
@@ -114,23 +123,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onAction() {
-        btnDineIn.setOnClickListener {
-            selectedOrderType = OrderTypeEnum.DINE_IN.type
-            selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
-            showTotalPrice(selectedOrderNameType)
-            onDineInSelected()
-        }
-
-        btnTakeAway.setOnClickListener {
-            selectedOrderType = OrderTypeEnum.TAKE_AWAY.type
-            onTakeAwaySelected()
-        }
-
-        btnPreOrder.setOnClickListener {
-            selectedOrderType = OrderTypeEnum.PRE_ORDER.type
-            selectedOrderNameType = OrderNameTypeEnum.PRE_ORDER.type
-            onPreOrderSelected()
-        }
 
         btnEditOrderType.setOnClickListener {
             btnEditOrderType.gone()
@@ -141,13 +133,12 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
             }
             selectedOrderType = ORDER_EDIT_TYPE
-            edtCustomerName.setText(emptyString())
+//            edtCustomerName.setText(emptyString())
             menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
         }
 
         btnTableNumber.setOnClickListener { tableViewModel.getTables() }
 
-        btnTakeAwayType.setOnClickListener { showTakeAwayOptions() }
 
         btnAdd.setOnClickListener {
             onAddMenuListener?.onOpenMenuPage(menus)
@@ -178,6 +169,14 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         btnPayment.setOnClickListener {
             paymentViewModel.getPayments()
+        }
+
+        btnKas.setOnClickListener {
+            orderViewModel.getListKas()
+        }
+
+        btnCustomerName.setOnClickListener {
+            orderViewModel.getListPelanggan()
         }
     }
 
@@ -257,6 +256,32 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             }
         })
 
+        orderViewModel.listPelangganLoad.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    showPelangganOption(it.data)
+                }
+                is Load.Loading -> {
+                }
+            }
+        })
+
+        orderViewModel.listKas.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    showKasOption(it.data)
+                }
+                is Load.Loading -> {
+                }
+            }
+        })
+
     }
 
     private fun isOrderValid(): Boolean {
@@ -281,38 +306,23 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         return OrderResult(
             order = Order(
                 id = orderId,
-                customerName = edtCustomerName.text.toString(),
-                orderCategory = when (selectedOrderType) {
-                    OrderTypeEnum.TAKE_AWAY.type -> {
-                        btnTakeAwayType.text.toString()
-                    }
-                    OrderTypeEnum.DINE_IN.type -> {
-                        OrderNameTypeEnum.DINE_IN.type
-                    }
-                    OrderTypeEnum.PRE_ORDER.type -> {
-                        OrderNameTypeEnum.PRE_ORDER.type
-                    }
-                    else -> OrderNameTypeEnum.TAKE_AWAY.type
-                },
-                tableId = if (selectedOrderType == OrderTypeEnum.DINE_IN.type) btnTableNumber.text.toString() else null,
+                customerName = selectedPelanggan?.naem.orEmpty(),
+                orderCategory = selectedCategoryOrder ?: KategoriOrder(),
+                tableId = btnTableNumber.text.toString(),
                 discount = discount,
                 totalPayment = totalPayment,
                 totalPaymentBeforeDiscount = totalPaymentBeforeDiscount
             ),
             menu = menuAdapter.data,
-            type = selectedOrderType,
+            type = selectedOrderNameType,
             paymentMethod = selectedPayment?.name.orEmpty()
         )
     }
 
     private fun showTotalPrice(orderType: String) {
         totalPaymentBeforeDiscount = menus.map {
-            when (orderType) {
-                OrderNameTypeEnum.DINE_IN.type -> it.price * it.quantity
-                OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> it.goFoodPrice * it.quantity
-                OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> it.grabFoodPrice * it.quantity
-                else -> it.totalPrice
-            }
+          it.totalPrice
+
         }.sum()
         val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
         totalPayment = totalPaymentBeforeDiscount - totalDiscount
@@ -322,42 +332,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     private fun showOrderResult() {
         orderResult?.let { order ->
             orderId = order.order.id
-            selectedOrderType = order.type
+            selectedOrderNameType = order.type
             selectedPayment = Payment(id = 0, name = order.paymentMethod)
-            when (selectedOrderType) {
-                OrderTypeEnum.TAKE_AWAY.type -> {
-                    onTakeAwaySelected()
-                    btnTakeAwayType.text = order.order.orderCategory
-                    selectedTakeAway = TakeAway(order.order.orderCategory)
-                    when (order.order.orderCategory) {
-                        TakeAwayTypeEnum.GRABFOOD.type -> {
-                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
-                            menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
-                        }
-                        TakeAwayTypeEnum.GOFOOD.type -> {
-                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type
-                            menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
-                        }
-                        TakeAwayTypeEnum.PERSONAL.type -> {
-                            selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY.type
-                            menuAdapter.updateOrderReadType(ORDER_READ_TYPE)
-                        }
-                    }
-                }
-                OrderTypeEnum.DINE_IN.type -> {
-                    selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
-                    onDineInSelected()
-                    val table = order.order.tableId?.toInt() ?: 0
-                    selectedTable = Table(id = table, number = table)
-                    btnTableNumber.text = order.order.tableId
-                }
-                OrderTypeEnum.PRE_ORDER.type -> {
-                    selectedOrderNameType = OrderNameTypeEnum.PRE_ORDER.type
-                    onPreOrderSelected()
-                    btnPreOrder.text = order.order.orderCategory
-                }
-            }
-            edtCustomerName.setText(order.order.customerName)
+
+//            edtCustomerName.setText(order.order.customerName)
             btnPayment.text =
                 if (order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod
             if (order.order.discount != 0) {
@@ -428,7 +406,50 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
     }
 
-    private fun showTakeAwayOptions() {
+    private fun showPelangganOption(customer: List<Customer>) {
+        generateCustomBottomSheetDialog(
+            context = requireContext(),
+            layoutRes = R.layout.layout_alert_option,
+            isCancelable = true,
+            isExpandMode = true
+        ).apply {
+            svPelanggan.visibility = View.VISIBLE
+            val pelangganAdapter = PelangganAdapter(
+                context = requireContext(),
+                datas = customer,
+                listener = object : PelangganListener {
+                    override fun onPelangganSelected(data: Customer) {
+                        selectedPelanggan = data
+                        getSelectedPelanggan()
+                        dismiss()
+                    }
+                }
+            )
+
+            svPelanggan.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val filter = customer.filter {
+                        it.naem.contains(newText.toString())
+                    }
+                    pelangganAdapter.updateData(filter)
+                    return false
+                }
+
+            })
+
+            rvOption.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = pelangganAdapter
+            }
+        }
+    }
+
+    private fun showKasOption(payments: List<Wallet>) {
         generateCustomBottomSheetDialog(
             context = requireContext(),
             layoutRes = R.layout.layout_alert_option,
@@ -436,23 +457,21 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             isExpandMode = true
         ).apply {
 
-            val takeAwayAdapter = TakeAwayAdapter(
+            val kasAdapter = KasAdapter(
                 context = requireContext(),
-                datas = getTakeAwayTypes(),
-                listener = object : TakeAwayListener {
-                    override fun onTakeAwaySelected(data: TakeAway) {
-                        selectedTakeAway = data
-                        getSelectedTakeAway()
+                datas = payments,
+                listener = object : KasListener {
+                    override fun onKasSelected(data: Wallet) {
+                        selectedKas = data
+                        getSelectedKas()
                         dismiss()
                     }
                 }
             )
 
-            tvTitle.text = getString(R.string.title_select_take_away_type)
-
             rvOption.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
-                adapter = takeAwayAdapter
+                adapter = kasAdapter
             }
         }
     }
@@ -465,7 +484,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
-        if ((menu.quantity * menu.stockRequired).toDouble() == menu.stock) showToast(getString(R.string.message_error_over_stock))
         showTotalPrice(selectedOrderNameType)
     }
 
@@ -481,26 +499,14 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         btnPayment.text = selectedPayment?.name
     }
 
-    fun getSelectedTakeAway() {
-        btnTakeAwayType.text = selectedTakeAway?.name.orEmpty()
-        when (selectedTakeAway?.name) {
-            TakeAwayTypeEnum.GOFOOD.type -> {
-                selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type
-                menuAdapter.updateOrderReadType(ORDER_READ_GO_FOOD_TYPE)
-                edtCustomerName.setText(selectedOrderNameType.toUpperCase(Locale.getDefault()))
-            }
-            TakeAwayTypeEnum.GRABFOOD.type -> {
-                selectedOrderNameType = OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type
-                menuAdapter.updateOrderReadType(ORDER_READ_GRAB_FOOD_TYPE)
-                edtCustomerName.setText(selectedOrderNameType.toUpperCase(Locale.getDefault()))
-            }
-            else -> {
-                selectedOrderNameType = OrderNameTypeEnum.DINE_IN.type
-                edtCustomerName.setText(emptyString())
-                menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
-            }
-        }
-        showTotalPrice(selectedOrderNameType)
+    fun getSelectedKas() {
+        btnKas.text = selectedKas?.name
     }
+
+    fun getSelectedPelanggan() {
+        btnCustomerName.text = selectedPelanggan?.naem
+    }
+
+
 
 }

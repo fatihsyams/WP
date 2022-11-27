@@ -5,6 +5,7 @@ import android.widget.Button
 import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
+import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.stock.checkstock.CheckStockFragment
@@ -34,6 +35,8 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     private var isEditeMenu = false
 
     private var existingOrder: OrderResult? = null
+
+    var selectedKategoriOrder: KategoriOrder? = null
 
     override val layoutView: Int = R.layout.activity_main
 
@@ -82,10 +85,11 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
                 toOrderFragment(
                     order = existingOrder,
                     menus = selectedMenus,
-                    isEditMode = true
+                    isEditMode = true,
+                    kategoriOrder = selectedKategoriOrder?: KategoriOrder()
                 )
             } else {
-                toOrderFragment(menus = selectedMenus, isEditMode = false)
+                toOrderFragment(menus = selectedMenus, isEditMode = false, kategoriOrder = selectedKategoriOrder?: KategoriOrder())
             }
             disableEditMode()
         }
@@ -100,11 +104,12 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
     fun toOrderFragment(
         order: OrderResult? = null,
         menus: List<Menu>,
-        isEditMode: Boolean = false
+        isEditMode: Boolean = false,
+        kategoriOrder: KategoriOrder
     ) {
         isEditeMenu = isEditMode
         existingOrder = order
-        val orderFragment = OrderFragment.newInstance(order, menus, isEditMode)
+        val orderFragment = OrderFragment.newInstance(order, menus, isEditMode, kategoriOrder)
         orderFragment.onAddMenuListener = this
         loadFragment(R.id.fl_container, orderFragment)
     }
@@ -149,5 +154,9 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
 
     fun disableEditMode() {
         isEditeMenu = false
+    }
+
+    override fun onCategoryOrderClicked(kategoriOrder: KategoriOrder?) {
+        selectedKategoriOrder = kategoriOrder
     }
 }

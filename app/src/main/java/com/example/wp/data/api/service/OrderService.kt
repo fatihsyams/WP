@@ -32,4 +32,14 @@ interface OrderService {
     @GET("pembayaran")
     suspend fun getListPembayaran() : Response<ResponseListPembayaran>
 
+    @GET("kas")
+    suspend fun getListKas() : Response<ResponseListKas>
+
+    @GET("pelanggan")
+    suspend fun getPelanggan() : Response<ResponsePelanggan>
+
+
+
+
+
 }

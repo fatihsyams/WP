@@ -36,9 +36,8 @@ class WarungPojokPrinter(
                 "Customer : ${order.order.customerName}",
                 1, WoosimCmd.ALIGN_LEFT
             )
-            if (order.type == OrderTypeEnum.DINE_IN.type){
+
                 printStr( "No Meja : ${order.order.tableId}", 1, WoosimCmd.ALIGN_LEFT)
-            }
             printStr(
                 "Metode Pembayaran : ${order.paymentMethod}",
                 1, WoosimCmd.ALIGN_LEFT
@@ -57,12 +56,8 @@ class WarungPojokPrinter(
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
                 printStr(
                     "  x ${menu.quantity} \t ${
-                        when(order.order.orderCategory){
-                            OrderNameTypeEnum.DINE_IN.type -> toCurrencyFormat(menu.price*menu.quantity)
-                            OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> toCurrencyFormat(menu.grabFoodPrice*menu.quantity)
-                            OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type -> toCurrencyFormat(menu.goFoodPrice*menu.quantity)
-                            else -> toCurrencyFormat(menu.price*menu.quantity)
-                        }
+                        toCurrencyFormat(menu.price*menu.quantity)
+                        
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
                 printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
@@ -81,12 +76,8 @@ class WarungPojokPrinter(
             )
             printStr("================================")
             printStr(
-                when (order.type) {
-                    OrderTypeEnum.DINE_IN.type -> "Terimakasih Atas Kunjungannya"
-                    OrderTypeEnum.TAKE_AWAY.type -> "Terimakasih Atas Orderannya"
-                    OrderTypeEnum.PRE_ORDER.type -> "Selamat Menikmati"
-                    else -> "Selamat Menikmati"
-                }, 1, WoosimCmd.ALIGN_CENTER
+               "Selamat Menikmati"
+                , 1, WoosimCmd.ALIGN_CENTER
             )
             printNewLine()
         }

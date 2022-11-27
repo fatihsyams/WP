@@ -32,6 +32,12 @@
         android:layout_marginTop="@dimen/dimen_20dp"
         android:textSize="@dimen/text_size_30sp"/>
 
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:id="@+id/svPelanggan"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

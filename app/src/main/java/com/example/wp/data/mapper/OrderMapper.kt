@@ -3,10 +3,13 @@ package com.example.wp.data.mapper
 import com.example.wp.data.api.model.request.RequestOrderApi
 import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.kategoriorder.KategoriOrder
+import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
+import com.example.wp.domain.order.Wallet
 import com.example.wp.domain.payment.Payment
 import com.example.wp.utils.Load
+import com.example.wp.utils.emptyString
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.handleApiSuccess
@@ -21,7 +24,7 @@ object OrderMapper {
 
     private fun mapResponseOrder(responsePostOrder: ResponsePostOrder):OrderResult{
         return OrderResult(
-            menu = responsePostOrder.menu?.map { menuApi -> MenuMapper.mapToMenu(menuApi) }.orEmpty(),
+            menu = responsePostOrder.order?.orderMenuApi?.map { menuApi -> MenuMapper.mapToMenu(menuApi.menu?: MenuApi()) }.orEmpty(),
             order = mapToOrder(responsePostOrder.order ?: OrderApi())
         )
     }
@@ -37,9 +40,9 @@ object OrderMapper {
             updatedAt = response.updatedAt.orEmpty(),
             createdAt = response.createdAt.orEmpty(),
             id = response.id ?: 0,
-            customerName = response.customerName.orEmpty(),
+            customerName = response.customer?.customer.orEmpty(),
             information = response.information.orEmpty(),
-            orderCategory = response.orderCategory.orEmpty(),
+            orderCategory = KategoriOrder(),
             tableId = response.tableId.orEmpty(),
             totalPayment = response.totalPayment ?: 0.0
         )
@@ -47,9 +50,9 @@ object OrderMapper {
 
     fun mapToRequestOrderApi(domain:OrderResult):RequestOrderApi{
         return RequestOrderApi(
-            customerName = domain.order.customerName,
+            customerId = domain.order.customerId,
             information = domain.menu.joinToString { it.additionalInformation },
-            orderCategory = domain.order.orderCategory,
+            orderCategory = emptyString(),
             tableId = domain.order.tableId,
             menuIds = domain.menu.map { it.id }.joinToString(),
             amounts = domain.menu.map { it.quantity }.joinToString(),
@@ -64,25 +67,20 @@ object OrderMapper {
         return OrderResult(
             order = Order(
                 createdAt = api.createdAt.orEmpty(),
-                customerName = api.customerName.orEmpty(),
+                customerId = api.customerId ?: 0,
                 id = api.id ?: 0,
                 information = api.information,
-                orderCategory = api.orderCategory.orEmpty(),
+                orderCategory = KategoriOrder(),
                 tableId = api.tableId.orEmpty(),
                 totalPayment = api.totalPayment?.minus(api.discountOrder?.toInt() ?: 0) ?: 0.0,
                 totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0
             ),
-            menu = api.orderMenuApis?.map { MenuMapper.mapToMenu(it.menu ?: MenuApi(),it.amount,it.additionalInformation.orEmpty()) }.orEmpty(),
-            paymentMethod = api.pembayaran.orEmpty(),
-            type = when(api.orderCategory){
-                OrderNameTypeEnum.DINE_IN.type -> OrderTypeEnum.DINE_IN.type
-                OrderNameTypeEnum.PRE_ORDER.type -> OrderTypeEnum.PRE_ORDER.type
-                OrderNameTypeEnum.TAKE_AWAY.type,OrderNameTypeEnum.TAKE_AWAY_GOFOOD.type,OrderNameTypeEnum.TAKE_AWAY_GRABFOOD.type -> OrderTypeEnum.TAKE_AWAY.type
-                else -> OrderTypeEnum.DINE_IN.type
-            },
-            status = api.orderStatus.orEmpty()
+            menu = api.orderMenuApi?.map { MenuMapper.mapToMenu(it.menu ?: MenuApi(),it.amount,it.additionalInformation.orEmpty()) }.orEmpty(),
+            paymentMethod = api.paymentMethod.orEmpty(),
+            type = api.categoryOrder.orEmpty(),
+                    status = api.orderStatus.orEmpty()
         )
     }
 
@@ -111,6 +109,35 @@ object OrderMapper {
             name = api?.payment.orEmpty()
         )
 
+    }
+
+    fun mapGetListKas(response: ResponseListKas): Load<List<Wallet>> {
+        return handleApiSuccess(data = response.wallet?.map {
+            mapToListKas(it)
+        }.orEmpty())
+    }
+
+    private fun mapToListKas(api: WalletApi?): Wallet {
+        return Wallet(
+            id = api?.id ?: 0,
+            name = api?.wallet.orEmpty()
+        )
+    }
+
+     fun mapGetListCustomer(response: ResponsePelanggan): Load<List<Customer>> {
+        return handleApiSuccess(data = response?.customer?.map {
+            mapToListCustomer(it)
+        }.orEmpty())
+    }
+
+    private fun mapToListCustomer(api: CustomerApi?): Customer {
+        return Customer(
+            id = api?.id ?: 0,
+            codeCustomer = api?.categoryCustomerId?: 0,
+            naem = api?.customer.orEmpty(),
+            discountCustomer = api?.discountCustomer?: 0
+
+        )
     }
 
 }

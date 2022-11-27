@@ -61,7 +61,7 @@ class MenuDetailFragment : WarungPojokFragment() {
         btnOk.setOnClickListener {
             menu?.apply {
                     this.quantity = selectedQuantity
-                    totalPrice = price * selectedQuantity
+                    totalPrice = (menuPrice.firstOrNull()?.price?.toDouble()?: 0.0 )* selectedQuantity
                     additionalInformation = edtKeteranganOrder.text.toString()
                     onMenuSelectListener?.onSelectMenu(this)
             }
