@@ -58,7 +58,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     putParcelable(KEY_ORDER, orderResult)
                     putParcelableArrayList(KEY_MENU, menus as ArrayList<Menu>)
                     putBoolean(AppConstants.KEY_ORDER_MODE, isEditMode)
-                    putParcelable(AppConstants.KEY_KATEGORI, kategoriOrder)
+                    putParcelable(KEY_KATEGORI, kategoriOrder)
                 }
             }
     }
@@ -115,7 +115,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
-        orderTypeContainer.visible()
         btnAdd.visible()
         showMenus()
         showOrderResult()
@@ -126,12 +125,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         btnEditOrderType.setOnClickListener {
             btnEditOrderType.gone()
-            orderTypeContainer.visible()
-            when (selectedOrderType) {
-                OrderTypeEnum.DINE_IN.type -> dineInContainer.invisible()
-                OrderTypeEnum.TAKE_AWAY.type -> takeAwayContainer.invisible()
-                OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
-            }
+//            when (selectedOrderType) {
+//                OrderTypeEnum.DINE_IN.type -> dineInContainer.invisible()
+//                OrderTypeEnum.TAKE_AWAY.type -> takeAwayContainer.invisible()
+//                OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
+//            }
             selectedOrderType = ORDER_EDIT_TYPE
 //            edtCustomerName.setText(emptyString())
             menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
@@ -153,11 +151,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         }
 
         btnPrint.setOnClickListener {
-            if (isOrderValid()) {
+//            if (isOrderValid()) {
                 if (isEditMode) orderViewModel.editOrder(getOrderResult()) else orderViewModel.postOrder(
                     getOrderResult()
                 )
-            }
+//            }
         }
 
         edtDiscount.doOnTextChanged { text, _, _, _ ->
@@ -182,19 +180,15 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private fun onDineInSelected() {
         dineInContainer.visible()
-        orderTypeContainer.gone()
         btnEditOrderType.visible()
     }
 
     private fun onPreOrderSelected() {
         preOrderContainer.visible()
-        orderTypeContainer.gone()
         btnEditOrderType.visible()
     }
 
     private fun onTakeAwaySelected() {
-        takeAwayContainer.visible()
-        orderTypeContainer.gone()
         btnEditOrderType.visible()
     }
 
@@ -307,25 +301,27 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             order = Order(
                 id = orderId,
                 customerName = selectedPelanggan?.naem.orEmpty(),
+                customerId = selectedPelanggan?.id ?: 0,
                 orderCategory = selectedCategoryOrder ?: KategoriOrder(),
-                tableId = btnTableNumber.text.toString(),
+                table = selectedTable ?: Table(),
                 discount = discount,
                 totalPayment = totalPayment,
-                totalPaymentBeforeDiscount = totalPaymentBeforeDiscount
+                totalPaymentBeforeDiscount = totalPaymentBeforeDiscount,
+                wallet = selectedKas ?: Wallet()
             ),
             menu = menuAdapter.data,
             type = selectedOrderNameType,
-            paymentMethod = selectedPayment?.name.orEmpty()
+            paymentMethod = selectedPayment ?: Payment()
         )
     }
 
     private fun showTotalPrice(orderType: String) {
-        totalPaymentBeforeDiscount = menus.map {
+        totalPayment = menus.map {
           it.totalPrice
 
         }.sum()
-        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
-        totalPayment = totalPaymentBeforeDiscount - totalDiscount
+//        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
+//        totalPayment = totalPaymentBeforeDiscount - totalDiscount
         tvTotalPrice.text = toCurrencyFormat(totalPayment)
     }
 
@@ -333,11 +329,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         orderResult?.let { order ->
             orderId = order.order.id
             selectedOrderNameType = order.type
-            selectedPayment = Payment(id = 0, name = order.paymentMethod)
+            selectedPayment = Payment(id = 0, name = order.paymentMethod.name)
 
 //            edtCustomerName.setText(order.order.customerName)
             btnPayment.text =
-                if (order.paymentMethod.isEmpty()) getString(R.string.action_select_payment_method) else order.paymentMethod
+                order.paymentMethod.name.ifEmpty { getString(R.string.action_select_payment_method) }
             if (order.order.discount != 0) {
                 edtDiscount.setText(order.order.discount.toString())
             }

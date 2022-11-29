@@ -8,10 +8,8 @@ import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.domain.order.Wallet
 import com.example.wp.domain.payment.Payment
+import com.example.wp.domain.table.Table
 import com.example.wp.utils.Load
-import com.example.wp.utils.emptyString
-import com.example.wp.utils.enum.OrderNameTypeEnum
-import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.handleApiSuccess
 
 object OrderMapper {
@@ -22,9 +20,13 @@ object OrderMapper {
         return handleApiSuccess(data = mapResponseOrder(responsePostOrder))
     }
 
-    private fun mapResponseOrder(responsePostOrder: ResponsePostOrder):OrderResult{
+    private fun mapResponseOrder(responsePostOrder: ResponsePostOrder): OrderResult {
         return OrderResult(
-            menu = responsePostOrder.order?.orderMenuApi?.map { menuApi -> MenuMapper.mapToMenu(menuApi.menu?: MenuApi()) }.orEmpty(),
+            menu = responsePostOrder.order?.orderMenuApi?.map { menuApi ->
+                MenuMapper.mapToMenu(
+                    menuApi.menu ?: MenuApi()
+                )
+            }.orEmpty(),
             order = mapToOrder(responsePostOrder.order ?: OrderApi())
         )
     }
@@ -43,59 +45,66 @@ object OrderMapper {
             customerName = response.customer?.customer.orEmpty(),
             information = response.information.orEmpty(),
             orderCategory = KategoriOrder(),
-            tableId = response.tableId.orEmpty(),
+            table = Table(id = response.tableId ?: 0),
             totalPayment = response.totalPayment ?: 0.0
         )
     }
 
-    fun mapToRequestOrderApi(domain:OrderResult):RequestOrderApi{
+    fun mapToRequestOrderApi(domain: OrderResult): RequestOrderApi {
         return RequestOrderApi(
             customerId = domain.order.customerId,
             information = domain.menu.joinToString { it.additionalInformation },
-            orderCategory = emptyString(),
-            tableId = domain.order.tableId,
+            orderCategory = domain.order.orderCategory.name,
+            tableId = if (domain.order.table.id == 0) null else domain.order.table.id,
             menuIds = domain.menu.map { it.id }.joinToString(),
             amounts = domain.menu.map { it.quantity }.joinToString(),
             discount = domain.order.discount,
-            paymentMethod = domain.paymentMethod,
-            totalPaymentBeforeDiscount = domain.order.totalPaymentBeforeDiscount,
-            totalPayment = domain.order.totalPayment
+            paymentId = domain.paymentMethod.id,
+            totalPayment = domain.order.totalPayment,
+            walletId = domain.order.wallet.id
         )
     }
 
-    private fun mapToOrderResult(api:OrderApi):OrderResult{
+    private fun mapToOrderResult(api: OrderApi): OrderResult {
         return OrderResult(
             order = Order(
                 createdAt = api.createdAt.orEmpty(),
                 customerId = api.customerId ?: 0,
                 id = api.id ?: 0,
-                information = api.information,
+                information = api.information.orEmpty(),
                 orderCategory = KategoriOrder(),
-                tableId = api.tableId.orEmpty(),
+                table = Table(id = api.tableId ?: 0),
                 totalPayment = api.totalPayment?.minus(api.discountOrder?.toInt() ?: 0) ?: 0.0,
                 totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0
             ),
-            menu = api.orderMenuApi?.map { MenuMapper.mapToMenu(it.menu ?: MenuApi(),it.amount,it.additionalInformation.orEmpty()) }.orEmpty(),
-            paymentMethod = api.paymentMethod.orEmpty(),
+            menu = api.orderMenuApi?.map {
+                MenuMapper.mapToMenu(
+                    it.menu ?: MenuApi(),
+                    it.amount,
+                    it.additionalInformation.orEmpty()
+                )
+            }.orEmpty(),
+            paymentMethod = Payment(name = api.paymentMethod.orEmpty()),
             type = api.categoryOrder.orEmpty(),
-                    status = api.orderStatus.orEmpty()
+            status = api.orderStatus.orEmpty()
         )
     }
 
     fun mapGetOrderKategori(
         response: ResponseKategoriOrder
     ): Load<List<KategoriOrder>> {
-        return handleApiSuccess(data = response.categoryOrder?.map { mapToKategoriOrder(it) }.orEmpty())
+        return handleApiSuccess(data = response.categoryOrder?.map { mapToKategoriOrder(it) }
+            .orEmpty())
     }
 
-    private fun mapToKategoriOrder(api: CategoryOrderApi?) : KategoriOrder{
+    private fun mapToKategoriOrder(api: CategoryOrderApi?): KategoriOrder {
         return KategoriOrder(
             name = api?.categoryOrder.orEmpty(),
             id = api?.id ?: 0
         )
-}
+    }
 
     fun mapGetListPembayaran(response: ResponseListPembayaran): Load<List<Payment>> {
         return handleApiSuccess(data = response.payment?.map {
@@ -124,7 +133,7 @@ object OrderMapper {
         )
     }
 
-     fun mapGetListCustomer(response: ResponsePelanggan): Load<List<Customer>> {
+    fun mapGetListCustomer(response: ResponsePelanggan): Load<List<Customer>> {
         return handleApiSuccess(data = response?.customer?.map {
             mapToListCustomer(it)
         }.orEmpty())
@@ -133,9 +142,9 @@ object OrderMapper {
     private fun mapToListCustomer(api: CustomerApi?): Customer {
         return Customer(
             id = api?.id ?: 0,
-            codeCustomer = api?.categoryCustomerId?: 0,
+            codeCustomer = api?.categoryCustomerId ?: 0,
             naem = api?.customer.orEmpty(),
-            discountCustomer = api?.discountCustomer?: 0
+            discountCustomer = api?.discountCustomer ?: 0
 
         )
     }

@@ -108,7 +108,9 @@ class MenusAdapter(
                 if (item.images.isNotEmpty()) {
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
+
                 item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+
                 tvHargaMenus.text = toCurrencyFormat(item.totalPrice)
 
 
@@ -123,9 +125,9 @@ class MenusAdapter(
 
                 btnMinus.setOnClickListener {
                         item.quantity--
-                    notifyItemChanged(adapterPosition)
-
+                    item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
+                    notifyItemChanged(adapterPosition)
                 }
 
 
@@ -133,9 +135,9 @@ class MenusAdapter(
 
                 btnPlus.setOnClickListener {
                         item.quantity++
-                    notifyItemChanged(adapterPosition)
-
+                    item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
                     onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
+                    notifyItemChanged(adapterPosition)
                 }
 
                 btnDelete.setOnClickListener {

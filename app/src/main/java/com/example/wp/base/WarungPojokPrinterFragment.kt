@@ -122,7 +122,7 @@ abstract class WarungPojokPrinterFragment : WarungPojokFragment() {
                             "[L]\n" +
                             "[C]================================\n" +
                             "[L]\n" +
-                            "[C]${printClosingMessage(order.type)}"
+                            "[C]${order.type}"
                 )
 
 

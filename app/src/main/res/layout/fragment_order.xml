@@ -7,9 +7,6 @@
     android:background="@color/colorWhite"
     tools:context=".presentation.order.OrderFragment">
 
-
-
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditOrderType"
         style="@style/WarungPojokButton"
@@ -44,10 +41,11 @@
         style="@style/WarungPojokButtonOutlined"
         android:text="@string/action_select_table"
         android:textAllCaps="false"
+        android:layout_marginVertical="@dimen/dimen_4dp"
         android:textSize="@dimen/text_size_14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvLabelTableNumber"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/tvLabelTableNumber" />
+        app:layout_constraintBottom_toTopOf="@+id/btnCustomerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTakeAwayType"
@@ -212,25 +210,11 @@
         tools:listitem="@layout/item_menu_order" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/orderTypeContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="btnDineIn,btnTakeAway,btnPreOrder" />
-
-    <androidx.constraintlayout.widget.Group
         android:id="@+id/dineInContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:constraint_referenced_ids="tvLabelTableNumber,btnTableNumber" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/takeAwayContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="tvLabelTakeAwayType,btnTakeAwayType" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/preOrderContainer"

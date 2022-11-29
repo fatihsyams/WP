@@ -37,9 +37,9 @@ class WarungPojokPrinter(
                 1, WoosimCmd.ALIGN_LEFT
             )
 
-                printStr( "No Meja : ${order.order.tableId}", 1, WoosimCmd.ALIGN_LEFT)
+                printStr( "No Meja : ${order.order.table.number}", 1, WoosimCmd.ALIGN_LEFT)
             printStr(
-                "Metode Pembayaran : ${order.paymentMethod}",
+                "Metode Pembayaran : ${order.paymentMethod.name}",
                 1, WoosimCmd.ALIGN_LEFT
             )
 //            printStr(

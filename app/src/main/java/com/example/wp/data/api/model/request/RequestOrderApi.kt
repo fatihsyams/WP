@@ -10,7 +10,7 @@ data class RequestOrderApi (
     @SerializedName("order_category")
     val orderCategory:String,
     @SerializedName("table_id")
-    val tableId:String?,
+    val tableId:Int?,
     @SerializedName("menu_price_id")
     val menuIds:String,
     @SerializedName("amount")
@@ -18,11 +18,11 @@ data class RequestOrderApi (
     @SerializedName("discount_order")
     val discount:Int?,
     @SerializedName("payment_id")
-    val paymentMethod:String?,
+    val paymentId:Int?,
     @SerializedName("total_payment")
     val totalPayment:Double?,
-    @SerializedName("total_payment_before_discount")
-    val totalPaymentBeforeDiscount: Double?
+    @SerializedName("wallet_id")
+    val walletId: Int?
 )
 
 data class RequestUpdateOrderApi(

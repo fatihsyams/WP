@@ -20,7 +20,7 @@ data class TableApi(
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("number")
-    val number: Int? = null,
+    val number: String? = null,
     @SerializedName("updated_at")
     val updatedAt: String? = null
 )

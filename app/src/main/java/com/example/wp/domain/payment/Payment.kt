@@ -1,8 +1,11 @@
 package com.example.wp.domain.payment
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import com.example.wp.utils.emptyString
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Payment(
-    val id: Int,
-    val name: String
-)
+    val id: Int = 0,
+    val name: String = emptyString()
+) : Parcelable

@@ -41,9 +41,9 @@ data class OrderApi(
     @SerializedName("order_status")
     val orderStatus: String? = null,
     @SerializedName("payment_id")
-    val paymentId: String? = null,
+    val paymentId: Int? = null,
     @SerializedName("table_id")
-    val tableId: String? = null,
+    val tableId: Int? = null,
     @SerializedName("total_payment")
     val totalPayment: Double? = null,
     @SerializedName("total_payment_before_discount")
@@ -51,7 +51,7 @@ data class OrderApi(
     @SerializedName("updated_at")
     val updatedAt: String? = null,
     @SerializedName("wallet_id")
-    val walletId: String? = null,
+    val walletId: Int? = null,
     val orderMenuApi : List<OrderMenuApi>? = null,
     val paymentMethod: String? = null,
     val categoryOrder: String? = null

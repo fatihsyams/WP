@@ -19,7 +19,7 @@ object TableMapper {
     private fun mapToTable(response: TableApi):Table{
         return Table(
           id = response.id ?: 0,
-            number = response.number ?: 0
+            number = response.number ?: "0"
         )
     }
 
