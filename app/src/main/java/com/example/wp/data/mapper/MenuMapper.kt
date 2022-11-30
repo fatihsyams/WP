@@ -33,7 +33,7 @@ object MenuMapper {
         )
     }
 
-    fun mapToMenu(response: MenuApi,quantity:Int? = 0,information:String= emptyString()): Menu {
+    fun mapToMenu(response: MenuApi,quantity:Int? = 0,information:String= emptyString(), menuPriceOrder:List<MenuPriceApi>? = null): Menu {
         return Menu(
             images = response.images.orEmpty(),
             additionalInformation = information,
@@ -57,7 +57,8 @@ object MenuMapper {
             discountTakeAway = response.discountTakeAway ?: 0,
             discountGofood = response.discountGofood ?: 0,
             discountGrabfood = response.discountGrabfood ?: 0,
-            menuPrice = response.menuPrice?.map { mapToMenuPrice(it) }.orEmpty()
+            menuPrice = menuPriceOrder?.map { mapToMenuPrice(it) }
+                ?: response.menuPrice?.map { mapToMenuPrice(it) }.orEmpty()
         )
     }
 
@@ -67,11 +68,11 @@ object MenuMapper {
             menuId = response.menuId ?: 0,
             id = response.id ?: 0,
             categoryOrderId = response.categoryOrderId ?: 0,
-            price = response.price ?: 0
+            price = response.price ?: 0,
+            orderCategory = OrderMapper.mapToKategoriOrder(response.categoryOrder),
+            menu = mapToMenu(response.menu ?: MenuApi())
         )
     }
-
-
 
     private fun getPrice(price: Double, discount: Int?): Double {
         return if (discount != null) price - price.times(discount) / 100 else price

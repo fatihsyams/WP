@@ -31,9 +31,9 @@ class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val
     inner class OrderResultViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: OrderResult) {
             with(itemView) {
-                tvOrderType.text = data.order.orderCategory.name
+                tvOrderType.text = data.menu.map { it.menuPrice.firstOrNull()?.orderCategory }.firstOrNull()?.name.orEmpty()
                 tvOrderName.text = if (data.order.customerName.isEmpty()) context.getString(R.string.label_no_name) else data.order.customerName.toUpperCase()
-                val orderImage = emptyString()
+                val orderImage = data.menu.firstOrNull()?.menuPrice?.firstOrNull()?.menu?.images.orEmpty()
                 Glide.with(context).load(orderImage).into(imgOrderType)
 
                 btnBill.setOnClickListener {

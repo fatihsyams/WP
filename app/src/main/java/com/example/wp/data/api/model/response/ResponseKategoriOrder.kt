@@ -1,7 +1,9 @@
 package com.example.wp.data.api.model.response
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ResponseKategoriOrder(
     @SerializedName("categoryOrder")
@@ -14,13 +16,14 @@ data class ResponseKategoriOrder(
     val statusCode: String?
 )
 
+@Parcelize
 data class CategoryOrderApi(
     @SerializedName("category_order")
     val categoryOrder: String?,
     @SerializedName("created_at")
-    val createdAt: Any?,
+    val createdAt: String?,
     @SerializedName("id")
     val id: Int?,
     @SerializedName("updated_at")
-    val updatedAt: Any?
-)
+    val updatedAt: String?
+): Parcelable

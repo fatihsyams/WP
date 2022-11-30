@@ -24,7 +24,7 @@ object OrderMapper {
         return OrderResult(
             menu = responsePostOrder.order?.orderMenuApi?.map { menuApi ->
                 MenuMapper.mapToMenu(
-                    menuApi.menu ?: MenuApi()
+                    menuApi.menu?.menu ?: MenuApi()
                 )
             }.orEmpty(),
             order = mapToOrder(responsePostOrder.order ?: OrderApi())
@@ -70,9 +70,9 @@ object OrderMapper {
             order = Order(
                 createdAt = api.createdAt.orEmpty(),
                 customerId = api.customerId ?: 0,
+                customerName = api.customer?.customer.orEmpty(),
                 id = api.id ?: 0,
                 information = api.information.orEmpty(),
-                orderCategory = KategoriOrder(),
                 table = Table(id = api.tableId ?: 0),
                 totalPayment = api.totalPayment?.minus(api.discountOrder?.toInt() ?: 0) ?: 0.0,
                 totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
@@ -81,13 +81,13 @@ object OrderMapper {
             ),
             menu = api.orderMenuApi?.map {
                 MenuMapper.mapToMenu(
-                    it.menu ?: MenuApi(),
+                    it.menu?.menu ?: MenuApi(),
                     it.amount,
-                    it.additionalInformation.orEmpty()
+                    it.additionalInformation.orEmpty(),
+                    listOf(it.menu ?: MenuPriceApi())
                 )
             }.orEmpty(),
-            paymentMethod = Payment(name = api.paymentMethod.orEmpty()),
-            type = api.categoryOrder.orEmpty(),
+            paymentMethod = mapToListPembayaran(api.paymentMethod),
             status = api.orderStatus.orEmpty()
         )
     }
@@ -99,7 +99,7 @@ object OrderMapper {
             .orEmpty())
     }
 
-    private fun mapToKategoriOrder(api: CategoryOrderApi?): KategoriOrder {
+    fun mapToKategoriOrder(api: CategoryOrderApi?): KategoriOrder {
         return KategoriOrder(
             name = api?.categoryOrder.orEmpty(),
             id = api?.id ?: 0

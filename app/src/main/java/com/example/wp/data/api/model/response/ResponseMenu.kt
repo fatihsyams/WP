@@ -101,15 +101,19 @@ data class MenuApi(
 @Parcelize
 data class MenuPriceApi(
     @SerializedName("discount_menu")
-    val discountMenu: String?,
+    val discountMenu: String? = null,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int? = null,
     @SerializedName("category_order_id")
-    val categoryOrderId: Int?,
+    val categoryOrderId: Int? = null,
     @SerializedName("price")
-    val price: Int?,
+    val price: Int? = null,
     @SerializedName("menu_id")
-    val menuId: Int?
+    val menuId: Int? = null,
+    @SerializedName("category_order")
+    val categoryOrder: CategoryOrderApi? = null,
+    @SerializedName("menu")
+    val menu: MenuApi? = null
 ): Parcelable
 
 

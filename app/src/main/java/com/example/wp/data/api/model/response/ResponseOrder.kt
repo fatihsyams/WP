@@ -52,9 +52,10 @@ data class OrderApi(
     val updatedAt: String? = null,
     @SerializedName("wallet_id")
     val walletId: Int? = null,
+    @SerializedName("order_menu")
     val orderMenuApi : List<OrderMenuApi>? = null,
-    val paymentMethod: String? = null,
-    val categoryOrder: String? = null
+    @SerializedName("payment")
+    val paymentMethod: PaymentApi? = null
 )
 
 data class ResponseOrders(
@@ -77,8 +78,8 @@ data class OrderMenuApi(
     val createdAt: String? = null,
     @SerializedName("id")
     val id: Int? = 0,
-    @SerializedName("menu")
-    val menu: MenuApi? = null,
+    @SerializedName("menu_price")
+    val menu: MenuPriceApi? = null,
     @SerializedName("menu_id")
     val menuId: Int? = 0,
     @SerializedName("order_id")
