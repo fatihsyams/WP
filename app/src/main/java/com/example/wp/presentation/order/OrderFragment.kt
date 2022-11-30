@@ -13,7 +13,6 @@ import com.example.wp.R
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
-import com.example.wp.domain.menu.getTakeAwayTypes
 import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.Order
 import com.example.wp.domain.order.OrderResult
@@ -22,7 +21,6 @@ import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.table.Table
 import com.example.wp.presentation.adapter.*
 import com.example.wp.presentation.adapter.MenusAdapter.Companion.ORDER_EDIT_TYPE
-
 import com.example.wp.presentation.listener.*
 import com.example.wp.presentation.main.MainActivity
 import com.example.wp.presentation.viewmodel.OrderViewModel
@@ -36,12 +34,9 @@ import com.example.wp.utils.constants.AppConstants.KEY_ORDER
 import com.example.wp.utils.datepicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
-import com.example.wp.utils.enum.TakeAwayTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
-import kotlinx.android.synthetic.main.item_pelanggan.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
@@ -123,18 +118,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onAction() {
 
-        btnEditOrderType.setOnClickListener {
-            btnEditOrderType.gone()
-//            when (selectedOrderType) {
-//                OrderTypeEnum.DINE_IN.type -> dineInContainer.invisible()
-//                OrderTypeEnum.TAKE_AWAY.type -> takeAwayContainer.invisible()
-//                OrderTypeEnum.PRE_ORDER.type -> preOrderContainer.invisible()
-//            }
-            selectedOrderType = ORDER_EDIT_TYPE
-//            edtCustomerName.setText(emptyString())
-            menuAdapter.updateOrderReadType(ORDER_EDIT_TYPE)
-        }
-
         btnTableNumber.setOnClickListener { tableViewModel.getTables() }
 
 
@@ -152,9 +135,9 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         btnPrint.setOnClickListener {
 //            if (isOrderValid()) {
-                if (isEditMode) orderViewModel.editOrder(getOrderResult()) else orderViewModel.postOrder(
-                    getOrderResult()
-                )
+            if (isEditMode) orderViewModel.editOrder(getOrderResult()) else orderViewModel.postOrder(
+                getOrderResult()
+            )
 //            }
         }
 
@@ -180,16 +163,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private fun onDineInSelected() {
         dineInContainer.visible()
-        btnEditOrderType.visible()
     }
 
     private fun onPreOrderSelected() {
         preOrderContainer.visible()
-        btnEditOrderType.visible()
-    }
-
-    private fun onTakeAwaySelected() {
-        btnEditOrderType.visible()
     }
 
     override fun onObserver() {
@@ -317,7 +294,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     private fun showTotalPrice(orderType: String) {
         totalPayment = menus.map {
-          it.totalPrice
+            it.totalPrice
 
         }.sum()
 //        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
@@ -329,11 +306,18 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         orderResult?.let { order ->
             orderId = order.order.id
             selectedOrderNameType = order.type
-            selectedPayment = Payment(id = 0, name = order.paymentMethod.name)
+            selectedPayment = order.paymentMethod
+            selectedPelanggan = Customer(naem = order.order.customerName)
+            selectedKas = order.order.wallet
+            selectedCategoryOrder = order.order.orderCategory
 
-//            edtCustomerName.setText(order.order.customerName)
             btnPayment.text =
                 order.paymentMethod.name.ifEmpty { getString(R.string.action_select_payment_method) }
+            btnCustomerName.text =
+                order.order.customerName.ifEmpty { getString(R.string.action_select_customer) }
+            btnKas.text =
+                order.order.wallet.name.ifEmpty { getString(R.string.action_select_wallet) }
+
             if (order.order.discount != 0) {
                 edtDiscount.setText(order.order.discount.toString())
             }
@@ -422,7 +406,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 }
             )
 
-            svPelanggan.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            svPelanggan.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
 
                     return false
@@ -502,7 +486,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     fun getSelectedPelanggan() {
         btnCustomerName.text = selectedPelanggan?.naem
     }
-
 
 
 }

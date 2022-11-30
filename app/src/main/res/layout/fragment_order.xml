@@ -7,23 +7,6 @@
     android:background="@color/colorWhite"
     tools:context=".presentation.order.OrderFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnEditOrderType"
-        style="@style/WarungPojokButton"
-        android:layout_marginStart="@dimen/dimen_16dp"
-        android:layout_marginLeft="@dimen/dimen_16dp"
-        android:layout_marginTop="@dimen/dimen_16dp"
-        android:layout_marginRight="@dimen/dimen_16dp"
-        android:minWidth="@dimen/dimen_0dp"
-        android:textAllCaps="false"
-        android:textSize="@dimen/text_size_20sp"
-        android:visibility="gone"
-        app:icon="@drawable/ic_baseline_edit_24"
-        app:iconPadding="@dimen/dimen_0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnTableNumber"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTableNumber"
         style="@style/WarungPojokTextView.Caption"
@@ -43,9 +26,9 @@
         android:textAllCaps="false"
         android:layout_marginVertical="@dimen/dimen_4dp"
         android:textSize="@dimen/text_size_14sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCustomerName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/tvLabelTableNumber"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@id/tvLabelTableNumber" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelTakeAwayType"
@@ -85,7 +68,6 @@
         android:hint="@string/label_date"
         android:padding="@dimen/dimen_8dp"
         app:layout_constraintBottom_toBottomOf="@id/tvLabelPickupOrder"
-        app:layout_constraintEnd_toStartOf="@+id/btnEditOrderType"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@id/tvLabelPickupOrder" />
 
@@ -110,7 +92,6 @@
         app:layout_constraintBottom_toBottomOf="@id/tvLabelCustomerName"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@id/tvLabelCustomerName" />
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelDiscount"
@@ -213,14 +194,14 @@
         android:id="@+id/dineInContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:constraint_referenced_ids="tvLabelTableNumber,btnTableNumber" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/preOrderContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:constraint_referenced_ids="tvLabelPickupOrder,edtPickupOrder" />
 
     <com.google.android.material.button.MaterialButton

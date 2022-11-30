@@ -33,7 +33,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     private val orderViewModel: OrderViewModel by viewModel()
     var onMenuClickListener: OnMenuClickListener? = null
 
-    var selectedCategoryOrder : KategoriOrder? = null
+    var isOrderCategoryOpen = false
 
     private var menuAdapter: MenusAdapter? = null
 
@@ -87,6 +87,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
             observeMenus(firstPage)
             return@setOnCloseListener true
         }
+
         btnPilihKategoriOrder.setOnClickListener {
            orderViewModel.getKategoriOrder()
         }
@@ -237,31 +238,36 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
 
     @SuppressLint("SetTextI18n")
     fun showKategoriOrder(kategoriOrder: List<KategoriOrder>) {
-        generateCustomBottomSheetDialog(
-            context = requireContext(),
-            layoutRes = R.layout.layout_alert_option,
-            isCancelable = true,
-            isExpandMode = true
-        ).apply {
-
-            val categoryAdapter = KategoriOrderAdapter(
+        if (isOrderCategoryOpen.not()){
+            generateCustomBottomSheetDialog(
                 context = requireContext(),
-                datas = kategoriOrder,
-                listener = object : KategoriOrderListener {
-                    override fun onKategoriOrderSelected(data: KategoriOrder) {
-                        onMenuClickListener?.onCategoryOrderClicked(data)
-                        menuViewModel.getMenus(categoryId = data.id, page = currentPage)
-                        dismiss()
+                layoutRes = R.layout.layout_alert_option,
+                isCancelable = false,
+                isExpandMode = true
+            ).apply {
+
+                isOrderCategoryOpen = true
+
+                val categoryAdapter = KategoriOrderAdapter(
+                    context = requireContext(),
+                    datas = kategoriOrder,
+                    listener = object : KategoriOrderListener {
+                        override fun onKategoriOrderSelected(data: KategoriOrder) {
+                            onMenuClickListener?.onCategoryOrderClicked(data)
+                            menuViewModel.getMenus(categoryId = data.id, page = currentPage)
+                            dismiss()
+                            isOrderCategoryOpen  = false
+                        }
                     }
+                )
+
+
+                tvTitle.text = getString(R.string.pilih_kategori_order)
+
+                rvOption.apply {
+                    layoutManager = GridLayoutManager(requireContext(), 3)
+                    adapter = categoryAdapter
                 }
-            )
-
-
-            tvTitle.text = getString(R.string.pilih_kategori_order)
-
-            rvOption.apply {
-                layoutManager = GridLayoutManager(requireContext(), 3)
-                adapter = categoryAdapter
             }
         }
     }
@@ -272,6 +278,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
 //        preparingAdapter()
         observeMenus(firstPage)
         (activity as MainActivity).setupOrderButton()
+        orderViewModel.getKategoriOrder()
     }
 
 }

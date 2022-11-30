@@ -142,4 +142,6 @@
     <string name="message_select_payment_method_first">Pilih Metode Pembayaran terlebih dahulu</string>
     <string name="label_no_name">Tanpa Nama</string>
     <string name="pilih_kategori_order">Pilih Kategori Order</string>
+    <string name="action_select_customer">Pilih Nama Pelanggan</string>
+    <string name="action_select_wallet">Pilih Kas</string>
 </resources>
