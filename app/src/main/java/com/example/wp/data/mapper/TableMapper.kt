@@ -16,10 +16,10 @@ object TableMapper {
         return handleApiSuccess(data = response.table?.map { mapToTable(it) }.orEmpty())
     }
 
-    private fun mapToTable(response: TableApi):Table{
+    fun mapToTable(response: TableApi):Table{
         return Table(
           id = response.id ?: 0,
-            number = response.number ?: "0"
+            number = response.number.orEmpty()
         )
     }
 

@@ -27,9 +27,9 @@ data class OrderApi(
     @SerializedName("created_at")
     val createdAt: String? = null,
     @SerializedName("customer")
-    val customer: CustomerApi?= null,
+    val customer: CustomerApi? = null,
     @SerializedName("customer_id")
-    val customerId: Int?= null,
+    val customerId: Int? = null,
     @SerializedName("information")
     val information: String? = null,
     @SerializedName("discount_order")
@@ -53,9 +53,13 @@ data class OrderApi(
     @SerializedName("wallet_id")
     val walletId: Int? = null,
     @SerializedName("order_menu")
-    val orderMenuApi : List<OrderMenuApi>? = null,
+    val orderMenuApi: List<OrderMenuApi>? = null,
     @SerializedName("payment")
-    val paymentMethod: PaymentApi? = null
+    val paymentMethod: PaymentApi? = null,
+    @SerializedName("wallet")
+    val wallet: WalletApi? = null,
+    @SerializedName("table")
+    val table: TableApi? = null
 )
 
 data class ResponseOrders(

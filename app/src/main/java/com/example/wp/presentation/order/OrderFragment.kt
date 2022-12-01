@@ -310,6 +310,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             selectedPelanggan = Customer(naem = order.order.customerName)
             selectedKas = order.order.wallet
             selectedCategoryOrder = order.order.orderCategory
+            selectedTable = order.order.table
 
             btnPayment.text =
                 order.paymentMethod.name.ifEmpty { getString(R.string.action_select_payment_method) }
@@ -317,6 +318,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 order.order.customerName.ifEmpty { getString(R.string.action_select_customer) }
             btnKas.text =
                 order.order.wallet.name.ifEmpty { getString(R.string.action_select_wallet) }
+            btnTableNumber.text =
+                order.order.table.number.ifEmpty { getString(R.string.action_select_table) }
+            dineInContainer.visibility = if (selectedTable?.number?.isEmpty() == true) View.GONE
+            else View.VISIBLE
 
             if (order.order.discount != 0) {
                 edtDiscount.setText(order.order.discount.toString())
