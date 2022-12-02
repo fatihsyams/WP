@@ -12,7 +12,6 @@ interface OrderService {
     @POST("order")
     suspend fun postOrder(@Body requestOrderApi: RequestOrderApi) : Response<ResponsePostOrder>
 
-
     @POST("order/{orderId}")
     suspend fun editOrder(
         @Path("orderId") id:Int,

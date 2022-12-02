@@ -113,7 +113,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         btnAdd.visible()
         showMenus()
         showOrderResult()
-        showTotalPrice(selectedOrderNameType)
+        showTotalPrice()
     }
 
     override fun onAction() {
@@ -144,7 +144,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         edtDiscount.doOnTextChanged { text, _, _, _ ->
             Handler().postDelayed({
                 if (!text.isNullOrEmpty()) discount = text.toString().toInt()
-                showTotalPrice(selectedOrderNameType)
+                showTotalPrice()
             }, 1000)
         }
 
@@ -292,13 +292,13 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         )
     }
 
-    private fun showTotalPrice(orderType: String) {
-        totalPayment = menus.map {
+    private fun showTotalPrice() {
+        totalPaymentBeforeDiscount = menus.map {
             it.totalPrice
 
         }.sum()
-//        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
-//        totalPayment = totalPaymentBeforeDiscount - totalDiscount
+        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
+        totalPayment = totalPaymentBeforeDiscount - totalDiscount
         tvTotalPrice.text = toCurrencyFormat(totalPayment)
     }
 
@@ -311,6 +311,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             selectedKas = order.order.wallet
             selectedCategoryOrder = order.order.orderCategory
             selectedTable = order.order.table
+            discount = order.order.discount
 
             btnPayment.text =
                 order.paymentMethod.name.ifEmpty { getString(R.string.action_select_payment_method) }
@@ -464,16 +465,16 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     override fun onDeleteClicked(menu: Menu, position: Int) {
         menus.remove(menu)
-        showTotalPrice(selectedOrderNameType)
+        showTotalPrice()
         menuAdapter.updateDataMenu(menus)
     }
 
     override fun onPlusClicked(menu: Menu, position: Int) {
-        showTotalPrice(selectedOrderNameType)
+        showTotalPrice()
     }
 
     override fun onMinuslicked(menu: Menu, position: Int) {
-        showTotalPrice(selectedOrderNameType)
+        showTotalPrice()
     }
 
     fun getSelectedTable() {
