@@ -26,8 +26,6 @@ data class RequestOrderApi (
 )
 
 data class RequestUpdateOrderApi(
-    @SerializedName("id")
-    val orderId:String,
     @SerializedName("status")
     val status:String
 )

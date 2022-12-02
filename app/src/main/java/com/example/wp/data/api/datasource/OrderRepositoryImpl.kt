@@ -35,7 +35,7 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
     ): Load<Boolean> {
         return try {
             val request = OrderMapper.mapToRequestOrderApi(order)
-            val response = service.editOrder(orderId,request)
+            val response = service.editOrder(orderId, request)
             if (response.isSuccessful) {
                 handleApiSuccess(true)
             } else {
@@ -123,7 +123,8 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
 
     override suspend fun updateOrder(orderId: String, status: String): Load<Boolean> {
         return try {
-            val response = service.postUpdateOrderStatus(RequestUpdateOrderApi(orderId, status))
+            val response =
+                service.postUpdateOrderStatus(orderId.toInt(), RequestUpdateOrderApi(status))
             if (response.isSuccessful) {
                 handleApiSuccess(true)
             } else {
