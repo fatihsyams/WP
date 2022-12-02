@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.wp.R
+import com.example.wp.domain.order.OrderResult
 import com.example.wp.presentation.listener.OpenMenuPageListener
 import kotlinx.android.synthetic.main.fragment_login.*
 

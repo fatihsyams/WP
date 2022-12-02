@@ -3,13 +3,14 @@ package com.example.wp.presentation.listener
 import com.example.wp.domain.material.Material
 import com.example.wp.domain.menu.Category
 import com.example.wp.domain.menu.Menu
+import com.example.wp.domain.order.OrderResult
 
 interface MenuListener{
     fun onSelectMenu(menu:Menu)
 }
 
 interface OpenMenuPageListener{
-    fun onOpenMenuPage(menus:List<Menu>)
+    fun onOpenMenuPage(menus:List<Menu>, orderResult: OrderResult?=null)
 }
 
 interface CalculateMenuListener{

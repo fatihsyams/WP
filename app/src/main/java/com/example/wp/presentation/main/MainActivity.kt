@@ -1,25 +1,22 @@
 package com.example.wp.presentation.main
 
 import android.view.View
-import android.widget.Button
 import com.example.wp.R
 import com.example.wp.base.WarungPojokActivity
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.order.OrderResult
-import com.example.wp.presentation.stock.checkstock.CheckStockFragment
 import com.example.wp.presentation.listener.MenuListener
 import com.example.wp.presentation.listener.OpenMenuPageListener
-import com.example.wp.presentation.menu.MenusFragment
 import com.example.wp.presentation.login.LoginFragment
 import com.example.wp.presentation.menu.MenuDetailFragment
 import com.example.wp.presentation.menu.MenusContainerFragment
+import com.example.wp.presentation.menu.MenusFragment
 import com.example.wp.presentation.order.OrderFragment
 import com.example.wp.presentation.order.OrderListFragment
 import com.example.wp.presentation.stock.StockContainerFragment
 import com.example.wp.utils.loadFragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
@@ -86,10 +83,14 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
                     order = existingOrder,
                     menus = selectedMenus,
                     isEditMode = true,
-                    kategoriOrder = selectedKategoriOrder?: KategoriOrder()
+                    kategoriOrder = selectedKategoriOrder ?: KategoriOrder()
                 )
             } else {
-                toOrderFragment(menus = selectedMenus, isEditMode = false, kategoriOrder = selectedKategoriOrder?: KategoriOrder())
+                toOrderFragment(
+                    menus = selectedMenus,
+                    isEditMode = false,
+                    kategoriOrder = selectedKategoriOrder ?: KategoriOrder()
+                )
             }
             disableEditMode()
         }
@@ -137,8 +138,10 @@ class MainActivity : WarungPojokActivity(), OpenMenuPageListener,
         tvQuantityOrder.text = selectedMenus.size.toString()
     }
 
-    override fun onOpenMenuPage(menus: List<Menu>) {
+    override fun onOpenMenuPage(menus: List<Menu>, orderResult: OrderResult?) {
         selectedMenus = menus.toMutableList()
+        existingOrder = orderResult
+        selectedKategoriOrder = orderResult?.order?.orderCategory
         loadFragment(R.id.fl_container, menuFragment)
         setupOrderButton()
     }

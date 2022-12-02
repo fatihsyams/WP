@@ -122,7 +122,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
 
         btnAdd.setOnClickListener {
-            onAddMenuListener?.onOpenMenuPage(menus)
+            onAddMenuListener?.onOpenMenuPage(menus, orderResult)
         }
 
         edtPickupOrder.setOnClickListener {
@@ -307,7 +307,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             orderId = order.order.id
             selectedOrderNameType = order.type
             selectedPayment = order.paymentMethod
-            selectedPelanggan = Customer(naem = order.order.customerName)
+            selectedPelanggan =
+                Customer(id = order.order.customerId, naem = order.order.customerName)
             selectedKas = order.order.wallet
             selectedCategoryOrder = order.order.orderCategory
             selectedTable = order.order.table

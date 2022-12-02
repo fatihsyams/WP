@@ -79,7 +79,8 @@ object OrderMapper {
                 totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0,
-                wallet = mapToListKas(api.wallet)
+                wallet = mapToListKas(api.wallet),
+                orderCategory = mapToKategoriOrder(api.orderMenuApi?.firstOrNull()?.menu?.categoryOrder)
             ),
             menu = api.orderMenuApi?.map {
                 MenuMapper.mapToMenu(
