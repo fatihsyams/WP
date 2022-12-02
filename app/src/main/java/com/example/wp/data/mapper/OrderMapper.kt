@@ -56,7 +56,7 @@ object OrderMapper {
             information = domain.menu.joinToString { it.additionalInformation },
             orderCategory = domain.order.orderCategory.name,
             tableId = if (domain.order.table.id == 0) null else domain.order.table.id,
-            menuIds = domain.menu.map { it.id }.joinToString(),
+            menuIds = domain.menu.map { it.menuPrice.firstOrNull()?.id }.joinToString(),
             amounts = domain.menu.map { it.quantity }.joinToString(),
             discount = domain.order.discount,
             paymentId = domain.paymentMethod.id,

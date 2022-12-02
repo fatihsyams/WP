@@ -3,8 +3,6 @@ package com.example.wp.utils.print
 import android.content.Context
 import android.util.Log
 import com.example.wp.domain.order.OrderResult
-import com.example.wp.presentation.adapter.MenusAdapter
-import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import com.example.wp.utils.lib.IPrintToPrinter
 import com.example.wp.utils.lib.WoosimPrnMng
@@ -37,7 +35,7 @@ class WarungPojokPrinter(
                 1, WoosimCmd.ALIGN_LEFT
             )
 
-                printStr( "No Meja : ${order.order.table.number}", 1, WoosimCmd.ALIGN_LEFT)
+            printStr("No Meja : ${order.order.table.number}", 1, WoosimCmd.ALIGN_LEFT)
             printStr(
                 "Metode Pembayaran : ${order.paymentMethod.name}",
                 1, WoosimCmd.ALIGN_LEFT
@@ -56,8 +54,8 @@ class WarungPojokPrinter(
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
                 printStr(
                     "  x ${menu.quantity} \t ${
-                        toCurrencyFormat((menu.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)*menu.quantity)
-                        
+                        toCurrencyFormat(menu.totalPrice)
+
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )
                 printStr("--------------------------------", 1, WoosimCmd.ALIGN_LEFT)
@@ -76,8 +74,7 @@ class WarungPojokPrinter(
             )
             printStr("================================")
             printStr(
-               "Selamat Menikmati"
-                , 1, WoosimCmd.ALIGN_CENTER
+                "Selamat Menikmati", 1, WoosimCmd.ALIGN_CENTER
             )
             printNewLine()
         }
