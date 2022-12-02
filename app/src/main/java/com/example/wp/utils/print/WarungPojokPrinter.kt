@@ -56,7 +56,7 @@ class WarungPojokPrinter(
                 printStr(menu.additionalInformation, 1, WoosimCmd.ALIGN_LEFT)
                 printStr(
                     "  x ${menu.quantity} \t ${
-                        toCurrencyFormat(menu.price*menu.quantity)
+                        toCurrencyFormat((menu.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)*menu.quantity)
                         
                     }", 1, WoosimCmd.ALIGN_LEFT
                 )

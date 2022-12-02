@@ -22,7 +22,9 @@ data class RequestOrderApi (
     @SerializedName("total_payment")
     val totalPayment:Double?,
     @SerializedName("wallet_id")
-    val walletId: Int?
+    val walletId: Int?,
+    @SerializedName("total_payment_before_discount")
+    val totalPaymentBeforeDiscount: Double?
 )
 
 data class RequestUpdateOrderApi(

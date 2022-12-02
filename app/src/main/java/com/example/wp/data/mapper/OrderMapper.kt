@@ -61,7 +61,8 @@ object OrderMapper {
             discount = domain.order.discount,
             paymentId = domain.paymentMethod.id,
             totalPayment = domain.order.totalPayment,
-            walletId = domain.order.wallet.id
+            walletId = domain.order.wallet.id,
+            totalPaymentBeforeDiscount = domain.order.totalPaymentBeforeDiscount
         )
     }
 
