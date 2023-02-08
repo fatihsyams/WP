@@ -76,7 +76,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
         searchViewCheckMenus.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { menuViewModel.getMenus(it) }
+//                query?.let { menuViewModel.getMenus(it) }
                 return false
             }
 
@@ -84,7 +84,7 @@ class CheckMenuFragment : WarungPojokFragment(), DeleteMenuListener, CreateMenuL
                 if (newText.isNullOrEmpty()){
                     observeMenus()
                 }else{
-                    menuViewModel.getMenus(newText)
+//                    menuViewModel.getMenus(newText)
                 }
                 return false
             }

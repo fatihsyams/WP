@@ -36,6 +36,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
     var isOrderCategoryOpen = false
 
     private var menuAdapter: MenusAdapter? = null
+    var selectedKategoriOrder: KategoriOrder? = null
 
     private val categoryAdapter: CategoryAdapter by lazy {
         CategoryAdapter(
@@ -69,7 +70,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
         searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { menuViewModel.getMenus(it) }
+                query?.let { menuViewModel.getMenus(it, selectedKategoriOrder?.id ?:0) }
                 return false
             }
 
@@ -77,7 +78,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                 if (newText.isNullOrEmpty()){
                     observeMenus(page = currentPage)
                 }else{
-                    menuViewModel.getMenus(newText)
+                    menuViewModel.getMenus(newText, selectedKategoriOrder?.id ?:0)
                 }
                 return false
             }
@@ -104,16 +105,19 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                     showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
+                    val validMenu = it.data.filterNot {
+                        it.menuPrice.isEmpty()
+                    }
                     msvMenu.showContentView()
-                    preparingAdapter(it.data)
-                    listMenu.addAll(it.data)
+                    preparingAdapter(validMenu)
+                    listMenu.addAll(validMenu)
                     isLoadMore = false
 //                    menuAdapter?.setLoadMoreProgress(false)
                     totalPages = 0
 //                    menuAdapter?.totalPage = totalPages
 //                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
 
-                    if (it.data.isEmpty()) {
+                    if (validMenu.isEmpty()) {
                         if (isLoadMore) {
                             isLoadMore = false
 //                            menuAdapter?.setLoadMoreProgress(false)
@@ -160,9 +164,13 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                     showToast(it.error.localizedMessage)
                 }
                 is Load.Success -> {
+                    val validMenu = it.data.filterNot {
+                        it.menuPrice.isEmpty()
+                    }
                     msvMenu.showContentView()
-                    listMenu.addAll(it.data)
-//                    menuAdapter?.notifyAddOrUpdateChanged(it.data)
+                    listMenu.addAll(validMenu)
+
+                    menuAdapter?.updateDataMenu(validMenu)
 
                     if (it.data.isEmpty()) {
 //                        menuAdapter?.datas?.clear()
@@ -254,6 +262,7 @@ class MenusFragment : WarungPojokFragment(), MenuCategoryListener,
                     listener = object : KategoriOrderListener {
                         override fun onKategoriOrderSelected(data: KategoriOrder) {
                             onMenuClickListener?.onCategoryOrderClicked(data)
+                            selectedKategoriOrder = data
                             menuViewModel.getMenus(categoryId = data.id, page = currentPage)
                             dismiss()
                             isOrderCategoryOpen  = false

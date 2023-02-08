@@ -56,10 +56,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvHargaMenus"
             style="@style/WarungPojokTextView.Caption"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:layout_marginLeft="@dimen/dimen_4dp"
             android:layout_marginTop="16dp"
             android:text="@string/sample_price"
-            android:layout_marginLeft="@dimen/dimen_4dp"
-            android:layout_marginStart="@dimen/dimen_4dp"
             app:layout_constraintStart_toEndOf="@+id/tvDiscountOrder"
             app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
 
@@ -70,19 +70,19 @@
             android:background="@color/colorRed"
             android:text="50%"
             android:textColor="@color/colorWhite"
-            android:visibility="gone"
             android:textSize="@dimen/text_size_18sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tvHargaMenus"
             app:layout_constraintStart_toStartOf="@id/guideline12"
             app:layout_constraintTop_toTopOf="@+id/tvHargaMenus" />
 
         <TextView
             android:id="@+id/tvDiscountPriceOrder"
-            android:visibility="gone"
             style="@style/WarungPojokTextView.Header.Bold"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/dimen_8dp"
             android:hint="@string/sample_price"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/guideline12"
             app:layout_constraintTop_toBottomOf="@+id/tvHargaMenus" />
 

@@ -56,9 +56,9 @@ class MenuRepositoryImpl(val service:MenuService):MenuRepository{
         }
     }
 
-    override suspend fun getSearchMenuResult(query: String): Load<List<Menu>> {
+    override suspend fun getSearchMenuResult(query: String, categoryId: Int): Load<List<Menu>> {
         return try {
-            val response = service.getSearchMenuResult(query)
+            val response = service.getSearchMenuResult(query, categoryId)
             if (response.isSuccessful){
                 response.body()?.let {response->
                     MenuMapper.mapSearchMenu(response)

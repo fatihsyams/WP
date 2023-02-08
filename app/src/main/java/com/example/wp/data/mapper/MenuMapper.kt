@@ -64,7 +64,7 @@ object MenuMapper {
 
     fun mapToMenuPrice(response: MenuPriceApi): MenuPrice {
         return MenuPrice(
-            discountMenu = response.discountMenu.orEmpty(),
+            discountMenu = response.discountMenu ?: 0,
             menuId = response.menuId ?: 0,
             id = response.id ?: 0,
             categoryOrderId = response.categoryOrderId ?: 0,

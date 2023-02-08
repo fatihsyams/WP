@@ -109,14 +109,20 @@ class MenusAdapter(
                     Glide.with(context).load(item.images).into(imgMenus)
                 }
 
-                item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
+                item.totalPrice = if (diskonPrice != 0.0) {
+                    realprice - diskonPrice
+                } else {
+                    realprice
+                }
 
                 tvHargaMenus.text = toCurrencyFormat(item.totalPrice)
 
 
-                tvDiscountOrder.text = "${item.discount}%"
+                tvDiscountOrder.text = "${item.menuPrice.firstOrNull()?.discountMenu}%"
 
-//                tvDiscountOrder.visibility = item.discount == 0 View.GONE else View.VISIBLE
+                tvDiscountOrder.visibility = if (item.menuPrice.firstOrNull()?.discountMenu ==  0) View.GONE else View.VISIBLE
 
 
                 tvNamaMenus.text = item.name
@@ -125,7 +131,14 @@ class MenusAdapter(
 
                 btnMinus.setOnClickListener {
                         item.quantity--
-                    item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                    val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                    val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
+                    item.totalPrice = if (diskonPrice != 0.0) {
+                        realprice - diskonPrice
+                    } else {
+                        realprice
+                    }
+
                     onCalculateMenuListener?.onMinuslicked(item, adapterPosition)
                     notifyItemChanged(adapterPosition)
                 }
@@ -135,9 +148,13 @@ class MenusAdapter(
 
                 btnPlus.setOnClickListener {
                         item.quantity++
-                    item.totalPrice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
-                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
-                    notifyItemChanged(adapterPosition)
+                    val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+                    val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
+                    item.totalPrice = if (diskonPrice != 0.0) {
+                        realprice - diskonPrice
+                    } else {
+                        realprice
+                    }
                 }
 
                 btnDelete.setOnClickListener {

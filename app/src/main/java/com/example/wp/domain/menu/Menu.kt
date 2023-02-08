@@ -41,7 +41,7 @@ data class Menu(
 data class MenuPrice(
     val menuId: Int,
     val categoryOrderId: Int,
-    val discountMenu: String,
+    val discountMenu: Int,
     val price: Int,
     val id: Int,
     val orderCategory: KategoriOrder = KategoriOrder(),

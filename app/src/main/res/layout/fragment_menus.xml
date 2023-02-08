@@ -20,6 +20,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Pilih Kategori"
+        android:background="@color/design_default_color_on_primary"
         android:id="@+id/btnPilihKategoriOrder"/>
 
     <com.kennyc.view.MultiStateView

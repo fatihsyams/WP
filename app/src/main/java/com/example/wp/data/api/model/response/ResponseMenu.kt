@@ -101,7 +101,7 @@ data class MenuApi(
 @Parcelize
 data class MenuPriceApi(
     @SerializedName("discount_menu")
-    val discountMenu: String? = null,
+    val discountMenu: Int? = null,
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("category_order_id")

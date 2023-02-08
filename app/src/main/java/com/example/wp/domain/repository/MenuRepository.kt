@@ -9,5 +9,5 @@ interface MenuRepository {
     suspend fun deleteMenus(id: Int): Load<Boolean>
     suspend fun getMenus(categoryId:Int,menuId: Int, page:Int):Load<List<Menu>>
     suspend fun getCategories():Load<List<Category>>
-    suspend fun getSearchMenuResult(query:String):Load<List<Menu>>
+    suspend fun getSearchMenuResult(query:String, categoryId: Int):Load<List<Menu>>
 }

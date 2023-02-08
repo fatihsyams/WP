@@ -49,9 +49,9 @@ class MenuViewModel(val repository: MenuRepository) : ViewModel() {
         _categoriesLoad.value = categories
     }
 
-    fun getMenus(query:String) = viewModelScope.launch {
+    fun getMenus(query:String, categoryId: Int) = viewModelScope.launch {
         _searchMenuLoad.value = Load.Loading
-        val menus = repository.getSearchMenuResult(query)
+        val menus = repository.getSearchMenuResult(query, categoryId)
         _searchMenuLoad.value = menus
     }
 

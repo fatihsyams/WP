@@ -113,7 +113,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         btnAdd.visible()
         showMenus()
         showOrderResult()
-        showTotalPrice()
+
     }
 
     override fun onAction() {
@@ -293,9 +293,15 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     private fun showTotalPrice() {
-        totalPaymentBeforeDiscount = menus.map {
-            it.totalPrice
-
+        totalPaymentBeforeDiscount = menus.map {item ->
+            val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+            val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
+            item.totalPrice = if (diskonPrice != 0.0) {
+                realprice - diskonPrice
+            } else {
+                realprice
+            }
+        item.totalPrice
         }.sum()
         val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
         totalPayment = totalPaymentBeforeDiscount - totalDiscount
@@ -337,6 +343,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = menuAdapter
         }
+        showTotalPrice()
     }
 
     private fun showTableOptions(tables: List<Table>) {
@@ -374,6 +381,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             isExpandMode = true
         ).apply {
 
+            tvTitle.setText("Pilih Pembayaran ")
             val paymentAdapter = PaymentAdapter(
                 context = requireContext(),
                 datas = payments,
@@ -401,6 +409,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             isExpandMode = true
         ).apply {
             svPelanggan.visibility = View.VISIBLE
+            tvTitle.setText("Pilih Pelanggan ")
             val pelangganAdapter = PelangganAdapter(
                 context = requireContext(),
                 datas = customer,
@@ -408,6 +417,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     override fun onPelangganSelected(data: Customer) {
                         selectedPelanggan = data
                         getSelectedPelanggan()
+                        showDiscountCustomer()
                         dismiss()
                     }
                 }
@@ -443,7 +453,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             isCancelable = true,
             isExpandMode = true
         ).apply {
-
+            tvTitle.setText("Pilih Kas ")
             val kasAdapter = KasAdapter(
                 context = requireContext(),
                 datas = payments,
@@ -492,6 +502,11 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
     fun getSelectedPelanggan() {
         btnCustomerName.text = selectedPelanggan?.naem
+    }
+
+    fun showDiscountCustomer() {
+        discount = selectedPelanggan?.discountCustomer ?: 0
+        edtDiscount.setText(discount.toString())
     }
 
 
