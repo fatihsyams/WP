@@ -32,7 +32,8 @@ class OrderResultAdapter(val context: Context, var datas: List<OrderResult>, val
         fun bind(data: OrderResult) {
             with(itemView) {
                 tvOrderType.text = data.menu.map { it.menuPrice.firstOrNull()?.orderCategory }.firstOrNull()?.name.orEmpty()
-                tvOrderName.text = if (data.order.customerName.isEmpty()) context.getString(R.string.label_no_name) else data.order.customerName.toUpperCase()
+                val orderName = "${data.order.customerName} (${data.order.orderCategory.name}) (No meja : ${data.order.table.number})".toUpperCase()
+                tvOrderName.text = if (data.order.customerName.isEmpty()) context.getString(R.string.label_no_name) else orderName
                 val orderImage = data.menu.firstOrNull()?.menuPrice?.firstOrNull()?.menu?.images.orEmpty()
                 Glide.with(context).load(orderImage).into(imgOrderType)
 
