@@ -9,10 +9,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val networkModule = module {
 //    single(named(HEADER_INTERCEPTOR)) { provideHeaderInterceptor(get()) }
-    single { provideOkHttpClient(get()) }
+    single { provideOkHttpClient(get(), get()) }
     single { provideLoggingInterceptor() }
     single { provideRetrofit(get()) }
 }
@@ -22,9 +23,14 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .addConverterFactory(GsonConverterFactory.create()).build()
 }
 
-fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, preferences:SessionManager): OkHttpClient {
 
-    return OkHttpClient().newBuilder().addInterceptor(loggingInterceptor).build()
+    return OkHttpClient().newBuilder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .addInterceptor(CustomInterceptor(preferences))
+        .addInterceptor(loggingInterceptor).build()
 }
 
 fun provideHeaderInterceptor(appPreference: SessionManager): Interceptor {

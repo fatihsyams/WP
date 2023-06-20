@@ -2,7 +2,7 @@ package com.example.wp.presentation.login
 
 import android.content.Context
 import android.util.Log
-import com.example.wp.data.api.model.response.RequestLogin
+import com.example.wp.data.api.model.request.RequestLoginApi
 import com.example.wp.data.api.model.response.ResponseLoginn
 import com.example.wp.data.preference.SessionManager
 import com.example.wp.utils.NetworkUtils.Companion.create
@@ -27,7 +27,7 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
 
         sm?.let { sm->
             val api = create(sm)
-            val loginBody = RequestLogin(
+            val loginBody = RequestLoginApi(
                 username,
                 password
             )
@@ -43,10 +43,10 @@ class LoginPresenter(model: LoginInterface.View) : LoginInterface.Presenter {
                 ) {
                     if (response.body() != null) {
                         var responseBody = response.body()
-                        view?.showLoginSuccess("Selamat Datang" + "${responseBody?.token}")
+                        view?.showLoginSuccess("Selamat Datang")
                         if (responseBody?.token != null) {
                             sm.saveUserLogin(true)
-                            sm.saveToken(responseBody?.token.toString())
+                            sm.saveToken(responseBody.token.toString())
                             view?.moveHome()
                         } else {
                             view?.showLoginFailed("Token Tidak Dapat")

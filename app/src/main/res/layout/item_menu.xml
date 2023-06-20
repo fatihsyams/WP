@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_8dp"
@@ -12,8 +11,9 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/dimem_20dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +43,8 @@
         android:layout_height="@dimen/dimen_80dp"
         android:src="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -52,11 +53,11 @@
         android:layout_margin="@dimen/dimen_10dp"
         android:background="@drawable/icon_circle_white"
         android:backgroundTint="@color/colorBase"
-        android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="@+id/imgCircle"
         app:layout_constraintEnd_toEndOf="@+id/imgCircle"
         app:layout_constraintStart_toStartOf="@+id/imgCircle"
-        app:layout_constraintTop_toTopOf="@+id/imgCircle" />
+        app:layout_constraintTop_toTopOf="@+id/imgCircle"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -70,30 +71,73 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="270dp" />
+        app:layout_constraintGuide_begin="261dp" />
 
     <TextView
         android:id="@+id/tvNamaMenus"
+        style="@style/WarungPojokTextView.Title.Bold"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimem_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:text="@string/sample_menu"
-        android:textSize="@dimen/text_size_30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <TextView
         android:id="@+id/tvHargaMenus"
+        style="@style/WarungPojokTextView.Title"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
         android:hint="@string/sample_price"
-        android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvNamaMenus"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@id/tvDiscount"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaMenus" />
+
+    <TextView
+        android:id="@+id/tvDiscountPrice"
+        style="@style/WarungPojokTextView.Header.Bold"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
+        android:hint="@string/sample_price"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHargaMenus" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorRed"
+        android:text="50%"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHargaMenus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvHargaMenus" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSoldOut"
+        android:visibility="gone"
+        style="@style/WarungPojokTextView.Header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorBlackTransparent"
+        android:text="Habis"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/frameLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="124dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

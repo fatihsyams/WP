@@ -1,28 +1,21 @@
 package com.example.wp.presentation.menu
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.bidikan.baseapp.ui.WarungPojokFragment
 import com.bumptech.glide.Glide
 import com.example.wp.R
-import com.example.wp.data.api.model.response.DataItem
+import com.example.wp.domain.menu.Menu
 import com.example.wp.presentation.listener.MenuListener
-import com.example.wp.utils.AppConstants.KEY_MENU
-import com.example.wp.utils.generateCustomAlertDialog
-import com.example.wp.utils.removeFragment
-import com.example.wp.utils.showToast
+import com.example.wp.presentation.main.MainActivity
+import com.example.wp.utils.*
+import com.example.wp.utils.constants.AppConstants.KEY_MENU
 import kotlinx.android.synthetic.main.fragment_menu_detail.*
 import kotlinx.android.synthetic.main.fragment_menu_detail.tvPrice
-import kotlinx.android.synthetic.main.item_menu.view.*
-import kotlinx.android.synthetic.main.layout_order_additional_note_dialog.*
 
 class MenuDetailFragment : WarungPojokFragment() {
 
     companion object {
-        fun newInstance(menu: DataItem) =
+        fun newInstance(menu: Menu) =
             MenuDetailFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_MENU, menu)
@@ -30,9 +23,9 @@ class MenuDetailFragment : WarungPojokFragment() {
             }
     }
 
-    private var menu: DataItem? = null
+    private var menu: Menu? = null
 
-    private var quantity = 0
+    private var selectedQuantity = 1
 
     var onMenuSelectListener: MenuListener? = null
 
@@ -46,25 +39,41 @@ class MenuDetailFragment : WarungPojokFragment() {
     }
 
     override fun onView() {
+        (activity as MainActivity).getOrderButton().gone()
         showMenuDetail()
     }
 
     override fun onAction() {
         btnMinus.setOnClickListener {
-            if (quantity > 0) quantity--
-            setMenuQuantity()
+            menu?.let { menu ->
+                    selectedQuantity--
+                setMenuQuantity()
+            }
         }
 
         btnPlus.setOnClickListener {
-            quantity++
-            setMenuQuantity()
+            menu?.let { menu ->
+                    selectedQuantity++
+                    setMenuQuantity()
+            }
         }
 
-        btnOk.setOnClickListener { showAdditionalNoteDialog() }
+        btnOk.setOnClickListener {
+            menu?.apply {
+                    this.quantity = selectedQuantity
+                    totalPrice = (menuPrice.firstOrNull()?.price?.toDouble()?: 0.0 )* selectedQuantity
+                    additionalInformation = edtKeteranganOrder.text.toString()
+                    onMenuSelectListener?.onSelectMenu(this)
+            }
+        }
     }
 
-    private fun setMenuQuantity(){
-        tvQuantity.text = quantity.toString()
+
+    private fun setMenuQuantity() {
+        tvQuantity.text = selectedQuantity.toString()
+        val price = menu?.menuPrice?.firstOrNull()?.price?.toDouble() ?: 0.0
+        val totalPrice = price.times(selectedQuantity)
+        tvPrice.text = toCurrencyFormat(totalPrice ?: 0.0)
     }
 
     override fun onObserver() {
@@ -72,39 +81,41 @@ class MenuDetailFragment : WarungPojokFragment() {
 
     private fun showMenuDetail() {
         menu?.apply {
-            if (!images.isNullOrEmpty()) {
-                Glide.with(this@MenuDetailFragment).load(images.first().imageUrl).into(imgMenu)
+            if (images.isNotEmpty()) {
+                Glide.with(this@MenuDetailFragment).load(images).into(imgMenu)
             }
+            tvName.text = name
             tvDescription.text = description
-            tvPrice.text = "Rp $price"
+            tvPrice.text = toCurrencyFormat(menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0)
         }
     }
 
-    private fun showAdditionalNoteDialog() {
-        context?.let {
-            generateCustomAlertDialog(
-                it,
-                R.layout.layout_order_additional_note_dialog,
-                false
-            ).apply {
-
-                menu?.apply {
-                    tvNamaMenu.text = name
-                    tvPrice.text = "Rp $price"
-
-                    btnCancel.setOnClickListener { dismiss() }
-
-                    btnDone.setOnClickListener {
-                        this.quantity = quantity
-                        additionalInformation = edtNote.text.toString()
-                        onMenuSelectListener?.onSelectMenu(this)
-                        dismiss()
-                        removeFragment()
-                    }
-                }
-
-            }
-        }
-    }
+//    private fun showAdditionalNoteDialog() {
+//        context?.let {
+//            generateCustomAlertDialog(
+//                it,
+//                R.layout.layout_order_additional_note_dialog,
+//                false
+//            ).apply {
+//
+//                menu?.apply {
+//                    tvNamaMenu.text = name
+//                    tvPrice.text = toCurrencyFormat(price)
+//
+//                    btnCancel.setOnClickListener { dismiss() }
+//
+//                    btnDone.setOnClickListener {
+//                        this.quantity = selectedQuantity
+//                        totalPrice = price * selectedQuantity
+//                        additionalInformation = edtNote.text.toString()
+//                        onMenuSelectListener?.onSelectMenu(this)
+//                        dismiss()
+//                        removeFragment()
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 
 }

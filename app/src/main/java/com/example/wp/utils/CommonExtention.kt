@@ -1,8 +1,11 @@
 package com.example.wp.utils
 
+import android.graphics.Paint
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.example.wp.R
 import okhttp3.MediaType
@@ -33,12 +36,16 @@ fun Fragment.loadFragment(layoutResourceId:Int, fragment: Fragment, isBackStack:
         .commit()
 }
 
-fun Fragment.showToast(message:String){
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+fun Fragment.showToast(message:String?){
+    Toast.makeText(context, message ?:  "Error tidak diketahui", Toast.LENGTH_LONG).show()
 }
 
 fun Fragment.removeFragment(){
     activity?.supportFragmentManager?.popBackStack()
+}
+
+fun AppCompatActivity.resfreshFragment(fragment: Fragment){
+    supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commitAllowingStateLoss()
 }
 
 fun View.visible() {
@@ -51,4 +58,10 @@ fun View.gone() {
 
 fun View.invisible() {
     this.visibility = View.INVISIBLE
+}
+
+fun TextView.toStrikethrough(){
+    apply {
+        paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+    }
 }

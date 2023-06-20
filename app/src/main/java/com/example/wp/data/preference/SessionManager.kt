@@ -8,6 +8,7 @@ class SessionManager(context: Context) {
     private val KEY_PASS = "PASS"
     private val KEY_BOOLEAN = "BOOLEAN"
     private val KEY_TOKEN = "TOKEN"
+    private val KEY_ORDER = "ORDER"
 
 
     var mSharedPrefence: SharedPreferences? = null
@@ -15,10 +16,6 @@ class SessionManager(context: Context) {
 
     init {
         mSharedPrefence = context.getSharedPreferences(KEY_NAME, Context.MODE_PRIVATE)
-    }
-
-    fun initSessionManager(context: Context) {
-
     }
 
     fun saveEmail(email: String) {
@@ -47,6 +44,15 @@ class SessionManager(context: Context) {
 
     fun isUserLogin(): Boolean {
         return mSharedPrefence?.getBoolean(KEY_BOOLEAN, false)!!
+    }
+
+    fun saveOrderSaved(boolean: Boolean) {
+        mEditor = mSharedPrefence?.edit()
+        mEditor?.putBoolean(KEY_ORDER, boolean)?.apply()
+    }
+
+    fun isOrderSaved(): Boolean {
+        return mSharedPrefence?.getBoolean(KEY_ORDER, false)!!
     }
 
     fun getEmail(): String? {

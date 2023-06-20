@@ -1,54 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.createmenu.CreateMenuFragment">
+    tools:context=".presentation.menu.createmenu.CreateMenuFragment">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ImgCreateMenu"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@color/colorPrimary" />
-
-    <EditText
-        android:id="@+id/edtNameCreateMenu"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/formContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="name" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/btnCreateMenu"
+        android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/edtDescriptionCreateMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="description" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edtPriceCreateMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Price" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ImgCreateMenu"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:src="@color/colorPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/guideline9"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edtStockCreateMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="stock" />
+            <ImageView
+                android:id="@+id/imgIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/ImgCreateMenu"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="@+id/ImgCreateMenu"
+                app:layout_constraintStart_toStartOf="@id/ImgCreateMenu"
+                app:layout_constraintTop_toTopOf="@+id/ImgCreateMenu"
+                app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
-    <EditText
-        android:id="@+id/edtCategoryMenuIdCreateMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="category_menu_id" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtNameCreateMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="text"
+                    android:hint="@string/hint_menu_name" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilCategoryId">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtDescriptionCreateMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="text"
+                    android:hint="@string/hint_description" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPrice"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toBottomOf="@+id/tilName">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtPriceCreateMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:hint="@string/hint_price_menu" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPriceGofood"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilPrice">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtPriceGofood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:hint="@string/hint_price_gofood" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPriceGrabfood"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilPriceGofood">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtPriceGrabfood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:hint="@string/hint_price_grabfood" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStock"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilMaterial">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtStockCreateMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:inputType="number"
+                    android:hint="@string/hint_menu_total_bahan" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCategoryId"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilStock">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtCategoryMenuIdCreateMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/label_menu_Category" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMaterial"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilPriceGrabfood">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edtMaterial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLabelLogin"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/hint_material" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="183dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="134dp" />
+
+            <ProgressBar
+                android:id="@+id/pbCreateMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ImgCreateMenu"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCreateMenu"
+        style="@style/WarungPojokButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBase"
-        android:hint="Create"
-        android:textColor="#FFF" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/action_create_menu" />
 
-
-</LinearLayout>
+</RelativeLayout>

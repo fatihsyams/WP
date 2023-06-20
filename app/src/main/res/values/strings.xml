@@ -1,15 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="action_add">Tambah</string>
+    <string name="action_cancel">Batal</string>
+    <string name="action_create">Buat</string>
+    <string name="action_create_menu">Buat Menu</string>
+    <string name="action_create_stock">Buat Stok</string>
+    <string name="action_dine_in">Dine In</string>
+    <string name="action_done">Selesai</string>
+    <string name="action_login">Masuk</string>
+    <string name="action_ok">ok</string>
+    <string name="action_pre_order">Pre Order</string>
+    <string name="action_print">Cetak</string>
+    <string name="action_save">Simpan</string>
+    <string name="action_select_table">Pilih Meja</string>
+    <string name="action_select_take_away">Pilih Jenis</string>
+    <string name="action_take_away">Take Away</string>
+
     <string name="app_name">WP</string>
+
+    <string name="bixolon_brand">Bixolon</string>
+
+    <string name="bluetooth_not_available">Bluetooth not available</string>
+
+    <string name="button_scan">Scan devices</string>
+
+    <string name="choose_printer">Choose your printer brand</string>
+
+    <string name="connect_fail">Printer connection error</string>
+    <string name="connect_lost">Disconnected</string>
+
+    <string name="connected">Connect to</string>
+
+    <string name="dayFriday">Jum</string>
+
+    <string name="dayMonday">Sen</string>
+
+    <string name="daySaturday">Sab</string>
+
+    <string name="daySunday">Min</string>
+
+    <string name="dayThursday">Kam</string>
+
+    <string name="dayTuesday">Sel</string>
+
+    <string name="dayWednesday">Rab</string>
+
+    <string name="description">By using this app you can print on any brand of Bluetooth printers, for example Bixolon, Woosim, Sewoo, Rongta, Baby, Delta, etc.
+        \n\nChoose your printer brand:
+    </string>
+
+    <string name="do_print">Print</string>
+
+    <string name="format_table_number">No Meja : 10</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sample_price">19.000</string>
-    <string name="sample_menu">Ikan Gurame</string>
-    <string name="format_table_number">No Meja : 10</string>
-    <string name="action_done">Selesai</string>
-    <string name="action_cancel">Batal</string>
-    <string name="action_ok">ok</string>
+
+    <string name="hint_description">Deskripsi</string>
+    <string name="hint_material">Bahan Menu</string>
+    <string name="hint_material_name">Nama Material</string>
+    <string name="hint_menu_name">Nama Menu</string>
+    <string name="hint_menu_stock">Stok Menu</string>
+    <string name="hint_menu_total_bahan">Total bahan yang dibutuhkan</string>
+    <string name="hint_optional">Opsional</string>
+    <string name="hint_price">Harga</string>
+    <string name="hint_price_gofood">Harga Go Food</string>
+    <string name="hint_price_grabfood">Harga Grab Food</string>
+    <string name="hint_price_menu">Harga Menu</string>
+    <string name="hint_write_your_customer">Tulis Nama Pelanggan</string>
+
+    <string name="label_add_stock">Tambah Stok</string>
+    <string name="label_check_stock">Cek Stok</string>
+    <string name="label_customer_name">Nama Pelanggan</string>
+    <string name="label_date">Pilih Tanggal</string>
+    <string name="label_date_takeaway">Tanggal Pengambilan</string>
+    <string name="label_discount">Diskon (%)</string>
     <string name="label_information">Keterangan : </string>
-    <string name="action_dine_in">Dine In</string>
-    <string name="action_take_away">Take Away</string>
-    <string name="action_pre_order">Pre Order</string>
+    <string name="label_input_menu">Input Menu</string>
+    <string name="label_login">Login</string>
+    <string name="label_manage_menu">Manajemen Menu</string>
+    <string name="label_manage_stock">Manajemen Stok</string>
+    <string name="label_menu_Category">Kategori Menu</string>
+    <string name="label_menu_list">Daftar Menu</string>
+    <string name="label_order">Pesanan</string>
+    <string name="label_select_table">Pilih Meja</string>
+    <string name="label_stock">Stok</string>
+    <string name="label_table_order">Pesanan Meja</string>
+    <string name="label_take_away_type">Jenis Take Away</string>
+    <string name="label_total_price">Total Harga</string>
+    <string name="label_total_stock">Jumlah Stok</string>
+    <string name="label_warung_pojok">Warung Pojok</string>
+
+    <string name="message_complete_form_first">Mohon lengkapi data terlebih dahulu</string>
+    <string name="message_error_over_stock">Tidak bisa melebih stok</string>
+    <string name="message_receipt_printed">Apakah anda ingin mencetak struk ini lagi?</string>
+    <string name="message_select_delivery_time_first">Pilih Tanggal Pengambilan Pesanan Terlebih Dahulu</string>
+    <string name="message_select_order_type_first">Pilih Tipe Pesanan Terlebih Dahulu</string>
+    <string name="message_select_table_first">Pilih Nomer Meja Terlebih Dahulu</string>
+    <string name="message_select_take_away_type_first">Pilih Jenis Take Away Terlebih Dahulu</string>
+    <string name="message_success_update_stock">Berhasil memperbarui stok</string>
+
+    <string name="none_found">No device found</string>
+    <string name="none_paired">No device found</string>
+
+    <string name="not_connected">Connection is not established</string>
+
+    <string name="other_brands">Other printers</string>
+
+    <string name="pic_load_error">Error in loading picture</string>
+
+    <string name="print_error">Error in printing</string>
+    <string name="print_succ">Print done successfully</string>
+
+    <string name="rongta_brand">Rongta</string>
+
+    <string name="sample_category">Ikan</string>
+    <string name="sample_menu">Ikan Gurame</string>
+    <string name="sample_month_year">September 2020</string>
+    <string name="sample_price">19.000</string>
+    <string name="sample_table_number">1</string>
+
+    <string name="scanning">Searching…</string>
+
+    <string name="select_device">Select device</string>
+
+    <string name="title_other_devices">Other devices</string>
+    <string name="title_paired_devices">Paired devices</string>
+    <string name="title_receipt_printed">Selesai Mencetak Struk</string>
+    <string name="title_select_category">Pilih Kategori</string>
+    <string name="title_select_material">Pilih Bahan</string>
+    <string name="title_select_take_away_type">Pilih Jenis Take Away</string>
+
+    <string name="turnon_bluetooth">Turn on Bluetooth</string>
+
+    <string name="woosim_brand">Woosim</string>
+    <string name="label_payment_method">Metode Pembayaran</string>
+    <string name="action_select_payment_method">Pilih Metode Pembayaran</string>
+    <string name="label_order_list">Daftar Pesanan</string>
+    <string name="action_submit">Kirim</string>
+    <string name="label_orders">Pesanan</string>
+    <string name="message_select_payment_method_first">Pilih Metode Pembayaran terlebih dahulu</string>
+    <string name="label_no_name">Tanpa Nama</string>
+    <string name="pilih_kategori_order">Pilih Kategori Order</string>
+    <string name="action_select_customer">Pilih Nama Pelanggan</string>
+    <string name="action_select_wallet">Pilih Kas</string>
 </resources>

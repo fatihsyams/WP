@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.menu.MenusFragment">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:elevation="@dimen/dimen_4dp"
+        android:layout_margin="@dimen/dimen_8dp"
+        android:background="@drawable/bg_rectangle_white_border_grey_radius_8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        app:iconifiedByDefault="false"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih Kategori"
+        android:background="@color/design_default_color_on_primary"
+        android:id="@+id/btnPilihKategoriOrder"/>
+
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/msvMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:msv_loadingView="@layout/layout_loading"
+        app:msv_viewState="loading">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_category"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMenus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                tools:listitem="@layout/item_menu" />
+
+        </LinearLayout>
+
+    </com.kennyc.view.MultiStateView>
+
+</LinearLayout>

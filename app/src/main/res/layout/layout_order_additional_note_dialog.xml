@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/bg_rectangle_white_radius_8">
+    android:background="@drawable/bg_rectangle_white_radius_8"
+    android:fillViewport="true">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvNamaMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/sample_menu"
-        android:textSize="@dimen/text_size_30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="@string/sample_price"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_size_30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvNamaMenu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvNamaMenu" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edtNote"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_250dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="top"
-        android:textSize="@dimen/text_size_18sp"
-        android:lineSpacingExtra="@dimen/dimen_8dp"
-        tools:text="@tools:sample/lorem/random"
-        android:maxLines="8"
-        android:ellipsize="end"
-        android:background="@drawable/bg_rectangle_white_radius_8"
-        android:elevation="@dimen/dimem_20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvNamaMenu" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:padding="@dimen/dimen_16dp"
-        android:text="@string/action_done"
-        android:textSize="@dimen/text_size_20sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtNote"
-        app:layout_constraintStart_toStartOf="@+id/edtNote"
-        app:layout_constraintTop_toBottomOf="@id/edtNote" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNamaMenu"
+            android:layout_width="0dp"
+            style="@style/WarungPojokTextView.Title"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/sample_menu"
+            app:layout_constraintEnd_toStartOf="@+id/tvPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/btnCancel"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/action_cancel"
-        android:textColor="@color/colorRed"
-        android:textSize="@dimen/text_size_16sp"
-        app:layout_constraintEnd_toEndOf="@+id/btnDone"
-        app:layout_constraintStart_toStartOf="@+id/btnDone"
-        app:layout_constraintTop_toBottomOf="@+id/btnDone" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrice"
+            style="@style/WarungPojokTextView.Caption"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/sample_price"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/tvNamaMenu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvNamaMenu" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtNote"
+            android:layout_width="0dp"
+            style="@style/WarungPojokTextView.Caption"
+            android:padding="@dimen/dimen_8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_rectangle_white_radius_8"
+            android:elevation="@dimen/dimen_20dp"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:lineSpacingExtra="@dimen/dimen_8dp"
+            android:maxLines="8"
+            android:lines="8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNamaMenu"
+            tools:text="@tools:sample/lorem/random" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDone"
+            android:layout_width="0dp"
+            style="@style/WarungPojokButton"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/action_done"
+            app:layout_constraintEnd_toEndOf="@+id/edtNote"
+            app:layout_constraintStart_toStartOf="@+id/edtNote"
+            app:layout_constraintTop_toBottomOf="@id/edtNote" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnCancel"
+            style="@style/WarungPojokTextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/action_cancel"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/text_size_16sp"
+            app:layout_constraintEnd_toEndOf="@+id/btnDone"
+            app:layout_constraintStart_toStartOf="@+id/btnDone"
+            app:layout_constraintTop_toBottomOf="@+id/btnDone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

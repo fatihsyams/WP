@@ -11,7 +11,7 @@ data class ResponseLoginn(
 	val message: String? = null,
 
 	@field:SerializedName("user")
-	val user: User? = null,
+	val user: UserApi? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null,
@@ -20,7 +20,7 @@ data class ResponseLoginn(
 	val token: String? = null
 )
 
-data class User(
+data class UserApi(
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
