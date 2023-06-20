@@ -37,13 +37,13 @@ class WarungPojokPrinter(
 
             printStr("No Meja : ${order.order.table.number}", 1, WoosimCmd.ALIGN_LEFT)
             printStr(
+                "Jenis Pesanan : ${order.order.orderCategory.name}",
+                1, WoosimCmd.ALIGN_LEFT
+            )
+            printStr(
                 "Metode Pembayaran : ${order.paymentMethod.name}",
                 1, WoosimCmd.ALIGN_LEFT
             )
-//            printStr(
-//                "Status : ${order.status}",
-//                1, WoosimCmd.ALIGN_LEFT
-//            )
             printStr("================================")
             order.menu.forEach { menu ->
                 printStr(
