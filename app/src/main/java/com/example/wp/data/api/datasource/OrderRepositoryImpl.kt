@@ -121,12 +121,14 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
         }
     }
 
-    override suspend fun updateOrder(orderId: String, status: String): Load<Boolean> {
+    override suspend fun updateOrder(orderId: String, status: String): Load<OrderResult> {
         return try {
             val response =
                 service.postUpdateOrderStatus(orderId.toInt(), RequestUpdateOrderApi(status))
             if (response.isSuccessful) {
-                handleApiSuccess(true)
+                response.body()?.let { response ->
+                    OrderMapper.mapUpdateStatusOrder(response)
+                } ?: Load.Fail(Throwable(response.message()))
             } else {
                 Load.Fail(Throwable(response.message()))
             }

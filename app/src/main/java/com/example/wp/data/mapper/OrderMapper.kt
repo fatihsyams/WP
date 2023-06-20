@@ -37,6 +37,12 @@ object OrderMapper {
         return handleApiSuccess(data = response.dataorder?.map { mapToOrderResult(it) }.orEmpty())
     }
 
+    fun mapUpdateStatusOrder(
+        response: ResponseUpdateStatusOrder
+    ): Load<OrderResult> {
+        return handleApiSuccess(data = response.order?.let { mapToOrderResult(it) } ?: OrderResult())
+    }
+
     private fun mapToOrder(response: OrderApi): Order {
         return Order(
             updatedAt = response.updatedAt.orEmpty(),

@@ -91,3 +91,14 @@ data class OrderMenuApi(
     @SerializedName("updated_at")
     val updatedAt: String? = null
 )
+
+data class ResponseUpdateStatusOrder(
+    @SerializedName("message")
+    val message: String?,
+    @SerializedName("dataorder")
+    val order: OrderApi?,
+    @SerializedName("status")
+    val status: String?,
+    @SerializedName("status_code")
+    val statusCode: String?
+)

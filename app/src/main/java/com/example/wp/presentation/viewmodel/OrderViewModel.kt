@@ -19,8 +19,8 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
     private val _orderLoad = MutableLiveData<Load<OrderResult>>()
     val orderLoad = _orderLoad as LiveData<Load<OrderResult>>
 
-    private val _updateOrderStatus = MutableLiveData<Load<Boolean>>()
-    val updateOrderStatus = _updateOrderStatus as LiveData<Load<Boolean>>
+    private val _updateOrderStatus = MutableLiveData<Load<OrderResult>>()
+    val updateOrderStatus = _updateOrderStatus as LiveData<Load<OrderResult>>
 
     private val _ordersLoad = MutableLiveData<Load<List<OrderResult>>>()
     val ordersLoad = _ordersLoad as LiveData<Load<List<OrderResult>>>

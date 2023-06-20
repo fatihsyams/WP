@@ -20,7 +20,7 @@ interface OrderService {
     @POST("order-update-status/{orderId}")
     suspend fun postUpdateOrderStatus(
         @Path("orderId") id:Int,
-        @Body requestUpdateOrderApi: RequestUpdateOrderApi) : Response<ResponsePostOrder>
+        @Body requestUpdateOrderApi: RequestUpdateOrderApi) : Response<ResponseUpdateStatusOrder>
 
     @GET("list-bill")
     suspend fun getOrders() : Response<ResponseOrders>

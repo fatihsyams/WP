@@ -78,6 +78,7 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
                     if (isCanceled) {
                         orderViewModel.getOrders()
                     } else {
+                        order = it.data
                         printStruk()
                     }
                 }
@@ -94,13 +95,15 @@ class OrderListFragment : WarungPojokPrinterFragment(), OrderResultListener {
     }
 
     override fun onBillClicked(orderResult: OrderResult) {
-        order = orderResult
-        printStruk()
+        isCanceled = false
+        orderViewModel.updateOrderStatus(
+            orderId = orderResult.order.id.toString(),
+            status = OrderStatusTypeEnum.BILL.status
+        )
     }
 
     override fun onPayClicked(orderResult: OrderResult) {
         isCanceled = false
-        order = orderResult
         orderViewModel.updateOrderStatus(
             orderId = orderResult.order.id.toString(),
             status = OrderStatusTypeEnum.PAY.status
