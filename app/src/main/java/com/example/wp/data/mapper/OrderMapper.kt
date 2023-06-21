@@ -81,7 +81,7 @@ object OrderMapper {
                 id = api.id ?: 0,
                 information = api.information.orEmpty(),
                 table = TableMapper.mapToTable(api.table ?: TableApi()),
-                totalPayment = api.totalPayment?.minus(api.discountOrder?.toInt() ?: 0) ?: 0.0,
+                totalPayment = api.totalPayment ?: 0.0,
                 totalPaymentBeforeDiscount = api.totalPaymentBeforeDiscount ?: 0.0,
                 updatedAt = api.updatedAt.orEmpty(),
                 discount = api.discountOrder?.toIntOrNull() ?: 0,
