@@ -131,6 +131,9 @@ class MenusAdapter(
 
                 btnMinus.setOnClickListener {
                         item.quantity--
+                    if(item.quantity < 1) {
+                        onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
+                    }
                     val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
                     val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
                     item.totalPrice = if (diskonPrice != 0.0) {
@@ -155,11 +158,12 @@ class MenusAdapter(
                     } else {
                         realprice
                     }
+                    onCalculateMenuListener?.onPlusClicked(item, adapterPosition)
+                    notifyItemChanged(adapterPosition)
                 }
 
                 btnDelete.setOnClickListener {
                     onCalculateMenuListener?.onDeleteClicked(item, adapterPosition)
-//                    notifyItemRemoved(adapterPosition)
                 }
             }
         }

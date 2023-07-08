@@ -3,6 +3,7 @@ package com.example.wp.presentation.order
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
@@ -293,18 +294,26 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     private fun showTotalPrice() {
-        totalPaymentBeforeDiscount = menus.map {item ->
+        val totalPaymentOfMenuDiscount = menus.filter { it.menuPrice.firstOrNull()?.discountMenu != 0 }.map {item ->
             val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
             val diskonPrice = (realprice * (item.menuPrice.firstOrNull()?.discountMenu?:0)) / 100
-            item.totalPrice = if (diskonPrice != 0.0) {
+            item.totalPrice =
                 realprice - diskonPrice
-            } else {
-                realprice
-            }
-        item.totalPrice
+            item.totalPrice
         }.sum()
-        val totalDiscount = totalPaymentBeforeDiscount.times(discount) / 100
+        Log.d("cek diskon", "payment menu dskon $totalPaymentOfMenuDiscount")
+        val totalPaymentOfMenuDiscountCustomer = menus.filter { it.menuPrice.firstOrNull()?.discountMenu == 0 }.map {item ->
+            val realprice = (item.menuPrice.firstOrNull()?.price?.toDouble() ?: 0.0) * item.quantity
+            item.totalPrice = realprice
+            item.totalPrice
+        }.sum()
+        Log.d("cek diskon", "payment menu dskon customer $totalPaymentOfMenuDiscountCustomer")
+        totalPaymentBeforeDiscount = totalPaymentOfMenuDiscount + totalPaymentOfMenuDiscountCustomer
+        Log.d("cek diskon", "payment total before dskon $totalPaymentBeforeDiscount")
+        val totalDiscount = totalPaymentOfMenuDiscountCustomer.times(discount) / 100
+        Log.d("cek diskon", "total diskon $totalDiscount")
         totalPayment = totalPaymentBeforeDiscount - totalDiscount
+        Log.d("cek diskon", "total payment $totalPayment")
         tvTotalPrice.text = toCurrencyFormat(totalPayment)
     }
 
