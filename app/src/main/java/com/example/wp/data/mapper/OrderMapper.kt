@@ -1,12 +1,10 @@
 package com.example.wp.data.mapper
 
+import com.example.wp.data.api.model.request.RequestCustomerApi
 import com.example.wp.data.api.model.request.RequestOrderApi
 import com.example.wp.data.api.model.response.*
 import com.example.wp.domain.kategoriorder.KategoriOrder
-import com.example.wp.domain.order.Customer
-import com.example.wp.domain.order.Order
-import com.example.wp.domain.order.OrderResult
-import com.example.wp.domain.order.Wallet
+import com.example.wp.domain.order.*
 import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.table.Table
 import com.example.wp.utils.Load
@@ -151,11 +149,43 @@ object OrderMapper {
     private fun mapToListCustomer(api: CustomerApi?): Customer {
         return Customer(
             id = api?.id ?: 0,
-            codeCustomer = api?.categoryCustomerId ?: 0,
-            naem = api?.customer.orEmpty(),
-            discountCustomer = api?.discountCustomer ?: 0
-
+            categoryCustomerId = api?.categoryCustomerId ?: 0,
+            codeCustomer = api?.codeCustomer.orEmpty(),
+            name = api?.customer.orEmpty(),
+            discountCustomer = api?.discountCustomer ?: 0,
+            phoneNumber = api?.noHp.orEmpty()
         )
     }
+
+    fun mapGetListCategoryCustomer(response: ResponseCustomerCategories): Load<List<CategoryCustomer>> {
+        return handleApiSuccess(data = response.categoryCustomer?.map {
+            mapToListCategoryCustomer(it)
+        }.orEmpty())
+    }
+
+    private fun mapToListCategoryCustomer(api: CategoryCustomerApi?): CategoryCustomer {
+        return CategoryCustomer(
+            id = api?.id ?: 0,
+            categoryCode = api?.categoryCode.orEmpty(),
+            categoryCustomer = api?.categoryCustomer.orEmpty()
+        )
+    }
+
+    fun mapToRequestCustomerApi(request:Customer): RequestCustomerApi {
+        return RequestCustomerApi(
+            customer = request.name,
+            categoryCustomerId = request.categoryCustomerId,
+            customerCode =  request.codeCustomer,
+            discount = request.discountCustomer,
+            phoneNumber = request.phoneNumber
+        )
+    }
+
+    fun mapResponseNewCustomer(
+        responseAddNewCustomer: ResponseAddNewCustomer
+    ): Load<Customer> {
+        return handleApiSuccess(data = mapToListCustomer(responseAddNewCustomer.customer))
+    }
+
 
 }

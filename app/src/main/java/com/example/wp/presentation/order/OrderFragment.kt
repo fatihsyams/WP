@@ -278,7 +278,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         return OrderResult(
             order = Order(
                 id = orderId,
-                customerName = selectedPelanggan?.naem.orEmpty(),
+                customerName = selectedPelanggan?.name.orEmpty(),
                 customerId = selectedPelanggan?.id ?: 0,
                 orderCategory = selectedCategoryOrder ?: KategoriOrder(),
                 table = selectedTable ?: Table(),
@@ -323,7 +323,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
             selectedOrderNameType = order.type
             selectedPayment = order.paymentMethod
             selectedPelanggan =
-                Customer(id = order.order.customerId, naem = order.order.customerName)
+                Customer(id = order.order.customerId, name = order.order.customerName)
             selectedKas = order.order.wallet
             selectedCategoryOrder = order.order.orderCategory
             selectedTable = order.order.table
@@ -440,7 +440,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val filter = customer.filter {
-                        it.naem.contains(newText.toString())
+                        it.name.contains(newText.toString())
                     }
                     pelangganAdapter.updateData(filter)
                     return false
@@ -510,7 +510,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     }
 
     fun getSelectedPelanggan() {
-        btnCustomerName.text = selectedPelanggan?.naem
+        btnCustomerName.text = selectedPelanggan?.name
     }
 
     fun showDiscountCustomer() {

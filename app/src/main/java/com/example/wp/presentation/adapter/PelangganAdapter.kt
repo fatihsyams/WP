@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wp.R
-import com.example.wp.domain.menu.Category
 import com.example.wp.domain.order.Customer
-import com.example.wp.domain.order.Wallet
-import com.example.wp.presentation.listener.KasListener
 import com.example.wp.presentation.listener.PelangganListener
-import kotlinx.android.synthetic.main.item_kas.view.*
 import kotlinx.android.synthetic.main.item_pelanggan.view.*
 
 class PelangganAdapter(val context: Context, var datas: List<Customer>, val listener: PelangganListener? = null) :
@@ -32,7 +28,7 @@ class PelangganAdapter(val context: Context, var datas: List<Customer>, val list
     inner class PelangganViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: Customer) {
             with(itemView) {
-                btnPelanggan.text = data.naem
+                btnPelanggan.text = data.name
 
                 btnPelanggan.setOnClickListener {
                     listener?.onPelangganSelected(data)

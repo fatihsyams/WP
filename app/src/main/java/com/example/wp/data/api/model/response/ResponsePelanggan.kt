@@ -16,19 +16,19 @@ data class ResponsePelanggan(
 
 data class CustomerApi(
     @SerializedName("category_customer_id")
-    val categoryCustomerId: Int?,
+    val categoryCustomerId: Int? = null,
     @SerializedName("code_customer")
-    val codeCustomer: String?,
+    val codeCustomer: String? = null,
     @SerializedName("created_at")
-    val createdAt: String?,
+    val createdAt: String? = null,
     @SerializedName("customer")
-    val customer: String?,
+    val customer: String? = null,
     @SerializedName("discount_customer")
-    val discountCustomer: Int?,
+    val discountCustomer: Int? = null,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int? = null,
     @SerializedName("no_hp")
-    val noHp: String?,
+    val noHp: String? = null,
     @SerializedName("updated_at")
-    val updatedAt: String?
+    val updatedAt: String? = null
 )

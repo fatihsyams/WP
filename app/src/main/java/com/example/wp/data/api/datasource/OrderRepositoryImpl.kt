@@ -4,6 +4,7 @@ import com.example.wp.data.api.model.request.RequestUpdateOrderApi
 import com.example.wp.data.api.service.OrderService
 import com.example.wp.data.mapper.OrderMapper
 import com.example.wp.domain.kategoriorder.KategoriOrder
+import com.example.wp.domain.order.CategoryCustomer
 import com.example.wp.domain.order.Customer
 import com.example.wp.domain.order.OrderResult
 import com.example.wp.domain.order.Wallet
@@ -128,6 +129,37 @@ class OrderRepositoryImpl(private val service: OrderService) : OrderRepository {
             if (response.isSuccessful) {
                 response.body()?.let { response ->
                     OrderMapper.mapUpdateStatusOrder(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun getListCategoryCustomer(): Load<List<CategoryCustomer>> {
+        return try {
+            val response = service.getCustomerCategories()
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    OrderMapper.mapGetListCategoryCustomer(response)
+                } ?: Load.Fail(Throwable(response.message()))
+            } else {
+                Load.Fail(Throwable(response.message()))
+            }
+        } catch (e: Exception) {
+            Load.Fail(e)
+        }
+    }
+
+    override suspend fun postNewCustomer(customer: Customer): Load<Customer> {
+        return try {
+            val request = OrderMapper.mapToRequestCustomerApi(customer)
+            val response = service.postNewCustomer(request)
+            if (response.isSuccessful) {
+                response.body()?.let { response ->
+                    OrderMapper.mapResponseNewCustomer(response)
                 } ?: Load.Fail(Throwable(response.message()))
             } else {
                 Load.Fail(Throwable(response.message()))

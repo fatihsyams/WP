@@ -1,9 +1,9 @@
 package com.example.wp.data.api.service
 
+import com.example.wp.data.api.model.request.RequestCustomerApi
 import com.example.wp.data.api.model.request.RequestOrderApi
 import com.example.wp.data.api.model.request.RequestUpdateOrderApi
 import com.example.wp.data.api.model.response.*
-import com.example.wp.domain.kategoriorder.KategoriOrder
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -36,6 +36,12 @@ interface OrderService {
 
     @GET("pelanggan")
     suspend fun getPelanggan() : Response<ResponsePelanggan>
+
+    @POST("pelanggan")
+    suspend fun postNewCustomer(request:RequestCustomerApi) : Response<ResponseAddNewCustomer>
+
+    @GET("kategori-pelanggan")
+    suspend fun getCustomerCategories() : Response<ResponseCustomerCategories>
 
 
 
