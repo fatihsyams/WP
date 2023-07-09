@@ -38,7 +38,7 @@ interface OrderService {
     suspend fun getPelanggan() : Response<ResponsePelanggan>
 
     @POST("pelanggan")
-    suspend fun postNewCustomer(request:RequestCustomerApi) : Response<ResponseAddNewCustomer>
+    suspend fun postNewCustomer(@Body request:RequestCustomerApi) : Response<ResponseAddNewCustomer>
 
     @GET("kategori-pelanggan")
     suspend fun getCustomerCategories() : Response<ResponseCustomerCategories>

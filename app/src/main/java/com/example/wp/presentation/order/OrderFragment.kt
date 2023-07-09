@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bidikan.baseapp.ui.WarungPojokFragment
@@ -14,10 +16,7 @@ import com.example.wp.R
 import com.example.wp.domain.kategoriorder.KategoriOrder
 import com.example.wp.domain.menu.Menu
 import com.example.wp.domain.menu.TakeAway
-import com.example.wp.domain.order.Customer
-import com.example.wp.domain.order.Order
-import com.example.wp.domain.order.OrderResult
-import com.example.wp.domain.order.Wallet
+import com.example.wp.domain.order.*
 import com.example.wp.domain.payment.Payment
 import com.example.wp.domain.table.Table
 import com.example.wp.presentation.adapter.*
@@ -36,8 +35,10 @@ import com.example.wp.utils.datepicker.DialogDatePicker
 import com.example.wp.utils.enum.OrderNameTypeEnum
 import com.example.wp.utils.enum.OrderTypeEnum
 import kotlinx.android.synthetic.main.fragment_order.*
+import kotlinx.android.synthetic.main.layout_add_new_customer.*
 import kotlinx.android.synthetic.main.layout_alert_option.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
@@ -114,7 +115,6 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         btnAdd.visible()
         showMenus()
         showOrderResult()
-
     }
 
     override fun onAction() {
@@ -159,6 +159,10 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
         btnCustomerName.setOnClickListener {
             orderViewModel.getListPelanggan()
+        }
+
+        btnAddNewCustomer.setOnClickListener{
+            orderViewModel.getListCategoryCustomer()
         }
     }
 
@@ -250,6 +254,36 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                     showKasOption(it.data)
                 }
                 is Load.Loading -> {
+                }
+            }
+        })
+
+        orderViewModel.listCategoryCustomer.observe(this, Observer {
+            when (it) {
+                is Load.Fail -> {
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    showAddNewCustomerDialog(it.data)
+                }
+                is Load.Loading -> {
+                }
+            }
+        })
+
+        orderViewModel.postNewCustomer.observe(this, androidx.lifecycle.Observer {
+            when (it) {
+                is Load.Loading -> progressDialog.show()
+                is Load.Fail -> {
+                    progressDialog.dismiss()
+                    showToast(it.error.localizedMessage)
+                }
+                is Load.Success -> {
+                    selectedPelanggan = it.data
+                    getSelectedPelanggan()
+                    showDiscountCustomer()
+                    progressDialog.dismiss()
+                    showToast("Customer berhasil ditambahkan")
                 }
             }
         })
@@ -518,5 +552,38 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
         edtDiscount.setText(discount.toString())
     }
 
+    private fun showAddNewCustomerDialog(listCategoryCustomer:List<CategoryCustomer>){
+        context?.let {
+            generateCustomAlertDialog(
+                it,
+                R.layout.layout_add_new_customer,
+                false
+            ).apply {
+
+                val spinnerArrayAdapter = ArrayAdapter(
+                    it, android.R.layout.simple_spinner_item,
+                    listCategoryCustomer.map { categoryCustomer ->  categoryCustomer.categoryCustomer })
+                spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spnCategoryCustomer.adapter = spinnerArrayAdapter
+
+                btnSave.setOnClickListener {
+                    val customer = Customer(
+                        name = edtCustomerName.text.toString(),
+                        codeCustomer = edtCustomerCode.text.toString(),
+                        categoryCustomerId = listCategoryCustomer.find { list -> list.categoryCustomer == spnCategoryCustomer.selectedItem.toString() }?.id ?: 0,
+                        discountCustomer = edtCustomerDiscount.text.toString().toIntOrNull() ?: 0,
+                        phoneNumber = edtCustomerPhoneNumber.text.toString()
+                    )
+                    postNewCustomer(customer)
+                    dismiss()
+                }
+
+            }
+        }
+    }
+
+    private fun postNewCustomer(customer: Customer) {
+        orderViewModel.postNewCustomer(customer)
+    }
 
 }

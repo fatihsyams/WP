@@ -9,7 +9,7 @@ data class RequestCustomerApi(
     val categoryCustomerId:Int,
     @SerializedName("code_customer")
     val customerCode:String,
-    @SerializedName("discount")
+    @SerializedName("discount_customer")
     val discount:Int,
     @SerializedName("no_hp")
     val phoneNumber:String

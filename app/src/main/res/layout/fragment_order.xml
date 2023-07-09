@@ -93,6 +93,18 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@id/tvLabelCustomerName" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddNewCustomer"
+        style="@style/WarungPojokButtonOutlined"
+        android:text="Tambah Pelanggan"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size_14sp"
+        android:layout_marginLeft="@dimen/dimen_16dp"
+        android:layout_marginStart="@dimen/dimen_16dp"
+        app:layout_constraintBottom_toBottomOf="@id/btnCustomerName"
+        app:layout_constraintStart_toEndOf="@id/btnCustomerName"
+        app:layout_constraintTop_toTopOf="@id/btnCustomerName" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLabelDiscount"
         style="@style/WarungPojokTextView.Caption"

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_16dp">
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spnCategoryCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_16dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtCustomerCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kode Pelanggan"
+        android:layout_marginBottom="@dimen/dimen_16dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtCustomerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nama Pelanggan"
+        android:layout_marginBottom="@dimen/dimen_16dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtCustomerPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="No Hp Pelanggan"
+        android:layout_marginBottom="@dimen/dimen_16dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtCustomerDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Diskon Pelanggan"
+        android:layout_marginBottom="@dimen/dimen_16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simpan"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
