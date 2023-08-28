@@ -566,6 +566,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
                 spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spnCategoryCustomer.adapter = spinnerArrayAdapter
 
+                btnClose.setOnClickListener { dismiss() }
+
                 btnSave.setOnClickListener {
                     val customer = Customer(
                         name = edtCustomerName.text.toString(),
