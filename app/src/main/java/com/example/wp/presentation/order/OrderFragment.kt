@@ -113,8 +113,8 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
     override fun onView() {
         (activity as MainActivity).getOrderButton().gone()
         btnAdd.visible()
-        showMenus()
         showOrderResult()
+        showMenus()
     }
 
     override fun onAction() {
