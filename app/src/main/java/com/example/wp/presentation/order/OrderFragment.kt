@@ -474,7 +474,7 @@ class OrderFragment : WarungPojokFragment(), CalculateMenuListener {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val filter = customer.filter {
-                        it.name.contains(newText.toString())
+                        it.name.contains(newText.toString(),true)
                     }
                     pelangganAdapter.updateData(filter)
                     return false
